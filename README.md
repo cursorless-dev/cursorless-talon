@@ -7,7 +7,7 @@ First, install the dependencies:
 
 ### Dependencies
 1. Install [Talon](https://talonvoice.com/)
-2. Install [knausj_talon](https://github.com/knausj85/knausj_talon)
+2. Install [knausj_talon](https://github.com/knausj85/knausj_talon). Note that even a heavily modified version of knausj should be fine
 3. Install [VSCode](https://code.visualstudio.com/)
 4. Install the [VSCode talon extension pack](https://marketplace.visualstudio.com/items?itemName=pokey.talon)
 5. Install the [Cursorless VSCode extension](https://marketplace.visualstudio.com/items?itemName=pokey.cursorless)
