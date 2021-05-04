@@ -3,6 +3,7 @@
 This repository contains the talon side of [Cursorless](https://marketplace.visualstudio.com/items?itemName=pokey.cursorless).  
 
 ## Installation
+First, install the dependencies:
 
 ### Dependencies
 1. Install [Talon](https://talonvoice.com/)
