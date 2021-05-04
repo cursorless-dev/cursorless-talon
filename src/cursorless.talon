@@ -31,6 +31,12 @@ quad wrap <user.cursorless_target>:
 
 twin wrap <user.cursorless_target>:
     user.cursorless_single_target_command("wrap", cursorless_target, "'", "'")
+    
+escaped quad wrap <user.cursorless_target>:
+    user.cursorless_single_target_command("wrap", cursorless_target, "\\\"", "\\\"")
+
+escaped twin wrap <user.cursorless_target>:
+    user.cursorless_single_target_command("wrap", cursorless_target, "\\'", "\\'")
 
 puff <user.cursorless_target>:
     user.cursorless_single_target_command("wrap", cursorless_target, "\n", "\n")
