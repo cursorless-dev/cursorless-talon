@@ -50,4 +50,4 @@ extract <user.cursorless_target> as <user.text>:
     user.code_public_variable_formatter(text)
     key(enter)
 
-action(user.dental_click): user.vscode("cursorless.toggleDecorations")
+# action(user.dental_click): user.vscode("cursorless.toggleDecorations")
