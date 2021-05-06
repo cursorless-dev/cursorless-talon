@@ -8,14 +8,14 @@ mod = Module()
 @mod.capture(
     rule=(
         "<user.cursorless_primitive_target> | "
-        "through <user.cursorless_primitive_target> | "
-        "[range] <user.cursorless_primitive_target> through <user.cursorless_primitive_target>"
+        "past <user.cursorless_primitive_target> | "
+        "[range] <user.cursorless_primitive_target> past <user.cursorless_primitive_target>"
     )
 )
 def cursorless_range(m) -> str:
-    if "through" in m:
+    if "past" in m:
         end = json.loads(m[-1])
-        if m[0] == "through":
+        if m[0] == "past":
             start = BASE_TARGET.copy()
         else:
             start = json.loads(m.cursorless_primitive_target_list[0])

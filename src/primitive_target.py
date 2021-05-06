@@ -82,7 +82,7 @@ containing_scope_type_map = {
     "arg": "argumentOrParameter",
     "arrow": "arrowFunction",
     "class": "class",
-    "elm": "listElement",
+    "element": "listElement",
     "funk": "namedFunction",
     "if": "ifStatement",
     "invoke": "functionCall",
@@ -212,7 +212,7 @@ ctx.lists["self.cursorless_selection_type"] = {
 }
 
 
-@mod.capture(rule="[at] [{user.symbol_color}] <user.any_alphanumeric_key>")
+@mod.capture(rule="[{user.symbol_color}] <user.any_alphanumeric_key>")
 def decorated_symbol(m) -> str:
     """A decorated symbol"""
     try:

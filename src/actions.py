@@ -25,7 +25,7 @@ ctx.lists["self.simple_cursorless_action"] = {
     # Sort children?? (would need to sort only named ones to avoid commas)
     # Reverse children
     # "cut": "cut",
-    # "copy": "copy",
+    "copy": "copy",
     # FIND: "findInFile",
     # f"{FIND} last": "findBackwardsInFile",
     # f"{FIND} all": "findAll",

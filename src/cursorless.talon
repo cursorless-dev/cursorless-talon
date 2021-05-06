@@ -11,6 +11,14 @@ pour <user.cursorless_target>:
     user.cursorless_single_target_command("setSelection", cursorless_target)
     user.new_line_below()
 
+def show <user.cursorless_target>:
+    user.cursorless_single_target_command("setSelection", cursorless_target)
+    user.vscode("editor.action.revealDefinition")
+
+ref show <user.cursorless_target>:
+    user.cursorless_single_target_command("setSelection", cursorless_target)
+    user.vscode("references-view.find")
+
 wrap <user.cursorless_target> with funk <user.code_functions>:
     user.cursorless_single_target_command("wrap", cursorless_target, "{code_functions}(", ")")
 
