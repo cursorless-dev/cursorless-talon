@@ -81,17 +81,19 @@ ctx.lists["self.cursorless_matching"] = {
 containing_scope_type_map = {
     "arg": "argumentOrParameter",
     "arrow": "arrowFunction",
+    "call": "functionCall",
     "class": "class",
+    "comment": "comment",
     "element": "listElement",
     "funk": "namedFunction",
     "if": "ifStatement",
-    "call": "functionCall",
     "key": "pairKey",
     "lambda": "arrowFunction",
     "list": "list",
     "map": "dictionary",
     "pair": "pair",
     "state": "statement",
+    "string": "string",
     "value": "value",
 }
 
