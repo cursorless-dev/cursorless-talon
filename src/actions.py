@@ -21,7 +21,7 @@ ctx.lists["self.simple_cursorless_action"] = {
     # "sort": "sortLines",
     # "join": "joinLines",
     # "float": "insertEmptyLineBelow",
-    # "drop": "insertEmptyLineBelow",
+    # "drop": "insertEmptyLineAbove",
     # Sort children?? (would need to sort only named ones to avoid commas)
     # Reverse children
     "carve": "cut",
@@ -29,7 +29,8 @@ ctx.lists["self.simple_cursorless_action"] = {
     # FIND: "findInFile",
     # f"{FIND} last": "findBackwardsInFile",
     # f"{FIND} all": "findAll",
-    # "fold": "fold",
+    "fold": "fold",
+    "unfold": "unfold",
     # "stack": "addCursorAt",
     # "cursor all": "addCursorToAllLines",
     # "remove cursor": "removeCursor",

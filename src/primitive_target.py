@@ -85,7 +85,7 @@ containing_scope_type_map = {
     "element": "listElement",
     "funk": "namedFunction",
     "if": "ifStatement",
-    "invoke": "functionCall",
+    "call": "functionCall",
     "key": "pairKey",
     "lambda": "arrowFunction",
     "list": "list",

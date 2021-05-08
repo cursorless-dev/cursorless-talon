@@ -4,11 +4,11 @@ app: vscode
     user.cursorless_single_target_command(simple_cursorless_action, cursorless_target)
 
 drink <user.cursorless_target>:
-    user.cursorless_single_target_command("setSelection", cursorless_target)
+    user.cursorless_single_target_command("setSelectionBefore", cursorless_target)
     user.new_line_above()
 
 pour <user.cursorless_target>:
-    user.cursorless_single_target_command("setSelection", cursorless_target)
+    user.cursorless_single_target_command("setSelectionAfter", cursorless_target)
     user.new_line_below()
 
 def show <user.cursorless_target>:
@@ -54,8 +54,11 @@ extract <user.cursorless_target>:
 
 extract <user.cursorless_target> as <user.text>:
     user.cursorless_single_target_command("extractVariable", cursorless_target)
-    sleep(250ms)
+    sleep(300ms)
     user.code_public_variable_formatter(text)
     key(enter)
+
+swap <user.cursorless_target> with <user.cursorless_target>:
+    user.cursorless_multiple_target_command("swap", cursorless_target_list)
 
 # action(user.dental_click): user.vscode("cursorless.toggleDecorations")
