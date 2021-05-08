@@ -58,7 +58,7 @@ extract <user.cursorless_target> as <user.text>:
     user.code_public_variable_formatter(text)
     key(enter)
 
-swap <user.cursorless_target> with <user.cursorless_target>:
-    user.cursorless_multiple_target_command("swap", cursorless_target_list)
+<user.cursorless_swap>:
+    user.cursorless_multiple_target_command("swap", cursorless_swap)
 
 # action(user.dental_click): user.vscode("cursorless.toggleDecorations")
