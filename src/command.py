@@ -22,7 +22,7 @@ class Actions:
     ):
         """Execute single-target cursorlses command"""
         args = list(filter(lambda x: x is not NotSet, [arg1, arg2, arg3]))
-        actions.user.vscode_and_wait(
+        actions.user.vscode_with_plugin_and_wait(
             "cursorless.command",
             action,
             [json.loads(target)],
@@ -38,7 +38,7 @@ class Actions:
     ):
         """Execute single-target cursorlses command"""
         args = list(filter(lambda x: x is not NotSet, [arg1, arg2, arg3]))
-        actions.user.vscode_and_wait(
+        actions.user.vscode_with_plugin_and_wait(
             "cursorless.command",
             action,
             [json.loads(target) for target in targets],
