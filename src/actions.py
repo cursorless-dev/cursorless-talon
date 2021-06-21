@@ -1,5 +1,5 @@
 import json
-from .primitive_target import BASE_TARGET
+from .primitive_target import BASE_TARGET, STRICT_HERE
 from talon import Context, actions, ui, Module, app, clip
 
 mod = Module()
@@ -54,6 +54,7 @@ ctx.lists["self.simple_cursorless_action"] = {
     # "paste": "paste",
 }
 
+
 @mod.capture(rule=("swap [<user.cursorless_target>] with <user.cursorless_target>"))
 def cursorless_swap(m) -> str:
     target_list = m.cursorless_target_list
@@ -62,6 +63,17 @@ def cursorless_swap(m) -> str:
         target_list = [json.dumps(BASE_TARGET)] + target_list
 
     return target_list
+
+
+@mod.capture(rule=("bring <user.cursorless_target> [to <user.cursorless_target>]"))
+def cursorless_use(m) -> str:
+    target_list = m.cursorless_target_list
+
+    if len(target_list) == 1:
+        target_list = target_list + [json.dumps(STRICT_HERE)]
+
+    return target_list
+
 
 {
     # Require 1 extent of any kind and 1 position, but prob best to assume

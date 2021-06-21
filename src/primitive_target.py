@@ -24,6 +24,14 @@ ctx.lists["self.symbol_color"] = {
 CONNECTIVES = {"at", "of", "in", "containing"}
 
 BASE_TARGET = {"type": "primitive"}
+STRICT_HERE = {
+    "type": "primitive",
+    "mark": {"type": "cursor"},
+    "selectionType": "token",
+    "position": "contents",
+    "transformation": {"type": "identity"},
+    "insideOutsideType": "inside",
+}
 
 
 @mod.capture(
@@ -32,9 +40,9 @@ BASE_TARGET = {"type": "primitive"}
         "[{user.cursorless_pair_surround_type}] "
         "[{user.cursorless_selection_type} [of | in | containing]] "
         "[<user.cursorless_range_transformation>] "
-        "[<user.cursorless_indexer> [at]]"
-        "(<user.decorated_symbol> | {user.cursorless_mark} | {user.unmarked_core} | <user.cursorless_surrounding_pair> | <user.cursorless_containing_scope> | <user.cursorless_indexer>)"
-        "[<user.cursorless_indexer> | {user.cursorless_matching}]"
+        "[<user.cursorless_subcomponent> [at]]"
+        "(<user.decorated_symbol> | {user.cursorless_mark} | {user.unmarked_core} | <user.cursorless_surrounding_pair> | <user.cursorless_containing_scope> | <user.cursorless_subcomponent>)"
+        "[<user.cursorless_subcomponent> | {user.cursorless_matching}]"
     )
 )
 def cursorless_primitive_target(m) -> str:
@@ -251,20 +259,28 @@ ctx.lists["self.cursorless_sub_component_type"] = {
 }
 
 
+@mod.capture(rule=("<user.ordinals> | last"))
+def ordinal_or_last(m) -> str:
+    """Supported extents for cursorless navigation"""
+    if m[0] == "last":
+        return -1
+    return m.ordinals - 1
+
+
 @mod.capture(
     rule=(
-        "<user.ordinals> [through <user.ordinals>] {user.cursorless_sub_component_type}"
+        "<user.ordinal_or_last> [through <user.ordinal_or_last>] {user.cursorless_sub_component_type}"
     )
 )
-def cursorless_indexer(m) -> str:
-    """Supported extents for cursorless navigation"""
+def cursorless_subcomponent(m) -> str:
+    """Word subcomponents such as subwords or characters"""
     return json.dumps(
         {
             "transformation": {
                 "type": "subpiece",
                 "pieceType": m.cursorless_sub_component_type,
-                "startIndex": m.ordinals_list[0],
-                "endIndex": m.ordinals_list[-1] + 1,
+                "startIndex": m.ordinal_or_last_list[0],
+                "endIndex": m.ordinal_or_last_list[-1] + 1 or None,
             }
         }
     )

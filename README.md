@@ -9,12 +9,16 @@ First, install the dependencies:
 1. Install [Talon](https://talonvoice.com/)
 2. Install [knausj_talon](https://github.com/knausj85/knausj_talon). Note that
    even a heavily modified version of knausj should be fine, but make sure you
-   at least have [this
-   commit](https://github.com/knausj85/knausj_talon/commit/ffe1fe0f6a5ffa594d31501dad3f4f4ae7751e62)
-   (which is in mainline knausj).
+   have rebased since commit
+   https://github.com/knausj85/knausj_talon/commit/ff89cc18f73669fd175ab91b9f3e53665c6044df.
+   If rebasing is too painful, or if you are not a user of knausj, you can just
+   clone [the command
+   client](https://github.com/pokey/talon-vscode-command-client) into your
+   talon user directory. You may need a couple other things from knausj but nothing major.  Please file an issue if you have trouble getting this repo to work without knausj.
 3. Install [VSCode](https://code.visualstudio.com/)
 4. Install the [VSCode talon extension pack](https://marketplace.visualstudio.com/items?itemName=pokey.talon)
 5. Install the [Cursorless VSCode extension](https://marketplace.visualstudio.com/items?itemName=pokey.cursorless)
+6. Follow the instructions below to install cursorless-vscode itself.
 
 ### Installing this repo
 #### Linux & Mac
