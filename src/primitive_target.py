@@ -252,6 +252,7 @@ ctx.lists["self.cursorless_sub_component_type"] = {
     "subtokens": "subtoken",
     "subword": "subtoken",
     "subwords": "subtoken",
+    "word": "subtoken",
     "car": "character",
     "cars": "character",
     "character": "character",
