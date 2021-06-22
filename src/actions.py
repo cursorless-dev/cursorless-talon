@@ -14,7 +14,7 @@ app: vscode
 mod.list("simple_cursorless_action", desc="Supported actions for cursorless navigation")
 ctx.lists["self.simple_cursorless_action"] = {
     # Accepts any single extent
-    "spring": "setSelection",
+    # "spring": "setSelection",  # Removed because conflicts with "bring"
     "take": "setSelection",
     "pree": "setSelectionBefore",
     "post": "setSelectionAfter",

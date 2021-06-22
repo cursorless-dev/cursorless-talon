@@ -153,7 +153,7 @@ cursor_mark = {"mark": {"type": "cursor"}}
 that_mark = {"mark": {"type": "that"}}
 
 marks = {
-    "here": cursor_mark,
+    # "here": cursor_mark,  # Removed because conflicts with "air"
     "this": cursor_mark,
     **{
         f"this {selection_type.singular}": {**selection_type.json_repr, **cursor_mark}
