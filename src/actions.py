@@ -20,6 +20,8 @@ ctx.lists["self.simple_cursorless_action"] = {
     "post": "setSelectionAfter",
     "chuck": "delete",
     "clear": "clear",
+    "drink": "insertLineBefore",
+    "pour": "insertLineAfter",
     # "sort": "sortLines",
     # "join": "joinLines",
     # "float": "insertEmptyLineBelow",

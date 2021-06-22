@@ -3,14 +3,6 @@ app: vscode
 {self.simple_cursorless_action} <user.cursorless_target>:
     user.cursorless_single_target_command(simple_cursorless_action, cursorless_target)
 
-drink <user.cursorless_target>:
-    user.cursorless_single_target_command("setSelectionBefore", cursorless_target)
-    user.new_line_above()
-
-pour <user.cursorless_target>:
-    user.cursorless_single_target_command("setSelectionAfter", cursorless_target)
-    user.new_line_below()
-
 def show <user.cursorless_target>:
     user.cursorless_single_target_command("setSelection", cursorless_target)
     user.vscode("editor.action.revealDefinition")
