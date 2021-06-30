@@ -29,6 +29,19 @@ class Actions:
             *args,
         )
 
+    def cursorless_single_target_command_args(
+        action: str,
+        target: str,
+        args: list[Any]
+    ):
+        """Execute single-target cursorlses command with arguments list"""
+        actions.user.vscode_with_plugin_and_wait(
+            "cursorless.command",
+            action,
+            [json.loads(target)],
+            *args,
+        )
+
     def cursorless_multiple_target_command(
         action: str,
         targets: List[str],
@@ -43,13 +56,4 @@ class Actions:
             action,
             [json.loads(target) for target in targets],
             *args,
-        )
-
-    def cursorless_wrap_command(wrap: dict):
-        """Execute cursorless wrap command"""
-        actions.user.cursorless_single_target_command(
-            "wrap",
-            wrap["target"],
-            wrap["start"],
-            wrap["end"]
         )

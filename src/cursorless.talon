@@ -20,6 +20,9 @@ quick fix <user.cursorless_target>:
     sleep(300ms)
     user.vscode("editor.action.quickFix")
 
+<user.cursorless_wrapable> wrap <user.cursorless_target>:
+    user.cursorless_single_target_command_args("wrap", cursorless_target, cursorless_wrapable)
+
 wrap <user.cursorless_target> with funk <user.code_functions>:
     user.cursorless_single_target_command("wrap", cursorless_target, "{code_functions}(", ")")
 
@@ -34,9 +37,6 @@ extract <user.cursorless_target> as <user.text>:
     sleep(300ms)
     user.code_public_variable_formatter(text)
     key(enter)
-
-<user.cursorless_wrap>:
-    user.cursorless_wrap_command(cursorless_wrap)
 
 <user.cursorless_swap>:
     user.cursorless_multiple_target_command("swap", cursorless_swap)

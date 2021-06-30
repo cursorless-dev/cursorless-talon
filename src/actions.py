@@ -68,16 +68,12 @@ wrapables = {
     "escaped quad": ['\\"', '\\"']
 }
 
-mod.list("cursorless_wrapables", desc="Supported wraps for cursorless wrap action")
-ctx.lists["self.cursorless_wrapables"] = wrapables.keys()
+mod.list("cursorless_wrapable", desc="Supported wraps for cursorless wrap action")
+ctx.lists["self.cursorless_wrapable"] = wrapables.keys()
 
-@mod.capture(rule=("{user.cursorless_wrapables} wrap <user.cursorless_target>"))
-def cursorless_wrap(m) -> dict:
-    return {
-        "start": wrapables[m.cursorless_wrapables][0],
-        "end": wrapables[m.cursorless_wrapables][1],
-        "target": m.cursorless_target
-    }
+@mod.capture(rule=("{user.cursorless_wrapable}"))
+def cursorless_wrapable(m) -> list[str]:
+    return wrapables[m.cursorless_wrapable]
 
 
 @mod.capture(rule=("swap [<user.cursorless_target>] with <user.cursorless_target>"))
