@@ -56,7 +56,7 @@ ctx.lists["self.simple_cursorless_action"] = {
     # "paste": "paste",
 }
 
-wrapables = {
+wrappers = {
     "square": ["[", "]"],
     "round": ["(", ")"],
     "curly": ["{", "}"],
