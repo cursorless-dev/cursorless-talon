@@ -34,7 +34,7 @@ class Actions:
         target: str,
         args: list[Any]
     ):
-        """Execute single-target cursorlses command with arguments list"""
+        """Execute single-target cursorless command with argument list"""
         actions.user.vscode_with_plugin_and_wait(
             "cursorless.command",
             action,
