@@ -35,10 +35,9 @@ class Actions:
         args: list[Any]
     ):
         """Execute single-target cursorless command with argument list"""
-        actions.user.vscode_with_plugin_and_wait(
-            "cursorless.command",
+        actions.user.cursorless_single_target_command(
             action,
-            [json.loads(target)],
+            target,
             *args,
         )
 
