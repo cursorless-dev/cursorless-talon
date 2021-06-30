@@ -44,3 +44,12 @@ class Actions:
             [json.loads(target) for target in targets],
             *args,
         )
+
+    def cursorless_wrap_command(wrap: dict):
+        """Execute cursorless wrap command"""
+        actions.user.cursorless_single_target_command(
+            "wrap",
+            wrap["target"],
+            wrap["start"],
+            wrap["end"]
+        )

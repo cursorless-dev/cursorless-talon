@@ -56,6 +56,29 @@ ctx.lists["self.simple_cursorless_action"] = {
     # "paste": "paste",
 }
 
+wrapables = {
+    "square": ["[", "]"],
+    "round": ["(", ")"],
+    "curly": ["{", "}"],
+    "angle": ["<", ">"],
+    "twin": ["'", "'"],
+    "quad": ['"', '"'],
+    "brick": ["`", "`"],
+    "escaped twin": ["\\'", "\\'"],
+    "escaped quad": ['\\"', '\\"']
+}
+
+mod.list("cursorless_wrapables", desc="Supported wraps for cursorless wrap action")
+ctx.lists["self.cursorless_wrapables"] = wrapables.keys()
+
+@mod.capture(rule=("{user.cursorless_wrapables} wrap <user.cursorless_target>"))
+def cursorless_wrap(m) -> dict:
+    return {
+        "start": wrapables[m.cursorless_wrapables][0],
+        "end": wrapables[m.cursorless_wrapables][1],
+        "target": m.cursorless_target
+    }
+
 
 @mod.capture(rule=("swap [<user.cursorless_target>] with <user.cursorless_target>"))
 def cursorless_swap(m) -> str:
@@ -75,6 +98,8 @@ def cursorless_use(m) -> str:
         target_list = target_list + [json.dumps(STRICT_HERE)]
 
     return target_list
+
+
 
 
 {
