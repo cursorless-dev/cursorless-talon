@@ -20,8 +20,8 @@ quick fix <user.cursorless_target>:
 	sleep(300ms)
 	user.vscode("editor.action.quickFix")
 
-<user.cursorless_wrappers> wrap <user.cursorless_target>:
-	user.cursorless_single_target_command_with_arg_list("wrap", cursorless_target, cursorless_wrappers)
+<user.cursorless_wrapper> wrap <user.cursorless_target>:
+	user.cursorless_single_target_command_with_arg_list("wrap", cursorless_target, cursorless_wrapper)
 
 wrap <user.cursorless_target> with funk <user.code_functions>:
 	user.cursorless_single_target_command("wrap", cursorless_target, "{code_functions}(", ")")

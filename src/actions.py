@@ -69,11 +69,11 @@ wrappers = {
 }
 
 mod.list("cursorless_wrapper", desc="Supported wrappers for cursorless wrap action")
-ctx.lists["self.cursorless_wrappers"] = wrappers.keys()
+ctx.lists["self.cursorless_wrapper"] = wrappers.keys()
 
-@mod.capture(rule=("{user.cursorless_wrappers}"))
-def cursorless_wrappers(m) -> list[str]:
-    return wrappers[m.cursorless_wrappers]
+@mod.capture(rule=("{user.cursorless_wrapper}"))
+def cursorless_wrapper(m) -> list[str]:
+    return wrappers[m.cursorless_wrapper]
 
 
 @mod.capture(rule=("swap [<user.cursorless_target>] with <user.cursorless_target>"))
