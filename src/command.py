@@ -29,7 +29,7 @@ class Actions:
             *args,
         )
 
-    def cursorless_single_target_command_args(
+    def cursorless_single_target_command_with_arg_list(
         action: str,
         target: str,
         args: list[Any]
