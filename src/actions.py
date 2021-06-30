@@ -68,7 +68,7 @@ wrappers = {
     "escaped quad": ['\\"', '\\"']
 }
 
-mod.list("cursorless_wrappers", desc="Supported wraps for cursorless wrap action")
+mod.list("cursorless_wrapper", desc="Supported wrappers for cursorless wrap action")
 ctx.lists["self.cursorless_wrappers"] = wrappers.keys()
 
 @mod.capture(rule=("{user.cursorless_wrappers}"))
