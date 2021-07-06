@@ -29,6 +29,18 @@ class Actions:
             *args,
         )
 
+    def cursorless_single_target_command_with_arg_list(
+        action: str,
+        target: str,
+        args: list[Any]
+    ):
+        """Execute single-target cursorless command with argument list"""
+        actions.user.cursorless_single_target_command(
+            action,
+            target,
+            *args,
+        )
+
     def cursorless_multiple_target_command(
         action: str,
         targets: List[str],

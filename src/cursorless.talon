@@ -14,41 +14,17 @@ ref show <user.cursorless_target>:
 hover show <user.cursorless_target>:
     user.cursorless_single_target_command("setSelection", cursorless_target)
     user.vscode("editor.action.showHover")
-    
+
 quick fix <user.cursorless_target>:
     user.cursorless_single_target_command("setSelection", cursorless_target)
     sleep(300ms)
     user.vscode("editor.action.quickFix")
 
+<user.cursorless_wrapper> wrap <user.cursorless_target>:
+    user.cursorless_single_target_command_with_arg_list("wrap", cursorless_target, cursorless_wrapper)
+
 wrap <user.cursorless_target> with funk <user.code_functions>:
     user.cursorless_single_target_command("wrap", cursorless_target, "{code_functions}(", ")")
-
-square wrap <user.cursorless_target>:
-    user.cursorless_single_target_command("wrap", cursorless_target, "[", "]")
-
-round wrap <user.cursorless_target>:
-    user.cursorless_single_target_command("wrap", cursorless_target, "(", ")")
-
-curly wrap <user.cursorless_target>:
-    user.cursorless_single_target_command("wrap", cursorless_target, "{", "}")
-
-(diamond | angle) wrap <user.cursorless_target>:
-    user.cursorless_single_target_command("wrap", cursorless_target, "<", ">")
-
-quad wrap <user.cursorless_target>:
-    user.cursorless_single_target_command("wrap", cursorless_target, "\"", "\"")
-
-brick wrap <user.cursorless_target>:
-    user.cursorless_single_target_command("wrap", cursorless_target, "`", "`")
-
-twin wrap <user.cursorless_target>:
-    user.cursorless_single_target_command("wrap", cursorless_target, "'", "'")
-    
-escaped quad wrap <user.cursorless_target>:
-    user.cursorless_single_target_command("wrap", cursorless_target, "\\\"", "\\\"")
-
-escaped twin wrap <user.cursorless_target>:
-    user.cursorless_single_target_command("wrap", cursorless_target, "\\'", "\\'")
 
 puff <user.cursorless_target>:
     user.cursorless_single_target_command("wrap", cursorless_target, "\n", "\n")
