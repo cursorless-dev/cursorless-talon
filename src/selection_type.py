@@ -40,7 +40,7 @@ RANKED_SELECTION_TYPES = {
 }
 
 selection_type_map = {
-    st.singular: st.json_repr for st in  SELECTION_TYPES
+    selection_type.singular: selection_type.json_repr for selection_type in  SELECTION_TYPES
 }
 
 mod.list("cursorless_selection_type", desc="Types of selection_types")
