@@ -48,7 +48,7 @@ def cursorless_containing_scope_type(m) -> str:
 
 @mod.capture(rule=("[every] <user.cursorless_containing_scope_type>"))
 def cursorless_containing_scope(m) -> str:
-    """Supported extents for cursorless navigation"""
+    """Supported containing scope types"""
     if m[0] == "every":
         current_target = m.cursorless_containing_scope_type
         current_target["transformation"]["includeSiblings"] = True
