@@ -1,7 +1,7 @@
 app: vscode
 -
-{self.simple_cursorless_action} <user.cursorless_target>:
-    user.cursorless_single_target_command(simple_cursorless_action, cursorless_target)
+{self.cursorless_simple_action} <user.cursorless_target>:
+    user.cursorless_single_target_command(cursorless_simple_action, cursorless_target)
 
 def show <user.cursorless_target>:
     user.cursorless_single_target_command("setSelection", cursorless_target)

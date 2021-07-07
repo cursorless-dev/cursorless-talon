@@ -1,4 +1,3 @@
-import json
 from .primitive_target import BASE_TARGET, STRICT_HERE
 from talon import Context, actions, ui, Module, app, clip
 
@@ -11,8 +10,8 @@ app: vscode
 
 # TODO A lot of these could be supported by supporting a proper "pop back"
 # Would basically use the same logic that is used for updating token ranges
-mod.list("simple_cursorless_action", desc="Supported actions for cursorless navigation")
-ctx.lists["self.simple_cursorless_action"] = {
+mod.list("cursorless_simple_action", desc="Supported actions for cursorless navigation")
+ctx.lists["self.cursorless_simple_action"] = {
     # Accepts any single extent
     # "spring": "setSelection",  # Removed because conflicts with "bring"
     "take": "setSelection",
@@ -48,9 +47,9 @@ ctx.lists["self.simple_cursorless_action"] = {
     # "ref show": "showReferences",
     # "def show": "showDefinition",
     # "hover show": "showHover",
-    # "act up": "scrollToTop",
-    # "act eat": "scrollToMid",
-    # "act down": "scrollToBottom",
+    "top": "scrollToTop",
+    "center": "scrollToCenter",
+    "bottom": "scrollToBottom",
     # "breakpoint": "addBreakPoint",
     # # Accepts position
     # "paste": "paste",
@@ -81,7 +80,7 @@ def cursorless_swap(m) -> str:
     target_list = m.cursorless_target_list
 
     if len(target_list) == 1:
-        target_list = [json.dumps(BASE_TARGET)] + target_list
+        target_list = [BASE_TARGET] + target_list
 
     return target_list
 
@@ -91,7 +90,7 @@ def cursorless_use(m) -> str:
     target_list = m.cursorless_target_list
 
     if len(target_list) == 1:
-        target_list = target_list + [json.dumps(STRICT_HERE)]
+        target_list = target_list + [STRICT_HERE]
 
     return target_list
 
@@ -99,10 +98,6 @@ def cursorless_use(m) -> str:
 
 
 {
-    # Require 1 extent of any kind and 1 position, but prob best to assume
-    # the position is same type as extent, and need to explicitly say "token"
-    # if you want to use a token for the second one if the first is not
-    "use": "use",
     # Require 1 extent of any kind, and 1 format string (eg "camel foo bar",
     # "phrase hello world" etc, "spell air bat cap")
     # Note: these should actually be of the form "replace <range> with"
