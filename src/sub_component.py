@@ -10,7 +10,7 @@ app: vscode
 
 @mod.capture(rule=("<user.ordinals> | last"))
 def ordinal_or_last(m) -> str:
-    """Supported extents for cursorless navigation"""
+    """An ordinal or the word 'last'"""
     if m[0] == "last":
         return -1
     return m.ordinals - 1
@@ -37,5 +37,4 @@ def cursorless_subcomponent(m) -> str:
             "endIndex": m.ordinal_or_last_list[-1] + 1 or None,
         }
     }
-
 
