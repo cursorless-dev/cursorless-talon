@@ -28,7 +28,7 @@ ctx.lists["self.cursorless_sub_component_type"] = {
     )
 )
 def cursorless_subcomponent(m) -> str:
-    """Word subcomponents such as subwords or characters"""
+    """Subtoken ranges such as subwords or characters"""
     return {
         "transformation": {
             "type": "subpiece",
@@ -37,4 +37,3 @@ def cursorless_subcomponent(m) -> str:
             "endIndex": m.ordinal_or_last_list[-1] + 1 or None,
         }
     }
-
