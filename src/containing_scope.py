@@ -38,7 +38,7 @@ containing_scope_types = {
     for term, containing_scope_type in containing_scope_type_map.items()
 }
 
-mod.list("cursorless_containing_scope_type", desc="Supported symbol extent types")
+mod.list("cursorless_containing_scope_type", desc="Supported containing scope types")
 ctx.lists["self.cursorless_containing_scope_type"] = containing_scope_types.keys()
 
 @mod.capture(rule="{user.cursorless_containing_scope_type}")
