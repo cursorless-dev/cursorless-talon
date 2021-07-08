@@ -41,7 +41,7 @@ special_marks = {
     # "last cursor": {"mark": {"type": "lastCursorPosition"}} # Not implemented
 }
 
-mod.list("cursorless_mark", desc="Types of marks")
+mod.list("cursorless_mark", desc="Cursorless marks")
 ctx.lists["self.cursorless_mark"] =  marks.keys()
 
 @mod.capture(rule=(
