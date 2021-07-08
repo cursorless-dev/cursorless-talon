@@ -36,7 +36,7 @@ def cursorless_pair_surround_type(m) -> str:
 
 @mod.capture(rule=("<user.cursorless_pair_surround_type> {user.cursorless_pair_symbol}"))
 def cursorless_surrounding_pair(m) -> str:
-    """Supported extents for cursorless navigation"""
+    """Surrounding pair modifiers"""
     return {
         "transformation": {
             "type": "surroundingPair",
