@@ -17,7 +17,7 @@ pair_symbols = {
     "twin": "singleQuotes",
 }
 
-mod.list("cursorless_pair_symbol", desc="A pair symbol")
+mod.list("cursorless_pair_symbol", desc="A symbol that comes in pairs, eg brackets")
 ctx.lists["self.cursorless_pair_symbol"] = pair_symbols
 
 
