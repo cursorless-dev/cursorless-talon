@@ -5,7 +5,7 @@ mod = Module()
 ctx = Context()
 
 ctx.matches = r"""
-app: vscode
+tag: user.cursorless
 """
 
 @dataclass
@@ -13,10 +13,10 @@ class ModifierTerm:
     term: str
     info: dict
 
-matching_transformation = ModifierTerm(
+matching_pair_symbol = ModifierTerm(
     "matching",  {"transformation": {"type": "matchingPairSymbol"}}
 )
 
-@mod.capture(rule=matching_transformation.term)
-def cursorless_matching(m) -> str:
-    return matching_transformation.info
+@mod.capture(rule=matching_pair_symbol.term)
+def cursorless_matching_pair_symbol(m) -> str:
+    return cursorless_matching_pair_symbol.info

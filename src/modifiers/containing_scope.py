@@ -4,7 +4,7 @@ mod = Module()
 ctx = Context()
 
 ctx.matches = r"""
-app: vscode
+tag: user.cursorless
 """
 
 containing_scope_type_map = {

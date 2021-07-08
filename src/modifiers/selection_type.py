@@ -5,7 +5,7 @@ mod = Module()
 ctx = Context()
 
 ctx.matches = r"""
-app: vscode
+tag: user.cursorless
 """
 
 SELECTION_TYPE_KEY = "selectionType"

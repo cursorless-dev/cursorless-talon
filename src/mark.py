@@ -4,7 +4,7 @@ mod = Module()
 ctx = Context()
 
 ctx.matches = r"""
-app: vscode
+tag: user.cursorless
 """
 
 mod.list("cursorless_symbol_color", desc="Supported symbol colors for token jumping")

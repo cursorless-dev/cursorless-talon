@@ -1,5 +1,7 @@
 app: vscode
 -
+tag(): user.cursorless
+
 {self.cursorless_simple_action} <user.cursorless_target>:
     user.cursorless_single_target_command(cursorless_simple_action, cursorless_target)
 

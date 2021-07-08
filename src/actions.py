@@ -5,7 +5,7 @@ mod = Module()
 
 ctx = Context()
 ctx.matches = r"""
-app: vscode
+tag: user.cursorless
 """
 
 # TODO A lot of these could be supported by supporting a proper "pop back"
