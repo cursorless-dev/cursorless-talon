@@ -34,7 +34,7 @@ def cursorless_decorated_symbol(m) -> str:
     }
 
 
-marks = {
+special_marks = {
     "this": {"mark": {"type": "cursor"}},
     "that": {"mark": {"type": "that"}}
 
