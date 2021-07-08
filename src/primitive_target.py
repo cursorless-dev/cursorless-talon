@@ -19,7 +19,7 @@ STRICT_HERE = {
     "insideOutsideType": "inside"
 }
 
-parameters = [
+modifiers = [
     "<user.cursorless_position>",             # before, above, end of
     "<user.cursorless_selection_type>",       # token, line, file
     "<user.cursorless_containing_scope>",     # funk, state, class
@@ -30,17 +30,17 @@ parameters = [
     # "<user.cursorless_matching_pair_symbol>", # matching
 ]
 
-parameters_and_mark = (
-    f"({'|'.join(parameters)})* "   # 0 or more parameters
+modifiers_and_mark = (
+    f"({'|'.join(modifiers)})* "   # 0 or more parameters
     "<user.cursorless_mark>"        # 1 mark
 )
 
-parameters_only = (
-    f"({'|'.join(parameters)})+"   # 1 or more parameters
+modifiers_only = (
+    f"({'|'.join(modifiers)})+"   # 1 or more parameters
 )
 
 
-@mod.capture(rule=f"({parameters_and_mark}) | ({parameters_only})")
+@mod.capture(rule=f"({modifiers_and_mark}) | ({modifiers_only})")
 def cursorless_primitive_target(m) -> str:
     """Supported extents for cursorless navigation"""
     object = BASE_TARGET.copy()

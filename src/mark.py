@@ -7,7 +7,7 @@ ctx.matches = r"""
 tag: user.cursorless
 """
 
-mod.list("cursorless_symbol_color", desc="Supported symbol colors for token jumping")
+mod.list("cursorless_symbol_color", desc="Supported symbol colors for cursorless")
 ctx.lists["self.cursorless_symbol_color"] = {
     "gray": "default",
     "blue": "blue",
@@ -34,15 +34,15 @@ def cursorless_decorated_symbol(m) -> str:
     }
 
 
-marks = {
+special_marks = {
     "this": {"mark": {"type": "cursor"}},
     "that": {"mark": {"type": "that"}}
 
     # "last cursor": {"mark": {"type": "lastCursorPosition"}} # Not implemented
 }
 
-mod.list("cursorless_mark", desc="Types of marks")
-ctx.lists["self.cursorless_mark"] =  marks.keys()
+mod.list("cursorless_mark", desc="Cursorless marks")
+ctx.lists["self.cursorless_mark"] =  special_marks.keys()
 
 @mod.capture(rule=(
     "<user.cursorless_decorated_symbol> | "
@@ -52,4 +52,4 @@ def cursorless_mark(m) -> str:
     try:
         return m.cursorless_decorated_symbol
     except AttributeError:
-        return marks[m.cursorless_mark]
+        return special_marks[m.cursorless_mark]

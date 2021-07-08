@@ -7,7 +7,7 @@ ctx.matches = r"""
 tag: user.cursorless
 """
 
-surrounding_pairs = {
+pair_symbols = {
     "angle": "angleBrackets",
     "diamond": "angleBrackets",
     "curly": "curlyBrackets",
@@ -17,16 +17,16 @@ surrounding_pairs = {
     "twin": "singleQuotes",
 }
 
-mod.list("cursorless_surrounding_pair", desc="A surrounding air symbol")
-ctx.lists["self.cursorless_surrounding_pair"] = surrounding_pairs
+mod.list("cursorless_pair_symbol", desc="A symbol that comes in pairs, eg brackets")
+ctx.lists["self.cursorless_pair_symbol"] = pair_symbols
 
 
-@mod.capture(rule=("{user.cursorless_surrounding_pair}"))
+@mod.capture(rule=("{user.cursorless_pair_symbol}"))
 def cursorless_surrounding_pair(m) -> str:
-    """Supported extents for cursorless navigation"""
+    """Surrounding pair modifiers"""
     return {
         "transformation": {
             "type": "surroundingPair",
-            "delimiter": m.cursorless_surrounding_pair
+            "delimiter": m.pair_symbol
         }
     }
