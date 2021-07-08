@@ -19,7 +19,7 @@ STRICT_HERE = {
     "insideOutsideType": "inside"
 }
 
-parameters = [
+modifiers = [
     "<user.cursorless_position>",             # before, above, end of
     "<user.cursorless_selection_type>",       # token, line, file
     "<user.cursorless_containing_scope>",     # funk, state, class
