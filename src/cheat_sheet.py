@@ -9,8 +9,11 @@ cheat_sheet = None
 last_mouse_pos = None
 
 instructions_url = "https://github.com/pokey/cursorless-talon/tree/master/docs"
+instructions_text = "Full docs"
 line_height = 34
+outer_padding = 27
 text_size = 16
+url_text_size = 30
 close_size = 24
 header_size = 22
 padding = 4
@@ -20,7 +23,7 @@ CHEAT_SHEET_WIDTH = 1410
 
 CHEAT_SHEET_LINE_COUNT = 21
 
-command_font = "cascadia mono"
+command_font = "monospace"
 text_font = ""
 
 background_color = "fafafa"
@@ -29,7 +32,7 @@ text_color = "444444"
 header_color = "000000"
 command_background_color = "e9e9e9"
 command_text_color = "282828"
-url_color = "6495ED"
+url_color = "0046c9"
 
 
 class CheatSheet:
@@ -71,7 +74,7 @@ class CheatSheet:
                 actions.user.cursorless_open_instructions()
 
     def draw(self, canvas):
-        self.x = canvas.x + line_height
+        self.x = canvas.x + outer_padding
         self.w = 0
 
         self.draw_background(canvas)
@@ -100,7 +103,7 @@ class CheatSheet:
 
         self.next_row()
         self.draw_header(canvas, "Colors")
-        self.draw_items(canvas, get_list("cursorless_symbol_color"))
+        self.draw_items(canvas, get_list("symbol_color"))
 
         self.next_row()
         self.draw_header(canvas, "Special marks")
@@ -132,7 +135,7 @@ class CheatSheet:
 
         self.next_row()
         self.draw_header(canvas, "Subtokens")
-        self.draw_items(canvas, get_list("sub_component_type"))
+        self.draw_items(canvas, get_list("subtoken"))
 
         self.next_row()
         self.draw_header(canvas, "Positions")
@@ -182,7 +185,7 @@ class CheatSheet:
         canvas.paint.textsize = text_size
         canvas.paint.color = text_color
         self.y = canvas.y + canvas.height - line_height
-        self.draw_value(canvas, "S = selection    T = target")
+        self.draw_value(canvas, "S = Current selection    T = Target")
 
     def draw_close(self, canvas):
         canvas.paint.textsize = close_size
@@ -192,17 +195,17 @@ class CheatSheet:
         canvas.draw_text("X", rect.x + padding, rect.y + rect.height - padding)
 
     def draw_url(self, canvas):
-        canvas.paint.textsize = text_size
+        canvas.paint.textsize = url_text_size
         canvas.paint.color = url_color
         canvas.paint.style = canvas.paint.Style.FILL
         rect = get_url_rect(canvas)
         self.url_rect = rect
         draw_text(
-            canvas, instructions_url, rect.x + line_height, rect.y + 1.5 * padding
+            canvas, instructions_text, rect.x + line_height, rect.y + 1.5 * padding
         )
 
     def next_column(self, canvas):
-        self.x = self.x + self.w + 2 * line_height
+        self.x = self.x + self.w + 1.5 * line_height
         self.y = get_y(canvas)
         self.w = 0
 
@@ -306,7 +309,7 @@ def get_list(name, descriptions={}):
 
 
 def get_y(canvas):
-    return canvas.y + line_height
+    return canvas.y + outer_padding
 
 
 def draw_text(canvas, text, x, y):
@@ -334,7 +337,7 @@ def get_close_rect(canvas):
 
 
 def get_url_rect(canvas):
-    rect = canvas.paint.measure_text(instructions_url)[1]
+    rect = canvas.paint.measure_text(instructions_text)[1]
     width = rect.width + 2 * line_height
     height = line_height + padding
     cr = canvas.rect

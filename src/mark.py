@@ -14,7 +14,7 @@ ctx.lists["self.cursorless_symbol_color"] = {
     "green": "green",
     "rose": "red",
     "squash": "yellow",
-    "plum": "purple"
+    "plum": "purple",
 }
 
 
@@ -29,7 +29,7 @@ def cursorless_decorated_symbol(m) -> str:
         "mark": {
             "type": "decoratedSymbol",
             "symbolColor": symbol_color,
-            "character": m.any_alphanumeric_key
+            "character": m.any_alphanumeric_key,
         }
     }
 
@@ -37,17 +37,14 @@ def cursorless_decorated_symbol(m) -> str:
 special_marks = {
     "this": {"mark": {"type": "cursor"}},
     "that": {"mark": {"type": "that"}}
-
     # "last cursor": {"mark": {"type": "lastCursorPosition"}} # Not implemented
 }
 
 mod.list("cursorless_mark", desc="Cursorless marks")
-ctx.lists["self.cursorless_mark"] =  special_marks.keys()
+ctx.lists["self.cursorless_mark"] = special_marks.keys()
 
-@mod.capture(rule=(
-    "<user.cursorless_decorated_symbol> | "
-    "{user.cursorless_mark}"
-))
+
+@mod.capture(rule=("<user.cursorless_decorated_symbol> | " "{user.cursorless_mark}"))
 def cursorless_mark(m) -> str:
     try:
         return m.cursorless_decorated_symbol
