@@ -34,6 +34,7 @@ You can get back to these docs by saying `"cursorless docs"`.
   - [Swap](#swap)
   - [Insert empty lines](#insert-empty-lines)
   - [Rename](#rename)
+  - [Scroll](#scroll)
   - [Insert/Use/Repeat](#insertuserepeat)
   - [Wrap](#wrap)
   - [Show definition/reference/quick fix](#show-definitionreferencequick-fix)
@@ -106,17 +107,21 @@ Note that if the mark is `"this"`, and you have multiple cursors, the transforma
  `"arrow"` | anonymous lambda function
  `"call"` | function call, eg `foo(1, 2)`
  `"class"` | class definition
+ `"class name"` | the name in a class declaration
  `"comment"` | comment
  `"element"` | list element
  `"funk"` | function definition
+ `"funk name"` | the name in a function declaration
  `"if"` | if statement
  `"key"` | key in a map / object
  `"lambda"` | equivalent to `"arrow"`
  `"list"` | list
  `"map"` | map / object
+ `"name"` | the name in a declaration (eg function name)
  `"pair"` | an entry in a map / object
  `"state"` | a statement, eg `let foo;`
  `"string"` | string
+ `"type"` | a type annotation or declaration
  `"value"` | a value in a map / object
 
 For example, `"take funk blue air"` selects the function containing the token with a blue hat over the letter `'a'`. 
@@ -268,6 +273,15 @@ Executes vscode rename action on the given target
 eg:  
 `rename blue air`  
 Rename the token containing letter 'a' with a blue hat.
+
+### Scroll
+Scrolls a given target to the top, center or bottom of the screen.
+
+* `"top"`
+* `"center"`
+* `"bottom"`
+
+eg `top blue air` scrolls the line containing the letter 'a' with a blue hat to the top of the screen.
 
 ### Insert/Use/Repeat
 The `"bring"` command can be used to replace one target with another, or to use a target at the current cursor position.

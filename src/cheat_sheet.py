@@ -15,6 +15,11 @@ close_size = 24
 header_size = 22
 padding = 4
 
+# TODO: Compute this one on the fly (see https://github.com/pokey/cursorless-talon/issues/15)
+CHEAT_SHEET_WIDTH = 1410
+
+CHEAT_SHEET_LINE_COUNT = 21
+
 command_font = "cascadia mono"
 text_font = ""
 
@@ -30,8 +35,8 @@ url_color = "6495ED"
 class CheatSheet:
     def __init__(self):
         screen = ui.main_screen()
-        width = 1410
-        height = 21 * line_height
+        width = CHEAT_SHEET_WIDTH
+        height = CHEAT_SHEET_LINE_COUNT * line_height
         self.canvas = Canvas(
             screen.x + (screen.width - width) / 2,
             screen.y + (screen.height - height) / 2,
@@ -84,13 +89,13 @@ class CheatSheet:
 
         self.draw_header(canvas, "More actions")
         self.draw_items(
-            canvas, 
+            canvas,
             {
-                "swap T with T": "Swap T1 with T2",
+                "swap T1 with T2": "Swap T1 with T2",
                 "swap with T": "Swap S with T",
-                "bring T to T": "Replace T2 with T1",
-                "bring T": "Replace S with T"
-            }
+                "bring T1 to T2": "Replace T2 with T1",
+                "bring T": "Replace S with T",
+            },
         )
 
         self.next_row()
