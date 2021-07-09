@@ -100,7 +100,7 @@ class CheatSheet:
 
         self.next_row()
         self.draw_header(canvas, "Colors")
-        self.draw_items(canvas, get_list("symbol_color"))
+        self.draw_items(canvas, get_list("cursorless_symbol_color"))
 
         self.next_row()
         self.draw_header(canvas, "Special marks")
