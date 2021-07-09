@@ -22,7 +22,7 @@ containing_scope_type_map = {
     "lambda": "arrowFunction",
     "list": "list",
     "map": "dictionary",
-    "name": "name"
+    "name": "name",
     "pair": "pair",
     "state": "statement",
     "string": "string",
@@ -42,6 +42,7 @@ containing_scope_types = {
 
 mod.list("cursorless_containing_scope_type", desc="Supported containing scope types")
 ctx.lists["self.cursorless_containing_scope_type"] = containing_scope_types.keys()
+
 
 @mod.capture(rule="{user.cursorless_containing_scope_type}")
 def cursorless_containing_scope_type(m) -> str:
