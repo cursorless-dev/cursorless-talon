@@ -24,9 +24,4 @@ ctx.lists["self.cursorless_pair_symbol"] = pair_symbols
 @mod.capture(rule=("{user.cursorless_pair_symbol}"))
 def cursorless_surrounding_pair(m) -> str:
     """Surrounding pair modifiers"""
-    return {
-        "transformation": {
-            "type": "surroundingPair",
-            "delimiter": m.pair_symbol
-        }
-    }
+    return {"modifier": {"type": "surroundingPair", "delimiter": m.pair_symbol}}

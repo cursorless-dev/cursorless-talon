@@ -15,29 +15,26 @@ STRICT_HERE = {
     "mark": {"type": "cursor"},
     "selectionType": "token",
     "position": "contents",
-    "transformation": {"type": "identity"},
-    "insideOutsideType": "inside"
+    "modifier": {"type": "identity"},
+    "insideOutsideType": "inside",
 }
 
 modifiers = [
-    "<user.cursorless_position>",             # before, above, end of
-    "<user.cursorless_selection_type>",       # token, line, file
-    "<user.cursorless_containing_scope>",     # funk, state, class
-    "<user.cursorless_subtoken>"              # first past second word
-
+    "<user.cursorless_position>",  # before, above, end of
+    "<user.cursorless_selection_type>",  # token, line, file
+    "<user.cursorless_containing_scope>",  # funk, state, class
+    "<user.cursorless_subtoken>"  # first past second word
     # "<user.cursorless_inside_outside>",       # inner, outer
     # "<user.cursorless_surrounding_pair>",     # curly, round
     # "<user.cursorless_matching_pair_symbol>", # matching
 ]
 
 modifiers_and_mark = (
-    f"({'|'.join(modifiers)})* "   # 0 or more parameters
-    "<user.cursorless_mark>"        # 1 mark
+    f"({'|'.join(modifiers)})* "  # 0 or more parameters
+    "<user.cursorless_mark>"  # 1 mark
 )
 
-modifiers_only = (
-    f"({'|'.join(modifiers)})+"   # 1 or more parameters
-)
+modifiers_only = f"({'|'.join(modifiers)})+"  # 1 or more parameters
 
 
 @mod.capture(rule=f"({modifiers_and_mark}) | ({modifiers_only})")

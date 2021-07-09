@@ -15,12 +15,11 @@ def ordinal_or_last(m) -> str:
         return -1
     return m.ordinals - 1
 
+
 mod.list("cursorless_subtoken", desc="Supported subcomponent types")
 
-ctx.lists["self.cursorless_subtoken"] = {
-    "word": "subtoken",
-    "char": "character"
-}
+ctx.lists["self.cursorless_subtoken"] = {"word": "word", "char": "character"}
+
 
 @mod.capture(
     rule=(
@@ -30,7 +29,7 @@ ctx.lists["self.cursorless_subtoken"] = {
 def cursorless_subtoken(m) -> str:
     """Subtoken ranges such as subwords or characters"""
     return {
-        "transformation": {
+        "modifier": {
             "type": "subpiece",
             "pieceType": m.cursorless_subtoken,
             "startIndex": m.ordinal_or_last_list[0],
