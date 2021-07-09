@@ -32,7 +32,7 @@ containing_scope_type_map = {
 
 containing_scope_types = {
     term: {
-        "transformation": {
+        "modifier": {
             "type": "containingScope",
             "scopeType": containing_scope_type,
         }
@@ -54,6 +54,6 @@ def cursorless_containing_scope(m) -> str:
     """Supported containing scope types"""
     if m[0] == "every":
         current_target = m.cursorless_containing_scope_type
-        current_target["transformation"]["includeSiblings"] = True
+        current_target["modifier"]["includeSiblings"] = True
         return current_target
     return m.cursorless_containing_scope_type
