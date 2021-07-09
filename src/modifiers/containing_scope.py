@@ -1,0 +1,59 @@
+from talon import Context, Module
+
+mod = Module()
+ctx = Context()
+
+ctx.matches = r"""
+tag: user.cursorless
+"""
+
+containing_scope_type_map = {
+    "arg": "argumentOrParameter",
+    "arrow": "arrowFunction",
+    "call": "functionCall",
+    "class name": "className",
+    "class": "class",
+    "comment": "comment",
+    "element": "listElement",
+    "funk name": "functionName",
+    "funk": "namedFunction",
+    "if": "ifStatement",
+    "key": "pairKey",
+    "lambda": "arrowFunction",
+    "list": "list",
+    "map": "dictionary",
+    "name": "name",
+    "pair": "pair",
+    "state": "statement",
+    "string": "string",
+    "type": "type",
+    "value": "value",
+}
+
+containing_scope_types = {
+    term: {
+        "transformation": {
+            "type": "containingScope",
+            "scopeType": containing_scope_type,
+        }
+    }
+    for term, containing_scope_type in containing_scope_type_map.items()
+}
+
+mod.list("cursorless_containing_scope_type", desc="Supported containing scope types")
+ctx.lists["self.cursorless_containing_scope_type"] = containing_scope_types.keys()
+
+
+@mod.capture(rule="{user.cursorless_containing_scope_type}")
+def cursorless_containing_scope_type(m) -> str:
+    return containing_scope_types[m.cursorless_containing_scope_type]
+
+
+@mod.capture(rule=("[every] <user.cursorless_containing_scope_type>"))
+def cursorless_containing_scope(m) -> str:
+    """Supported containing scope types"""
+    if m[0] == "every":
+        current_target = m.cursorless_containing_scope_type
+        current_target["transformation"]["includeSiblings"] = True
+        return current_target
+    return m.cursorless_containing_scope_type
