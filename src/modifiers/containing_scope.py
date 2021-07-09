@@ -11,21 +11,23 @@ containing_scope_type_map = {
     "arg": "argumentOrParameter",
     "arrow": "arrowFunction",
     "call": "functionCall",
+    "class name": "className",
     "class": "class",
     "comment": "comment",
     "element": "listElement",
+    "funk name": "functionName",
     "funk": "namedFunction",
     "if": "ifStatement",
     "key": "pairKey",
     "lambda": "arrowFunction",
     "list": "list",
     "map": "dictionary",
+    "name": "name"
     "pair": "pair",
     "state": "statement",
     "string": "string",
-    "value": "value",
     "type": "type",
-    "name": "name"
+    "value": "value",
 }
 
 containing_scope_types = {
