@@ -301,7 +301,7 @@ The wrap commands can be used to wrap a given target with a pair of symbols
 `"square wrap"` | `[` | `]`
 `"round wrap"` | `(` | `)`
 `"curly wrap"` | `{` | `}`
-`"(diamond | angle) wrap"` | `<` | `>`
+`"(diamond \| angle) wrap"` | `<` | `>`
 `"quad wrap"` | `"` | `"`
 `"twin wrap"` | `'` | `'`
 `"escaped quad wrap"` | `\"` | `\"`
