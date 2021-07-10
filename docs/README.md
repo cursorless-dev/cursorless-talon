@@ -15,10 +15,10 @@ You can get back to these docs by saying `"cursorless docs"`.
         - [Colors](#colors)
       - [`"this"`](#this)
       - [`"that"`](#that)
-    - [Transformations](#transformations)
+    - [Modifiers](#modifiers)
       - [Syntactic scopes](#syntactic-scopes)
       - [`"every"`](#every)
-      - [Sub-token transformations](#sub-token-transformations)
+      - [Sub-token modifiers](#sub-token-modifiers)
         - [`"word"`](#word)
         - [`"char"`](#char)
       - [`"line"`](#line)
@@ -49,7 +49,7 @@ Every cursorless command consists of an action performed on a target. For exampl
 There are two types of targets: primitive targets and compound targets. Compound targets are constructed from primitive targets, so let's begin with primitive targets.
 
 ### Primitive targets
-A primitive target consists of a mark and an optional transformation. The simplest primitive targets just consist of a mark, so let's begin with those
+A primitive target consists of a mark and one or more optional modifiers. The simplest primitive targets just consist of a mark without any modifiers, so let's begin with those
 
 #### Marks
 There are several types of marks:
@@ -82,7 +82,7 @@ The following colors are supported. As mentioned above, note that gray is option
 
 
 ##### `"this"`
-The word `"this"` can be used as a mark to refer to the current cursor(s) or selection(s). Note that when combined with a transformation, the `"this"` mark can be omitted, and it will be implied.
+The word `"this"` can be used as a mark to refer to the current cursor(s) or selection(s). Note that when combined with a modifier, the `"this"` mark can be omitted, and it will be implied.
 
 * `chuck this`
 * `take this funk`
@@ -95,10 +95,10 @@ The word `"that"` can be used as a mark to refer to the target of the previous c
 * `"pre that"`
 * `"round wrap that"`
 
-#### Transformations
-Transformations can be applied to any mark to modify its extent. This is commonly used to refer to larger syntactic elements within a source code document. 
+#### Modifiers
+Modifiers can be applied to any mark to modify its extent. This is commonly used to refer to larger syntactic elements within a source code document. 
 
-Note that if the mark is `"this"`, and you have multiple cursors, the transformation will be applied to each cursor individually.
+Note that if the mark is `"this"`, and you have multiple cursors, the modifiers will be applied to each cursor individually.
 
 ##### Syntactic scopes
 |Term|Syntactic element|
@@ -135,9 +135,9 @@ The command `"every"` can be used to select a syntactic element and all of its m
 
 For example, the command `take every key [blue] air` will select every key in the map/object/dict including the token with a blue hat over the letter 'a'. 
 
-##### Sub-token transformations
+##### Sub-token modifiers
 ###### `"word"`
-If you need to refer to the individual words within a `camelCase`/`kebab-case`/`snake_case` token, you can use the `"word"` transformation. For example,
+If you need to refer to the individual words within a `camelCase`/`kebab-case`/`snake_case` token, you can use the `"word"` modifier. For example,
 
 * `"second word air"`
 * `"second through fourth word air"`
