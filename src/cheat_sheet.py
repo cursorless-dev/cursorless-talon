@@ -1,12 +1,12 @@
-from talon import Module, ui, registry, skia, actions
+from talon import Module, ui, registry, skia, actions, cron
 from talon.canvas import Canvas
 import re
 import webbrowser
+import math
 
 mod = Module()
 mod.mode("cursorless_cheat_sheet", "Mode for showing cursorless cheat sheet gui")
 cheat_sheet = None
-last_mouse_pos = None
 
 instructions_url = "https://github.com/pokey/cursorless-talon/tree/master/docs"
 instructions_text = "Full docs"
@@ -17,11 +17,6 @@ url_text_size = 30
 close_size = 24
 header_size = 22
 padding = 4
-
-# TODO: Compute this one on the fly (see https://github.com/pokey/cursorless-talon/issues/15)
-CHEAT_SHEET_WIDTH = 1410
-
-CHEAT_SHEET_LINE_COUNT = 21
 
 command_font = "monospace"
 text_font = ""
@@ -37,15 +32,11 @@ url_color = "0046c9"
 
 class CheatSheet:
     def __init__(self):
-        screen = ui.main_screen()
-        width = CHEAT_SHEET_WIDTH
-        height = CHEAT_SHEET_LINE_COUNT * line_height
-        self.canvas = Canvas(
-            screen.x + (screen.width - width) / 2,
-            screen.y + (screen.height - height) / 2,
-            width,
-            height,
-        )
+        self.need_resize = True
+        self.resize_job = None
+        self.last_mouse_pos = None
+        # Initializes at minimum size we can calculate and set correct size later
+        self.canvas = Canvas(0, 0, 1, 1)
         self.canvas.blocks_mouse = True
         self.canvas.register("draw", self.draw)
         self.canvas.register("mouse", self.mouse)
@@ -56,17 +47,36 @@ class CheatSheet:
         self.canvas.unregister("mouse", self.mouse)
         self.canvas.close()
 
+    def debounce_resize(self, width: int, height: int):
+        cron.cancel(self.resize_job)
+        self.resize_job = cron.after(
+            "50ms",
+            lambda: self.resize(width, height)
+        )
+
+    def resize(self, width: int, height: int):
+        if not self.need_resize:
+            return
+        self.need_resize = False
+        screen = ui.main_screen()
+        rect = ui.Rect(
+            screen.x + (screen.width - width) / 2,
+            screen.y + (screen.height - height) / 2,
+            width,
+            height,
+        )
+        self.canvas.set_rect(rect)
+
     def mouse(self, e):
-        global last_mouse_pos
         if e.event == "mousedown" and e.button == 0:
-            last_mouse_pos = e.gpos
-        elif e.event == "mousemove" and last_mouse_pos:
-            diff_x = e.gpos.x - last_mouse_pos.x
-            diff_y = e.gpos.y - last_mouse_pos.y
-            last_mouse_pos = e.gpos
+            self.last_mouse_pos = e.gpos
+        elif e.event == "mousemove" and self.last_mouse_pos:
+            diff_x = e.gpos.x - self.last_mouse_pos.x
+            diff_y = e.gpos.y - self.last_mouse_pos.y
+            self.last_mouse_pos = e.gpos
             self.canvas.move(self.canvas.rect.x + diff_x, self.canvas.rect.y + diff_y)
         elif e.event == "mouseup" and e.button == 0:
-            last_mouse_pos = None
+            self.last_mouse_pos = None
             if is_in_rect(self.canvas, e.gpos, get_close_rect(self.canvas)):
                 actions.user.cursorless_cheat_sheet_toggle()
             elif is_in_rect(self.canvas, e.gpos, self.url_rect):
@@ -76,6 +86,7 @@ class CheatSheet:
     def draw(self, canvas):
         self.x = canvas.x + outer_padding
         self.w = 0
+        self.max_y = 0
 
         self.draw_background(canvas)
         self.draw_legend(canvas)
@@ -169,6 +180,14 @@ class CheatSheet:
             ],
         )
 
+        # Resize to fit content
+        # NB: We debounce because for some reason draw gets called multiple
+        # times in quick succession.
+        self.debounce_resize(
+            math.ceil(self.x - canvas.x + self.w + outer_padding),
+            math.ceil(self.max_y - canvas.y + outer_padding)
+        )
+
     def draw_background(self, canvas):
         radius = 10
         rrect = skia.RoundRect.from_rect(canvas.rect, x=radius, y=radius)
@@ -205,6 +224,7 @@ class CheatSheet:
         )
 
     def next_column(self, canvas):
+        self.max_y = max(self.max_y, self.y)
         self.x = self.x + self.w + 1.5 * line_height
         self.y = get_y(canvas)
         self.w = 0
