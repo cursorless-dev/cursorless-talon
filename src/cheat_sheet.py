@@ -181,6 +181,8 @@ class CheatSheet:
         )
 
         # Resize to fit content
+        # NB: We debounce because for some reason draw gets called multiple
+        # times in quick succession.
         self.debounce_resize(
             math.ceil(self.x - canvas.x + self.w + outer_padding),
             math.ceil(self.max_y - canvas.y + outer_padding)
