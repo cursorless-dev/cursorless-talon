@@ -166,16 +166,14 @@ Selects the line including the token containing letter 'a' with a blue hat.
 ##### `"file"`
 The word file can be used to expand the target to refer to the entire file. 
 
-* "`copy file"`
-* "`take file"`
-* "`take file blue air"`
+* `"copy file"`
+* `"take file"`
+* `"take file blue air"`
 
-For example,  
-`take file [blue] air`  
-Selects the file including the token containing letter 'a' with a blue hat. 
+For example, `"take file [blue] air"` selects the file including the token containing letter 'a' with a blue hat. 
 
 ### Compound targets
-Individual targets can be combined into compound targets to make bigger targets or refer to multiple selections at the same .
+Individual targets can be combined into compound targets to make bigger targets or refer to multiple selections at the same time.
 
 #### Range targets
 A range target uses one primitive target as its start and another as its end to form a range from the start to the end. For example, `"air past bat"` refers to the range from the token with a hat over its 'a' to a token with a hat over its 'b'.
@@ -306,7 +304,7 @@ The wrap commands can be used to wrap a given target with a pair of symbols
 `"twin wrap"` | `'` | `'`
 `"escaped quad wrap"` | `\"` | `\"`
 `"escaped twin wrap"` | `\'` | `\'`
-`"puff"` | `\n` | `\n`
+`"line wrap"` | `\n` | `\n`
 `"wrap <TARGET> with funk <FUNCTION_NAME>"` | `<FUNCTION_NAME>(` | `)`
 
 eg:  
