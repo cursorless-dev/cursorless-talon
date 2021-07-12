@@ -29,8 +29,8 @@ extract <user.cursorless_target> as <user.text>:
 <user.cursorless_swap>:
     user.cursorless_multiple_target_command("swap", cursorless_swap)
 
-<user.cursorless_use>:
-    user.cursorless_multiple_target_command("use", cursorless_use)
+{user.cursorless_multiple_target_action} <user.cursorless_multiple_targets>:
+    user.cursorless_multiple_target_command(cursorless_multiple_target_action, cursorless_multiple_targets)
 
 pour cell:
     user.vscode("jupyter.insertCellBelow")
