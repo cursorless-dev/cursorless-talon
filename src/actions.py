@@ -46,7 +46,7 @@ def cursorless_swap(m) -> str:
 
 
 @mod.capture(rule=("<user.cursorless_target> [to <user.cursorless_target>]"))
-def cursorless_multiple_targets(m) -> str:
+def cursorless_move_bring_targets(m) -> str:
     target_list = m.cursorless_target_list
 
     if len(target_list) == 1:
