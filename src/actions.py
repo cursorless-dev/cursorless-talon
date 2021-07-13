@@ -29,7 +29,7 @@ ctx.lists["self.cursorless_simple_action"] = {
 }
 
 mod.list("cursorless_move_bring_action", desc="Cursorless move or bring actions")
-ctx.lists["self.cursorless_multiple_target_action"] = {
+ctx.lists["self.cursorless_move_bring_action"] = {
     "bring",
     "move"
 }
