@@ -28,7 +28,7 @@ ctx.lists["self.cursorless_simple_action"] = {
     "unfold": "unfold",
 }
 
-mod.list("cursorless_multiple_target_action", desc="Supported actions for cursorless multiple targets")
+mod.list("cursorless_move_bring_action", desc="Cursorless move or bring actions")
 ctx.lists["self.cursorless_multiple_target_action"] = {
     "bring",
     "move"
