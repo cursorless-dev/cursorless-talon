@@ -20,6 +20,7 @@ ctx.lists["self.cursorless_simple_action"] = {
     "copy": "copy",
     "drink": "insertLineBefore",
     "fold": "fold",
+    "paste": "paste",
     "post": "setSelectionAfter",
     "pour": "insertLineAfter",
     "pree": "setSelectionBefore",
