@@ -26,6 +26,9 @@ ctx.lists["self.cursorless_simple_action"] = {
     "take": "setSelection",
     "top": "scrollToTop",
     "unfold": "unfold",
+    "indent": "indent",
+    "dedent": "outdent",
+    "comment": "commentLine"
 }
 
 
