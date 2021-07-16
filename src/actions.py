@@ -28,6 +28,12 @@ ctx.lists["self.cursorless_simple_action"] = {
     "unfold": "unfold",
 }
 
+mod.list("cursorless_move_bring_action", desc="Cursorless move or bring actions")
+ctx.lists["self.cursorless_move_bring_action"] = {
+    "bring",
+    "move"
+}
+
 
 @mod.capture(rule=("swap [<user.cursorless_target>] with <user.cursorless_target>"))
 def cursorless_swap(m) -> str:
@@ -39,8 +45,8 @@ def cursorless_swap(m) -> str:
     return target_list
 
 
-@mod.capture(rule=("bring <user.cursorless_target> [to <user.cursorless_target>]"))
-def cursorless_use(m) -> str:
+@mod.capture(rule=("<user.cursorless_target> [to <user.cursorless_target>]"))
+def cursorless_move_bring_targets(m) -> str:
     target_list = m.cursorless_target_list
 
     if len(target_list) == 1:

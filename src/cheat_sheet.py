@@ -49,10 +49,7 @@ class CheatSheet:
 
     def debounce_resize(self, width: int, height: int):
         cron.cancel(self.resize_job)
-        self.resize_job = cron.after(
-            "50ms",
-            lambda: self.resize(width, height)
-        )
+        self.resize_job = cron.after("50ms", lambda: self.resize(width, height))
 
     def resize(self, width: int, height: int):
         if not self.need_resize:
@@ -102,13 +99,20 @@ class CheatSheet:
         self.next_column(canvas)
 
         self.draw_header(canvas, "More actions")
+        bring_move = {}
+        for action, desc in get_list("move_bring_action").items():
+            if desc == "Bring":
+                bring_move[f"{action} T1 to T2"] = "Replace T2 with T1"
+                bring_move[f"{action} T"] = "Replace S with T"
+            if desc == "Move":
+                bring_move[f"{action} T1 to T2"] = "Move T1 to T2"
+                bring_move[f"{action} T"] = "Move T to S"
         self.draw_items(
             canvas,
             {
+                **bring_move,
                 "swap T1 with T2": "Swap T1 with T2",
                 "swap with T": "Swap S with T",
-                "bring T1 to T2": "Replace T2 with T1",
-                "bring T": "Replace S with T",
             },
         )
 
@@ -185,7 +189,7 @@ class CheatSheet:
         # times in quick succession.
         self.debounce_resize(
             math.ceil(self.x - canvas.x + self.w + outer_padding),
-            math.ceil(self.max_y - canvas.y + outer_padding)
+            math.ceil(self.max_y - canvas.y + outer_padding),
         )
 
     def draw_background(self, canvas):

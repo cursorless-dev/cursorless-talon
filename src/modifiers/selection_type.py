@@ -31,7 +31,7 @@ FILE = SelectionType("file", "files", "document", 3)
 SELECTION_TYPES = [
     TOKEN,
     LINE,
-    BLOCK,
+    # BLOCK,
     FILE
 ]
 
