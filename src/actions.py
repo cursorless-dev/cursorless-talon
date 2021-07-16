@@ -19,6 +19,7 @@ ctx.lists["self.cursorless_simple_action"] = {
     "clear": "clear",
     "copy": "copy",
     "drink": "insertLineBefore",
+    "find all": "findInFiles",
     "fold": "fold",
     "post": "setSelectionAfter",
     "pour": "insertLineAfter",
