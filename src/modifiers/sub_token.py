@@ -33,7 +33,7 @@ def cursorless_first_last_range(m) -> str:
     """First/last range"""
     if m[0] == "first":
         return {"startIndex": 0, "endIndex": m.number_small}
-    return {"startIndex": -m.number_small, "endIndex": -1}
+    return {"startIndex": -m.number_small, "endIndex": None}
 
 
 @mod.capture(
