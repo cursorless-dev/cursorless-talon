@@ -26,13 +26,13 @@ ctx.lists["self.cursorless_simple_action"] = {
     "take": "setSelection",
     "top": "scrollToTop",
     "unfold": "unfold",
+    "puff": "insertLineAboveAndBelow",
+    "drop": "insertLineAbove",
+    "float": "insertLineBelow",
 }
 
 mod.list("cursorless_move_bring_action", desc="Cursorless move or bring actions")
-ctx.lists["self.cursorless_move_bring_action"] = {
-    "bring",
-    "move"
-}
+ctx.lists["self.cursorless_move_bring_action"] = {"bring", "move"}
 
 
 @mod.capture(rule=("swap [<user.cursorless_target>] with <user.cursorless_target>"))
