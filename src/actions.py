@@ -28,7 +28,7 @@ ctx.lists["self.cursorless_simple_action"] = {
     "unfold": "unfold",
     "indent": "indentLines",
     "dedent": "outdentLines",
-    "comment": "commentLine"
+    "comment": "commentLines"
 }
 
 
