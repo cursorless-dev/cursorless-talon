@@ -23,8 +23,8 @@ def ordinal_or_last(m) -> str:
 def cursorless_ordinal_range(m) -> str:
     """Ordinal range"""
     return {
-        "startIndex": m.ordinal_or_last_list[0],
-        "endIndex": m.ordinal_or_last_list[-1] + 1 or None,
+        "anchor": m.ordinal_or_last_list[0],
+        "active": m.ordinal_or_last_list[-1],
     }
 
 
@@ -32,8 +32,8 @@ def cursorless_ordinal_range(m) -> str:
 def cursorless_first_last_range(m) -> str:
     """First/last range"""
     if m[0] == "first":
-        return {"startIndex": 0, "endIndex": m.number_small}
-    return {"startIndex": -m.number_small, "endIndex": None}
+        return {"anchor": 0, "active": m.number_small - 1}
+    return {"anchor": -m.number_small, "active": -1}
 
 
 @mod.capture(
