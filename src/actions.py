@@ -18,17 +18,17 @@ ctx.lists["self.cursorless_simple_action"] = {
     "chuck": "delete",
     "clear": "clear",
     "copy": "copy",
-    "drink": "insertLineBefore",
+    "drink": "editNewLineAbove",
     "fold": "fold",
     "post": "setSelectionAfter",
-    "pour": "insertLineAfter",
+    "pour": "editNewLineBelow",
     "pree": "setSelectionBefore",
     "take": "setSelection",
     "top": "scrollToTop",
     "unfold": "unfold",
-    "puff": "insertLineAboveAndBelow",
-    "drop": "insertLineAbove",
-    "float": "insertLineBelow",
+    "puff": "insertEmptyLinesAround",
+    "drop": "insertEmptyLineAbove",
+    "float": "insertEmptyLineBelow",
 }
 
 mod.list("cursorless_move_bring_action", desc="Cursorless move or bring actions")
