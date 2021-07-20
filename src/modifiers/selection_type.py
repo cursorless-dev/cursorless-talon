@@ -25,13 +25,13 @@ class SelectionType:
 
 TOKEN = SelectionType("token", "tokens", "token", 0)
 LINE = SelectionType("line", "lines", "line", 1)
-BLOCK = SelectionType("block", "blocks", "block", 2)
+BLOCK = SelectionType("block", "blocks", "paragraph", 2)
 FILE = SelectionType("file", "files", "document", 3)
 
 SELECTION_TYPES = [
     TOKEN,
     LINE,
-    # BLOCK,
+    BLOCK,
     FILE
 ]
 
