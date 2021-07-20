@@ -27,6 +27,9 @@ ctx.lists["self.cursorless_simple_action"] = {
     "take": "setSelection",
     "top": "scrollToTop",
     "unfold": "unfold",
+    "indent": "indentLines",
+    "dedent": "outdentLines",
+    "comment": "commentLines"
 }
 
 mod.list("cursorless_move_bring_action", desc="Cursorless move or bring actions")
