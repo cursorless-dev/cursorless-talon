@@ -19,9 +19,6 @@ tag(): user.cursorless
 wrap <user.cursorless_target> with funk <user.code_functions>:
     user.cursorless_single_target_command("wrap", cursorless_target, "{code_functions}(", ")")
 
-line wrap <user.cursorless_target>:
-    user.cursorless_single_target_command("wrap", cursorless_target, "\n", "\n")
-
 extract <user.cursorless_target>:
     user.cursorless_single_target_command("extractVariable", cursorless_target)
 
