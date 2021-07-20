@@ -17,26 +17,26 @@ ctx.lists["self.cursorless_simple_action"] = {
     "center": "scrollToCenter",
     "chuck": "delete",
     "clear": "clear",
+    "comment": "commentLines",
     "copy": "copy",
-    "drink": "insertLineBefore",
+    "dedent": "outdentLines",
+    "drink": "editNewLineAbove",
+    "drop": "insertEmptyLineAbove",
+    "float": "insertEmptyLineBelow",
     "fold": "fold",
+    "indent": "indentLines",
     "paste": "paste",
     "post": "setSelectionAfter",
-    "pour": "insertLineAfter",
+    "pour": "editNewLineBelow",
     "pree": "setSelectionBefore",
+    "puff": "insertEmptyLinesAround",
     "take": "setSelection",
     "top": "scrollToTop",
     "unfold": "unfold",
-    "indent": "indentLines",
-    "dedent": "outdentLines",
-    "comment": "commentLines"
 }
 
 mod.list("cursorless_move_bring_action", desc="Cursorless move or bring actions")
-ctx.lists["self.cursorless_move_bring_action"] = {
-    "bring",
-    "move"
-}
+ctx.lists["self.cursorless_move_bring_action"] = {"bring", "move"}
 
 
 @mod.capture(rule=("swap [<user.cursorless_target>] with <user.cursorless_target>"))
