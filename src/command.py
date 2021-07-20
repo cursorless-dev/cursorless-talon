@@ -16,7 +16,7 @@ class Actions:
         target: dict,
         arg1: Any = NotSet,
         arg2: Any = NotSet,
-        arg3: Any = NotSet
+        arg3: Any = NotSet,
     ):
         """Execute single-target cursorless command"""
         actions.user.cursorless_multiple_target_command(
@@ -24,9 +24,7 @@ class Actions:
         )
 
     def cursorless_single_target_command_with_arg_list(
-        action: str,
-        target: str,
-        args: list[Any]
+        action: str, target: str, args: list[Any]
     ):
         """Execute single-target cursorless command with argument list"""
         actions.user.cursorless_single_target_command(
@@ -36,14 +34,28 @@ class Actions:
         )
 
     def cursorless_single_target_command_with_arg_list(
-        action: str,
-        target: str,
-        args: list[Any]
+        action: str, target: str, args: list[Any]
     ):
         """Execute single-target cursorless command with argument list"""
         actions.user.cursorless_single_target_command(
             action,
             target,
+            *args,
+        )
+
+    def cursorless_single_target_command_get(
+        action: str,
+        target: dict,
+        arg1: Any = NotSet,
+        arg2: Any = NotSet,
+        arg3: Any = NotSet,
+    ):
+        """Execute single-target cursorless command and return result"""
+        args = list(filter(lambda x: x is not NotSet, [arg1, arg2, arg3]))
+        return actions.user.vscode_get(
+            "cursorless.command",
+            action,
+            [target],
             *args,
         )
 
@@ -52,7 +64,7 @@ class Actions:
         targets: List[dict],
         arg1: Any = NotSet,
         arg2: Any = NotSet,
-        arg3: Any = NotSet
+        arg3: Any = NotSet,
     ):
         """Execute multi-target cursorless command"""
         args = list(filter(lambda x: x is not NotSet, [arg1, arg2, arg3]))

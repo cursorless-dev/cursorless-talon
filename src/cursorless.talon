@@ -5,6 +5,11 @@ tag(): user.cursorless
 {self.cursorless_simple_action} <user.cursorless_target>:
     user.cursorless_single_target_command(cursorless_simple_action, cursorless_target)
 
+# Provision for future actions like homophones
+# getText <user.cursorless_target>:
+#     result = user.cursorless_single_target_command_get("getText", cursorless_target)
+#     print(result)
+
 <user.cursorless_makeshift_action> <user.cursorless_target>:
     user.cursorless_run_makeshift_action(cursorless_makeshift_action, cursorless_target)
 

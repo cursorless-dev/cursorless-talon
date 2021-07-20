@@ -22,6 +22,7 @@ ctx.lists["self.cursorless_simple_action"] = {
     "dedent": "outdentLines",
     "drink": "editNewLineAbove",
     "drop": "insertEmptyLineAbove",
+    "find all": "findInFiles",
     "float": "insertEmptyLineBelow",
     "fold": "fold",
     "indent": "indentLines",
