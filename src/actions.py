@@ -13,6 +13,7 @@ tag: user.cursorless
 mod.list("cursorless_simple_action", desc="Supported actions for cursorless navigation")
 ctx.lists["self.cursorless_simple_action"] = {
     "bottom": "scrollToBottom",
+    "breakpoint": "setBreakpoint",
     "carve": "cut",
     "center": "scrollToCenter",
     "chuck": "delete",
