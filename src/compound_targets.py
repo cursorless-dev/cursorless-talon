@@ -7,8 +7,8 @@ mod = Module()
 @mod.capture(
     rule=(
         "<user.cursorless_primitive_target> | "
-        "(past|till|tween) <user.cursorless_primitive_target> | "
-        "<user.cursorless_primitive_target> (past|till|tween) <user.cursorless_primitive_target>"
+        "(past|until|tween) <user.cursorless_primitive_target> | "
+        "<user.cursorless_primitive_target> (past|until|tween) <user.cursorless_primitive_target>"
     )
 )
 def cursorless_range(m) -> str:
@@ -26,7 +26,7 @@ def cursorless_range(m) -> str:
         "start": start,
         "end": m[-1],
         "excludeStart": modifier == "tween",
-        "excludeEnd": modifier in ["tween", "till"],
+        "excludeEnd": modifier in ["tween", "until"],
     }
 
 
