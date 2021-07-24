@@ -23,6 +23,8 @@ ctx.lists["self.cursorless_simple_action"] = {
     "dedent": "outdentLines",
     "drink": "editNewLineAbove",
     "drop": "insertEmptyLineAbove",
+    "dupe": "copyLinesDown",
+    "dupe up": "copyLinesUp",
     "find all": "findInFiles",
     "float": "insertEmptyLineBelow",
     "fold": "fold",
