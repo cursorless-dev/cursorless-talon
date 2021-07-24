@@ -1,4 +1,5 @@
 from talon import Context, Module
+import copy
 
 mod = Module()
 ctx = Context()
@@ -53,7 +54,7 @@ def cursorless_containing_scope_type(m) -> str:
 def cursorless_containing_scope(m) -> str:
     """Supported containing scope types"""
     if m[0] == "every":
-        current_target = m.cursorless_containing_scope_type
+        current_target = copy.deepcopy(m.cursorless_containing_scope_type)
         current_target["modifier"]["includeSiblings"] = True
         return current_target
     return m.cursorless_containing_scope_type
