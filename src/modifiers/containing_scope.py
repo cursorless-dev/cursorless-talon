@@ -24,6 +24,7 @@ containing_scope_type_map = {
     "list": "list",
     "map": "dictionary",
     "name": "name",
+    "regex": "regex",
     "pair": "pair",
     "state": "statement",
     "string": "string",
