@@ -5,7 +5,8 @@ import webbrowser
 import math
 
 mod = Module()
-mod.mode("cursorless_cheat_sheet", "Mode for showing cursorless cheat sheet gui")
+mod.mode("cursorless_cheat_sheet",
+         "Mode for showing cursorless cheat sheet gui")
 cheat_sheet = None
 
 instructions_url = "https://github.com/pokey/cursorless-talon/tree/master/docs"
@@ -49,7 +50,8 @@ class CheatSheet:
 
     def debounce_resize(self, width: int, height: int):
         cron.cancel(self.resize_job)
-        self.resize_job = cron.after("50ms", lambda: self.resize(width, height))
+        self.resize_job = cron.after(
+            "50ms", lambda: self.resize(width, height))
 
     def resize(self, width: int, height: int):
         if not self.need_resize:
@@ -71,7 +73,8 @@ class CheatSheet:
             diff_x = e.gpos.x - self.last_mouse_pos.x
             diff_y = e.gpos.y - self.last_mouse_pos.y
             self.last_mouse_pos = e.gpos
-            self.canvas.move(self.canvas.rect.x + diff_x, self.canvas.rect.y + diff_y)
+            self.canvas.move(self.canvas.rect.x + diff_x,
+                             self.canvas.rect.y + diff_y)
         elif e.event == "mouseup" and e.button == 0:
             self.last_mouse_pos = None
             if is_in_rect(self.canvas, e.gpos, get_close_rect(self.canvas)):
@@ -94,7 +97,11 @@ class CheatSheet:
         self.w = 0
 
         self.draw_header(canvas, "Actions")
-        self.draw_items(canvas, get_list("simple_action"))
+        simple_actions = get_list("simple_action")
+        actions_limit = round(len(simple_actions) / 2) + 5
+        actions_list = slice_dict(simple_actions, 0, actions_limit)
+        more_actions = slice_dict(simple_actions, actions_limit)
+        self.draw_items(canvas, actions_list)
 
         self.next_column(canvas)
 
@@ -110,6 +117,7 @@ class CheatSheet:
         self.draw_items(
             canvas,
             {
+                **more_actions,
                 **bring_move,
                 "swap T1 with T2": "Swap T1 with T2",
                 "swap with T": "Swap S with T",
@@ -117,13 +125,10 @@ class CheatSheet:
         )
 
         self.next_row()
-        self.draw_header(canvas, "Colors")
-        self.draw_items(canvas, get_list("symbol_color"))
-
-        self.next_row()
         self.draw_header(canvas, "Special marks")
         self.draw_items(
-            canvas, get_list("mark", {"this": "Selection", "that": "Last target"})
+            canvas, get_list(
+                "mark", {"this": "Selection", "that": "Last target"})
         )
 
         self.next_column(canvas)
@@ -167,6 +172,10 @@ class CheatSheet:
                 "past T": "S past T",
             },
         )
+
+        self.next_row()
+        self.draw_header(canvas, "Colors")
+        self.draw_items(canvas, get_list("symbol_color"))
 
         self.next_row()
         self.draw_header(canvas, "Examples")
@@ -376,3 +385,8 @@ def is_in_rect(canvas, mouse_pos, rect):
     return in_range(mouse_pos.x, rect.x, rect.x + rect.width) and in_range(
         mouse_pos.y, rect.y, rect.y + rect.height
     )
+
+
+def slice_dict(dict: dict, start: int, end: int = None):
+    keys = sorted(dict)[start:end]
+    return {key: dict[key] for key in keys}
