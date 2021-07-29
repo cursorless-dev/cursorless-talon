@@ -34,6 +34,8 @@ ctx.lists["self.cursorless_simple_action"] = {
     "pour": "editNewLineBelow",
     "pree": "setSelectionBefore",
     "puff": "insertEmptyLinesAround",
+    "reverse": "reverse",
+    "sort": "sort",
     "take": "setSelection",
     "top": "scrollToTop",
     "unfold": "unfold",
