@@ -4,7 +4,7 @@ mod = Module()
 
 
 @mod.capture(rule=("(row <number>) | ((up | down) <number_small>)"))
-def cursorless_line(m) -> str:
+def cursorless_line_number(m) -> str:
     if m[0] == "row":
         isRelative = False
         lineNumber = m.number - 1
