@@ -14,9 +14,8 @@ wrap <user.cursorless_target> with funk <user.code_functions>:
 replace <user.cursorless_target> with <user.cursorless_replace_value>$:
     user.cursorless_replace(cursorless_target, cursorless_replace_value)
 
-# TODO Enable when support is in community repository
-# reformat <user.cursorless_target> as <user.formatters>:
-    # user.cursorless_reformat(cursorless_target, formatters)
+reformat <user.cursorless_target> as <user.formatters>:
+    user.cursorless_reformat(cursorless_target, formatters)
 
 extract <user.cursorless_target> as <user.text>$:
     user.cursorless_single_target_command("extractVariable", cursorless_target)
