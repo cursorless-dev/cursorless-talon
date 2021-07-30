@@ -43,7 +43,7 @@ class CallbackAction:
 callbacks = [
     CallbackAction("find", "find", run_find_action),
     # TODO Enable when support is in community repository
-    # CallbackActions("phones", "nextHomophone", run_homophones_action)
+    # CallbackAction("phones", "nextHomophone", run_homophones_action)
 ]
 
 callbacks_map = {callback.action: callback.callback for callback in callbacks}
