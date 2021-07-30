@@ -24,7 +24,9 @@ modifiers = [
     "<user.cursorless_selection_type>",  # token, line, file
     "<user.cursorless_containing_scope>",  # funk, state, class
     "<user.cursorless_subtoken>",  # first past second word
-    "<user.cursorless_line_number>" # row, up, down
+    # "<user.cursorless_line_number>" # row, up, down
+    # Because of problems with performance we have to have a simple version for now
+    "<user.cursorless_line_number_simple>" # up, down
     # "<user.cursorless_inside_outside>",       # inner, outer
     # "<user.cursorless_surrounding_pair>",     # curly, round
     # "<user.cursorless_matching_pair_symbol>", # matching
