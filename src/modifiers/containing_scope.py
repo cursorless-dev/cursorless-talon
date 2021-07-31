@@ -31,6 +31,7 @@ containing_scope_type_map = {
     "type": "type",
     "value": "value",
     #  XML, JSX
+    "attribute": "xmlAttribute",
     "tags": "xmlBothTags",
     "start tag": "xmlStartTag",
     "end tag": "xmlEndTag",
