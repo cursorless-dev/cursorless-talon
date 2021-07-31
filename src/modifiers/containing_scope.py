@@ -15,6 +15,7 @@ containing_scope_type_map = {
     "class name": "className",
     "class": "class",
     "comment": "comment",
+    "element": "xmlElement",
     "funk name": "functionName",
     "funk": "namedFunction",
     "if": "ifStatement",
@@ -29,6 +30,10 @@ containing_scope_type_map = {
     "string": "string",
     "type": "type",
     "value": "value",
+    #  XML, JSX
+    "tags": "xmlBothTags",
+    "start tag": "xmlStartTag",
+    "end tag": "xmlEndTag",
 }
 
 containing_scope_types = {
