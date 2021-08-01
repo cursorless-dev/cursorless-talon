@@ -8,9 +8,7 @@ last_phrase = None
 
 def on_phrase(d):
     global last_phrase
-    if actions.speech.enabled():
-        last_phrase = " ".join(d["phrase"])
-
+    last_phrase = d
 
 speech_system.register("pre:phrase", on_phrase)
 
@@ -79,9 +77,10 @@ class Actions:
     ):
         """Execute multi-target cursorless command"""
         args = list(filter(lambda x: x is not NotSet, [arg1, arg2, arg3]))
+        spoken_form = " ".join(last_phrase["phrase"])
         actions.user.vscode_with_plugin_and_wait(
             "cursorless.command",
-            last_phrase,
+            spoken_form,
             action,
             targets,
             *args,
