@@ -1,7 +1,18 @@
-from talon import actions, Module
+from talon import actions, Module, speech_system
 from typing import Any, List
 
 mod = Module()
+
+last_phrase = None
+
+
+def on_phrase(d):
+    global last_phrase
+    if actions.speech.enabled():
+        last_phrase = " ".join(d["phrase"])
+
+
+speech_system.register("pre:phrase", on_phrase)
 
 
 class NotSet:
@@ -70,6 +81,7 @@ class Actions:
         args = list(filter(lambda x: x is not NotSet, [arg1, arg2, arg3]))
         actions.user.vscode_with_plugin_and_wait(
             "cursorless.command",
+            last_phrase,
             action,
             targets,
             *args,
