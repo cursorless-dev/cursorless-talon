@@ -2,16 +2,8 @@ app: vscode
 -
 tag(): user.cursorless
 
-{self.cursorless_simple_action} <user.cursorless_target>:
-    user.cursorless_single_target_command(cursorless_simple_action, cursorless_target)
-
-# Provision for future actions like homophones
-# getText <user.cursorless_target>:
-#     result = user.cursorless_single_target_command_get("getText", cursorless_target)
-#     print(result)
-
-<user.cursorless_makeshift_action> <user.cursorless_target>:
-    user.cursorless_run_makeshift_action(cursorless_makeshift_action, cursorless_target)
+{user.cursorless_simple_action} <user.cursorless_target>:
+    user.cursorless_simple_action(cursorless_simple_action, cursorless_target)
 
 <user.cursorless_wrapper> wrap <user.cursorless_target>:
     user.cursorless_single_target_command_with_arg_list("wrap", cursorless_target, cursorless_wrapper)
@@ -19,10 +11,13 @@ tag(): user.cursorless
 wrap <user.cursorless_target> with funk <user.code_functions>:
     user.cursorless_single_target_command("wrap", cursorless_target, "{code_functions}(", ")")
 
-extract <user.cursorless_target>:
-    user.cursorless_single_target_command("extractVariable", cursorless_target)
+replace <user.cursorless_target> with <user.cursorless_replace_value>$:
+    user.cursorless_replace(cursorless_target, cursorless_replace_value)
 
-extract <user.cursorless_target> as <user.text>:
+reformat <user.cursorless_target> as <user.formatters>:
+    user.cursorless_reformat(cursorless_target, formatters)
+
+extract <user.cursorless_target> as <user.text>$:
     user.cursorless_single_target_command("extractVariable", cursorless_target)
     sleep(300ms)
     user.code_public_variable_formatter(text)

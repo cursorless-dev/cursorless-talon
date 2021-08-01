@@ -40,11 +40,13 @@ RANKED_SELECTION_TYPES = {
 }
 
 selection_type_map = {
-    selection_type.singular: selection_type.json_repr for selection_type in  SELECTION_TYPES
+    selection_type.json_name: selection_type.json_repr for selection_type in SELECTION_TYPES
 }
 
 mod.list("cursorless_selection_type", desc="Types of selection_types")
-ctx.lists["self.cursorless_selection_type"] = selection_type_map.keys()
+ctx.lists["self.cursorless_selection_type"] = {
+    type.singular: type.json_name for type in SELECTION_TYPES
+}
 
 @mod.capture(rule="{user.cursorless_selection_type}")
 def cursorless_selection_type(m) -> str:

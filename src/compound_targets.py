@@ -30,7 +30,7 @@ def cursorless_range(m) -> str:
     }
 
 
-@mod.capture(rule=("<user.cursorless_range> (and <user.cursorless_range>)*"))
+@mod.capture(rule="<user.cursorless_range> (and <user.cursorless_range>)*")
 def cursorless_target(m) -> str:
     if len(m.cursorless_range_list) == 1:
         return m.cursorless_range
