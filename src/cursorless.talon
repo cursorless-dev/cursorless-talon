@@ -29,6 +29,9 @@ extract <user.cursorless_target> as <user.text>$:
 {user.cursorless_move_bring_action} <user.cursorless_move_bring_targets>:
     user.cursorless_multiple_target_command(cursorless_move_bring_action, cursorless_move_bring_targets)
 
+<user.cursorless_call>:
+    user.cursorless_multiple_target_command("call", cursorless_call)
+
 pour cell:
     user.vscode("jupyter.insertCellBelow")
 

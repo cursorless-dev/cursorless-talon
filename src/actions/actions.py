@@ -24,8 +24,7 @@ makeshift_actions = [
     MakeshiftAction("drink cell", "jupyter.insertCellAbove"),
     MakeshiftAction("hover show", "editor.action.showHover"),
     MakeshiftAction("pour cell", "jupyter.insertCellBelow"),
-    MakeshiftAction("quick fix", "editor.action.quickFix",
-                    pre_command_sleep=0.3),
+    MakeshiftAction("quick fix", "editor.action.quickFix", pre_command_sleep=0.3),
     MakeshiftAction("ref show", "references-view.find"),
     MakeshiftAction("rename", "editor.action.rename", post_command_sleep=0.1),
 ]
@@ -42,14 +41,13 @@ class CallbackAction:
 
 callbacks = [
     CallbackAction("find", "find", run_find_action),
-    CallbackAction("phones", "nextHomophone", run_homophones_action)
+    CallbackAction("phones", "nextHomophone", run_homophones_action),
 ]
 
 callbacks_map = {callback.action: callback.callback for callback in callbacks}
 
 
-mod.list("cursorless_simple_action",
-         desc="Supported actions for cursorless navigation")
+mod.list("cursorless_simple_action", desc="Supported actions for cursorless navigation")
 ctx.lists["self.cursorless_simple_action"] = {
     "bottom": "scrollToBottom",
     "breakpoint": "setBreakpoint",
@@ -74,6 +72,8 @@ ctx.lists["self.cursorless_simple_action"] = {
     "pour": "editNewLineBelow",
     "pre": "setSelectionBefore",
     "puff": "insertEmptyLinesAround",
+    "reverse": "reverse",
+    "sort": "sort",
     "take": "setSelection",
     "top": "scrollToTop",
     "unfold": "unfold",
