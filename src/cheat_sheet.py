@@ -5,8 +5,7 @@ import webbrowser
 import math
 
 mod = Module()
-mod.mode("cursorless_cheat_sheet",
-         "Mode for showing cursorless cheat sheet gui")
+mod.mode("cursorless_cheat_sheet", "Mode for showing cursorless cheat sheet gui")
 cheat_sheet = None
 
 instructions_url = "https://github.com/pokey/cursorless-talon/tree/master/docs"
@@ -50,8 +49,7 @@ class CheatSheet:
 
     def debounce_resize(self, width: int, height: int):
         cron.cancel(self.resize_job)
-        self.resize_job = cron.after(
-            "50ms", lambda: self.resize(width, height))
+        self.resize_job = cron.after("50ms", lambda: self.resize(width, height))
 
     def resize(self, width: int, height: int):
         if not self.need_resize:
@@ -73,8 +71,7 @@ class CheatSheet:
             diff_x = e.gpos.x - self.last_mouse_pos.x
             diff_y = e.gpos.y - self.last_mouse_pos.y
             self.last_mouse_pos = e.gpos
-            self.canvas.move(self.canvas.rect.x + diff_x,
-                             self.canvas.rect.y + diff_y)
+            self.canvas.move(self.canvas.rect.x + diff_x, self.canvas.rect.y + diff_y)
         elif e.event == "mouseup" and e.button == 0:
             self.last_mouse_pos = None
             if is_in_rect(self.canvas, e.gpos, get_close_rect(self.canvas)):
@@ -96,41 +93,39 @@ class CheatSheet:
         self.y = get_y(canvas)
         self.w = 0
 
-        self.draw_header(canvas, "Actions")
         simple_actions = get_list("simple_action")
-        actions_limit = round(len(simple_actions) / 2) + 5
-        actions_list = slice_dict(simple_actions, 0, actions_limit)
-        more_actions = slice_dict(simple_actions, actions_limit)
-        self.draw_items(canvas, actions_list)
 
+        move_bring = {}
+        for action, desc in get_list("move_bring_action").items():
+            if desc == "Bring":
+                move_bring[f"{action} T1 to T2"] = "Replace T2 with T1"
+                move_bring[f"{action} T"] = "Replace S with T"
+            if desc == "Move":
+                move_bring[f"{action} T1 to T2"] = "Move T1 to T2"
+                move_bring[f"{action} T"] = "Move T to S"
+
+        all_actions = {
+            **simple_actions,
+            **move_bring,
+            "swap T1 with T2": "Swap T1 with T2",
+            "swap with T": "Swap S with T",
+            "call T1 on T2": "Call T1 on T2",
+            "call T": "Call T1 on S",
+            "wrap": '"round" wrap T',
+            "replace T with *": "Replace T with *",
+            "reformat T as *": "Reformat T as *",
+        }
+
+        actions_limit = round(len(all_actions) / 2)
+        actions_1 = slice_dict(all_actions, 0, actions_limit)
+        actions_2 = slice_dict(all_actions, actions_limit)
+
+        self.draw_header(canvas, "Actions")
+        self.draw_items(canvas, actions_1)
         self.next_column(canvas)
 
         self.draw_header(canvas, "More actions")
-        bring_move = {}
-        for action, desc in get_list("move_bring_action").items():
-            if desc == "Bring":
-                bring_move[f"{action} T1 to T2"] = "Replace T2 with T1"
-                bring_move[f"{action} T"] = "Replace S with T"
-            if desc == "Move":
-                bring_move[f"{action} T1 to T2"] = "Move T1 to T2"
-                bring_move[f"{action} T"] = "Move T to S"
-        self.draw_items(
-            canvas,
-            {
-                **more_actions,
-                **bring_move,
-                "swap T1 with T2": "Swap T1 with T2",
-                "swap with T": "Swap S with T",
-            },
-        )
-
-        self.next_row()
-        self.draw_header(canvas, "Special marks")
-        self.draw_items(
-            canvas, get_list(
-                "mark", {"this": "Selection", "that": "Last target"})
-        )
-
+        self.draw_items(canvas, actions_2)
         self.next_column(canvas)
 
         self.draw_header(canvas, "Scopes")
@@ -160,6 +155,15 @@ class CheatSheet:
         self.next_row()
         self.draw_header(canvas, "Positions")
         self.draw_items(canvas, get_list("position"))
+
+        self.next_row()
+        self.draw_header(canvas, "Special marks")
+        self.draw_items(
+            canvas,
+            get_list(
+                "mark", {"this": "Selection", "that": "Last T", "source": "Source T"}
+            ),
+        )
 
         self.next_column(canvas)
 
