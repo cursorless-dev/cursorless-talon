@@ -49,5 +49,6 @@ def cursorless_subtoken(m) -> str:
     except AttributeError:
         range = m.cursorless_first_last_range
     return {
-        "modifier": {"type": "subpiece", "pieceType": m.cursorless_subtoken, **range}
+        "selectionType": "token",
+        "modifier": {"type": "subpiece", "pieceType": m.cursorless_subtoken, **range},
     }
