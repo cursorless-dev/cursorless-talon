@@ -36,7 +36,8 @@ def cursorless_decorated_symbol(m) -> str:
 
 special_marks = {
     "this": {"mark": {"type": "cursor"}},
-    "that": {"mark": {"type": "that"}}
+    "that": {"mark": {"type": "that"}},
+    "source": {"mark": {"type": "source"}}
     # "last cursor": {"mark": {"type": "lastCursorPosition"}} # Not implemented
 }
 

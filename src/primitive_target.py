@@ -24,6 +24,7 @@ modifiers = [
     "<user.cursorless_selection_type>",  # token, line, file
     "<user.cursorless_containing_scope>",  # funk, state, class
     "<user.cursorless_subtoken>",  # first past second word
+    "<user.cursorless_head_tail>" # head, tail
     # "<user.cursorless_line_number>" # row, up, down
     # Because of problems with performance we have to have a simple version for now
     "<user.cursorless_line_number_simple>" # up, down
