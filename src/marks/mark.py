@@ -56,7 +56,7 @@ ctx.lists["self.cursorless_special_mark"] = special_marks.keys()
 )
 def cursorless_mark(m) -> str:
     try: return m.cursorless_decorated_symbol
-    except: pass
+    except AttributeError: pass
     try: return special_marks[m.cursorless_special_mark]
-    except: pass
+    except AttributeError: pass
     return m.cursorless_line_number_simple

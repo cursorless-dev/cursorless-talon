@@ -36,7 +36,7 @@ def cursorless_line_number_anchor(m) -> str:
 def cursorless_line_number_active(m) -> str:
     try:
         direction = m.cursorless_line_direction
-    except:
+    except AttributeError:
         direction = None
     return {"direction": direction, "lineNumber": m.number}
 
@@ -52,7 +52,7 @@ def cursorless_line_number(m) -> str:
         # Infer missing direction from anchor
         if active["direction"] == None:
             active["direction"] = anchor["direction"]
-    except:
+    except AttributeError:
         active = anchor
     return {
         "selectionType": "line",
@@ -63,7 +63,7 @@ def cursorless_line_number(m) -> str:
         },
     }
 
-# This is the simplified version that we are using for now that only implements are subset of the features
+# This is the simplified version that we are using for now that only implements a subset of the features
 @mod.capture(
     rule="(up | down) <number_small>"
 )
