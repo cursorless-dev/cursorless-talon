@@ -41,6 +41,7 @@ def cursorless_line_number_active(m) -> str:
     return {"direction": direction, "lineNumber": m.number}
 
 
+# For now this capture is not used because it's too complex and increase compilation time too much
 @mod.capture(
     rule="<user.cursorless_line_number_anchor> [<user.cursorless_line_number_active>]"
 )
@@ -62,6 +63,7 @@ def cursorless_line_number(m) -> str:
         },
     }
 
+# This is the simplified version that we are using for now that only implements are subset of the features
 @mod.capture(
     rule="(up | down) <number_small>"
 )
