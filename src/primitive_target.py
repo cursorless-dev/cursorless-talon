@@ -24,10 +24,7 @@ modifiers = [
     "<user.cursorless_selection_type>",  # token, line, file
     "<user.cursorless_containing_scope>",  # funk, state, class
     "<user.cursorless_subtoken>",  # first past second word
-    "<user.cursorless_head_tail>" # head, tail
-    # "<user.cursorless_line_number>" # row, up, down
-    # Because of problems with performance we have to have a simple version for now
-    "<user.cursorless_line_number_simple>" # up, down
+    "<user.cursorless_head_tail>", # head, tail
     # "<user.cursorless_inside_outside>",       # inner, outer
     # "<user.cursorless_surrounding_pair>",     # curly, round
     # "<user.cursorless_matching_pair_symbol>", # matching
@@ -45,6 +42,7 @@ modifiers_only = f"({'|'.join(modifiers)})+"  # 1 or more parameters
 def cursorless_primitive_target(m) -> str:
     """Supported extents for cursorless navigation"""
     object = BASE_TARGET.copy()
+    print(m)
     for capture in m:
         for key, value in capture.items():
             if (

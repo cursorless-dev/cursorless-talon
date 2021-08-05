@@ -55,7 +55,7 @@ def cursorless_line_number(m) -> str:
         active = anchor
     return {
         "selectionType": "line",
-        "modifier": {
+        "mark": {
             "type": "lineNumber",
             "anchor": parse_line(anchor),
             "active": parse_line(active),
@@ -63,13 +63,13 @@ def cursorless_line_number(m) -> str:
     }
 
 @mod.capture(
-    rule="(up|down) <number_small>"
+    rule="(up | down) <number_small>"
 )
 def cursorless_line_number_simple(m) -> str:
     position = {"direction": m[0], "lineNumber": m.number_small}
     return {
         "selectionType": "line",
-        "modifier": {
+        "mark": {
             "type": "lineNumber",
             "anchor": parse_line(position),
             "active": parse_line(position),

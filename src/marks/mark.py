@@ -41,13 +41,22 @@ special_marks = {
     # "last cursor": {"mark": {"type": "lastCursorPosition"}} # Not implemented
 }
 
-mod.list("cursorless_mark", desc="Cursorless marks")
-ctx.lists["self.cursorless_mark"] = special_marks.keys()
+mod.list("cursorless_special_mark", desc="Cursorless special marks")
+ctx.lists["self.cursorless_special_mark"] = special_marks.keys()
 
 
-@mod.capture(rule=("<user.cursorless_decorated_symbol> | " "{user.cursorless_mark}"))
+@mod.capture(
+    rule=(
+        "<user.cursorless_decorated_symbol> | "
+        "{user.cursorless_special_mark} |"
+        # Because of problems with performance we have to have a simple version for now
+        # "<user.cursorless_line_number>" # row, up, down
+        "<user.cursorless_line_number_simple>" # up, down
+    )
+)
 def cursorless_mark(m) -> str:
-    try:
-        return m.cursorless_decorated_symbol
-    except AttributeError:
-        return special_marks[m.cursorless_mark]
+    try: return m.cursorless_decorated_symbol
+    except: pass
+    try: return special_marks[m.cursorless_special_mark]
+    except: pass
+    return m.cursorless_line_number_simple
