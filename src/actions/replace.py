@@ -7,7 +7,7 @@ mod = Module()
 def cursorless_count(m) -> str:
     try:
         start = m.number_small
-    except:
+    except AttributeError:
         start = 0
     return {"start": start}
 
@@ -20,7 +20,7 @@ def cursorless_texts(m) -> str:
         texts = list(
             map(lambda text: actions.user.formatted_text(text, formatters), texts)
         )
-    except:
+    except AttributeError:
         pass
     return texts
 
