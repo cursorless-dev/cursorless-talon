@@ -20,7 +20,7 @@ STRICT_HERE = {
 }
 
 modifiers = [
-    "<user.cursorless_position>",  # before, above, end of
+    "<user.cursorless_position>",  # before, end of
     "<user.cursorless_selection_type>",  # token, line, file
     "<user.cursorless_containing_scope>",  # funk, state, class
     "<user.cursorless_subtoken>",  # first past second word
