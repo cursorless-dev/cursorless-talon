@@ -42,7 +42,6 @@ modifiers_only = f"({'|'.join(modifiers)})+"  # 1 or more parameters
 def cursorless_primitive_target(m) -> str:
     """Supported extents for cursorless navigation"""
     object = BASE_TARGET.copy()
-    print(m)
     for capture in m:
         for key, value in capture.items():
             if (
