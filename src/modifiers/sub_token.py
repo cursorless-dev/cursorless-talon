@@ -11,12 +11,12 @@ mod.list("cursorless_subtoken", desc="Supported subcomponent types")
 ctx.lists["self.cursorless_subtoken"] = {"word": "word", "char": "character"}
 
 
-@mod.capture(rule="<user.ordinals> | last")
+@mod.capture(rule="<user.ordinals_small> | last")
 def ordinal_or_last(m) -> str:
     """An ordinal or the word 'last'"""
     if m[0] == "last":
         return -1
-    return m.ordinals - 1
+    return m.ordinals_small - 1
 
 
 @mod.capture(rule="<user.ordinal_or_last> [past <user.ordinal_or_last>]")
