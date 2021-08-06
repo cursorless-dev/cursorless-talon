@@ -26,7 +26,7 @@ makeshift_actions = [
     MakeshiftAction("inspect", "editor.debug.action.showDebugHover"),
     MakeshiftAction("pour cell", "jupyter.insertCellBelow"),
     MakeshiftAction("quick fix", "editor.action.quickFix", pre_command_sleep=0.3),
-    MakeshiftAction("references", "references-view.find"),
+    MakeshiftAction("reference", "references-view.find"),
     MakeshiftAction("rename", "editor.action.rename", post_command_sleep=0.1),
 ]
 
