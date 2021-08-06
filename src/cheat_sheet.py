@@ -161,7 +161,7 @@ class CheatSheet:
         self.draw_items(
             canvas,
             get_list(
-                "mark", {"this": "Selection", "that": "Last T", "source": "Source T"}
+                "special_mark", {"this": "Selection", "that": "Last T", "source": "Source T"}
             ),
         )
 
