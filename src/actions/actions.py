@@ -20,12 +20,13 @@ class MakeshiftAction:
 
 
 makeshift_actions = [
-    MakeshiftAction("def show", "editor.action.revealDefinition"),
+    MakeshiftAction("define", "editor.action.revealDefinition"),
     MakeshiftAction("drink cell", "jupyter.insertCellAbove"),
-    MakeshiftAction("hover show", "editor.action.showHover"),
+    MakeshiftAction("hover", "editor.action.showHover"),
+    MakeshiftAction("inspect", "editor.debug.action.showDebugHover"),
     MakeshiftAction("pour cell", "jupyter.insertCellBelow"),
     MakeshiftAction("quick fix", "editor.action.quickFix", pre_command_sleep=0.3),
-    MakeshiftAction("ref show", "references-view.find"),
+    MakeshiftAction("reference", "references-view.find"),
     MakeshiftAction("rename", "editor.action.rename", post_command_sleep=0.1),
 ]
 
@@ -60,8 +61,8 @@ ctx.lists["self.cursorless_simple_action"] = {
     "dedent": "outdentLines",
     "drink": "editNewLineAbove",
     "drop": "insertEmptyLineAbove",
-    "dupe": "copyLinesDown",
-    "dupe up": "copyLinesUp",
+    "clone": "copyLinesDown",
+    "clone up": "copyLinesUp",
     "extract": "extractVariable",
     "find all": "findInFiles",
     "float": "insertEmptyLineBelow",
