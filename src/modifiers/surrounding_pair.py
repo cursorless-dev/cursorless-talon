@@ -36,7 +36,7 @@ def cursorless_surrounding_pair(m) -> str:
     return {
         "modifier": {
             "type": "surroundingPair",
-            "delimeter": cursorless_pair_symbol,
-            "delimetersOnly": m[0] == "pair",
+            "delimiter": cursorless_pair_symbol,
+            "delimitersOnly": m[0] == "pair",
         }
     }
