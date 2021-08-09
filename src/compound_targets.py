@@ -1,14 +1,27 @@
 from .primitive_target import BASE_TARGET
-from talon import Module
+from talon import Module, Context
 
 mod = Module()
+ctx = Context()
+
+ctx.matches = r"""
+tag: user.cursorless
+"""
+
+range_specifier = {
+    "past",
+    "until",
+    "tween",
+}
+
+mod.list("cursorless_range_specifier", desc="A symbol that comes in pairs, eg brackets")
+ctx.lists["self.cursorless_range_specifier"] = range_specifier
 
 
 @mod.capture(
     rule=(
-        "<user.cursorless_primitive_target> | "
-        "(past|until|tween) <user.cursorless_primitive_target> | "
-        "<user.cursorless_primitive_target> (past|until|tween) <user.cursorless_primitive_target>"
+        "[{user.cursorless_range_specifier}] <user.cursorless_primitive_target> | "
+        "<user.cursorless_primitive_target> {user.cursorless_range_specifier} <user.cursorless_primitive_target>"
     )
 )
 def cursorless_range(m) -> str:

@@ -30,15 +30,10 @@ modifiers = [
     # "<user.cursorless_matching_pair_symbol>",  # matching
 ]
 
-modifiers_and_mark = (
-    f"({'|'.join(modifiers)})* "  # 0 or more parameters
-    "<user.cursorless_mark>"  # 1 mark
+
+@mod.capture(
+    rule=f"({'|'.join(modifiers)})+ [<user.cursorless_mark>] | <user.cursorless_mark>"
 )
-
-modifiers_only = f"({'|'.join(modifiers)})+"  # 1 or more parameters
-
-
-@mod.capture(rule=f"({modifiers_and_mark}) | ({modifiers_only})")
 def cursorless_primitive_target(m) -> str:
     """Supported extents for cursorless navigation"""
     object = BASE_TARGET.copy()

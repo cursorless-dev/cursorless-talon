@@ -8,7 +8,6 @@ tag: user.cursorless
 """
 
 pair_symbols = {
-    "angle": "angleBrackets",
     "diamond": "angleBrackets",
     "curly": "curlyBrackets",
     "round": "parentheses",
