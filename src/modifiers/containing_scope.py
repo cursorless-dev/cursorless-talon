@@ -8,7 +8,7 @@ tag: user.cursorless
 """
 
 
-mod.list("cursorless_containing_scope_type", desc="Supported containing scope types")
+mod.list("cursorless_scope_type", desc="Supported scope types")
 ctx.lists["self.cursorless_containing_scope_type"] = {
     "arg": "argumentOrParameter",
     "arrow": "arrowFunction",
