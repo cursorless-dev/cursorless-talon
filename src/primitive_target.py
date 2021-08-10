@@ -21,7 +21,7 @@ modifiers = [
     "<user.cursorless_head_tail>",  # head, tail
     "<user.cursorless_containing_scope>",  # funk, state, class
     "<user.cursorless_subtoken>",  # first past second word
-    "<user.cursorless_surrounding_pair>",  # curly, round
+    "<user.cursorless_surrounding_pair>",  # matching/pair [curly, round]
     # "<user.cursorless_matching_pair_symbol>",  # matching
 ]
 
