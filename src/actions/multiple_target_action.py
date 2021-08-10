@@ -12,16 +12,15 @@ tag: user.cursorless
 mod.list("cursorless_multiple_target_action", desc="Cursorless move or bring actions")
 ctx.lists["self.cursorless_multiple_target_action"] = {"bring", "move", "swap", "call"}
 
-target_separator = {
-    "onto",
-    "before",  # TODO: Make this work
-    "after",  # TODO: Make this work
-}
 
 mod.list(
     "cursorless_target_separator", desc="A symbol that comes in pairs, eg brackets"
 )
-ctx.lists["self.cursorless_target_separator"] = target_separator
+ctx.lists["self.cursorless_target_separator"] = {
+    "at",
+    "before",
+    "after",
+}
 
 
 @mod.capture(
@@ -35,6 +34,8 @@ def cursorless_multiple_targets(m) -> str:
 
     try:
         target_separater = m.cursorless_target_separator
+        if target_separater != "at":
+            target_list[-1]["position"] = target_separater
     except AttributeError:
         target_separater = None
 

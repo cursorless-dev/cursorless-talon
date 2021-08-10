@@ -1,5 +1,4 @@
 from talon import Context, Module
-from .selection_type import LINE
 
 mod = Module()
 ctx = Context()
@@ -21,6 +20,7 @@ positions = {
 
 mod.list("cursorless_position", desc="Types of positions")
 ctx.lists["self.cursorless_position"] = positions.keys()
+
 
 @mod.capture(rule="{user.cursorless_position}")
 def cursorless_position(m) -> str:

@@ -7,7 +7,9 @@ ctx.matches = r"""
 tag: user.cursorless
 """
 
-pair_symbols = {
+
+mod.list("cursorless_pair_symbol", desc="A symbol that comes in pairs, eg brackets")
+ctx.lists["self.cursorless_pair_symbol"] = {
     "diamond": "angleBrackets",
     "curly": "curlyBrackets",
     "round": "parentheses",
@@ -16,9 +18,6 @@ pair_symbols = {
     "twin": "singleQuotes",
 }
 
-mod.list("cursorless_pair_symbol", desc="A symbol that comes in pairs, eg brackets")
-ctx.lists["self.cursorless_pair_symbol"] = pair_symbols
-
 
 @mod.capture(
     rule=(
@@ -26,12 +25,11 @@ ctx.lists["self.cursorless_pair_symbol"] = pair_symbols
     )
 )
 def cursorless_surrounding_pair(m) -> str:
-    """Surrounding pair modifiers"""
+    """Surrounding pair modifier"""
     try:
         cursorless_pair_symbol = m.cursorless_pair_symbol
     except AttributeError:
         cursorless_pair_symbol = None
-
     return {
         "modifier": {
             "type": "surroundingPair",
