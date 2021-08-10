@@ -8,7 +8,6 @@ tag: user.cursorless
 """
 
 pair_symbols = {
-    "angle": "angleBrackets",
     "diamond": "angleBrackets",
     "curly": "curlyBrackets",
     "round": "parentheses",
@@ -32,7 +31,6 @@ def cursorless_surrounding_pair(m) -> str:
         cursorless_pair_symbol = m.cursorless_pair_symbol
     except AttributeError:
         cursorless_pair_symbol = None
-
     return {
         "modifier": {
             "type": "surroundingPair",
