@@ -16,6 +16,7 @@ ctx.lists["self.cursorless_pair_symbol"] = {
     "square": "squareBrackets",
     "quad": "doubleQuotes",
     "twin": "singleQuotes",
+    "brick": "backtickQuotes"
 }
 
 
