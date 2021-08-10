@@ -9,7 +9,7 @@ tag: user.cursorless
 
 
 mod.list("cursorless_scope_type", desc="Supported scope types")
-ctx.lists["self.cursorless_containing_scope_type"] = {
+ctx.lists["self.cursorless_scope_type"] = {
     "arg": "argumentOrParameter",
     "arrow": "arrowFunction",
     "call": "functionCall",
@@ -39,13 +39,13 @@ ctx.lists["self.cursorless_containing_scope_type"] = {
 }
 
 
-@mod.capture(rule="[every] {user.cursorless_containing_scope_type}")
+@mod.capture(rule="[every] {user.cursorless_scope_type}")
 def cursorless_containing_scope(m) -> str:
-    """Supported containing scope types"""
+    """Expand to containing scope"""
     return {
         "modifier": {
             "type": "containingScope",
-            "scopeType": m.cursorless_containing_scope_type,
+            "scopeType": m.cursorless_scope_type,
             "includeSiblings": m[0] == "every",
         }
     }
