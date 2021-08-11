@@ -27,7 +27,7 @@ modifiers = [
 
 
 
-@mod.capture(rule='|'.join(modifiers))
+@mod.capture(rule="|".join(modifiers))
 def cursorless_modifier(m) -> str:
     """Cursorless modifier"""
     return m[0]

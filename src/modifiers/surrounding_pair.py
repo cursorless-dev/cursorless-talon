@@ -20,7 +20,7 @@ ctx.lists["self.cursorless_pair_symbol"] = {
 }
 
 
-@mod.capture(rule=("(matching | pair) [{user.cursorless_pair_symbol}]"))
+@mod.capture(rule="(matching | pair) [{user.cursorless_pair_symbol}]")
 def cursorless_surrounding_pair(m) -> str:
     """Surrounding pair modifier"""
     try:
