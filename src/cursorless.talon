@@ -5,8 +5,14 @@ tag(): user.cursorless
 {user.cursorless_simple_action} <user.cursorless_target>:
     user.cursorless_simple_action(cursorless_simple_action, cursorless_target)
 
-{user.cursorless_multiple_target_action} <user.cursorless_multiple_targets>:
-    user.cursorless_multiple_target_command(cursorless_multiple_target_action, cursorless_multiple_targets)
+<user.cursorless_swap>:
+    user.cursorless_multiple_target_command("swap", cursorless_swap)
+
+{user.cursorless_move_bring_action} <user.cursorless_move_bring_targets>:
+    user.cursorless_multiple_target_command(cursorless_move_bring_action, cursorless_move_bring_targets)
+
+<user.cursorless_call>:
+    user.cursorless_multiple_target_command("call", cursorless_call)
 
 <user.cursorless_wrapper> wrap <user.cursorless_target>:
     user.cursorless_single_target_command_with_arg_list("wrap", cursorless_target, cursorless_wrapper)
