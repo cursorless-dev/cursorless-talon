@@ -68,7 +68,7 @@ ctx.lists["self.cursorless_simple_action"] = {
     "float": "insertEmptyLineBelow",
     "fold": "fold",
     "indent": "indentLines",
-    "paste": "paste",
+    "paste to": "paste",
     "post": "setSelectionAfter",
     "pour": "editNewLineBelow",
     "pre": "setSelectionBefore",
