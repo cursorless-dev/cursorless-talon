@@ -22,7 +22,7 @@ tag(): user.cursorless
 # replace <user.cursorless_target> with <user.cursorless_replace_value>$:
 #     user.cursorless_replace(cursorless_target, cursorless_replace_value)
 
-format <user.formatters> at <user.cursorless_target>:
+format <user.cursorless_target> as <user.formatters>:
     user.cursorless_reformat(cursorless_target, formatters)
 
 pour cell:                 user.vscode("jupyter.insertCellBelow")
