@@ -11,7 +11,7 @@ tag: user.cursorless
 range_specifier = {
     "past",
     "until",
-    "tween",
+    "between",
 }
 
 mod.list("cursorless_range_specifier", desc="A symbol that comes in pairs, eg brackets")
@@ -38,8 +38,8 @@ def cursorless_range(m) -> str:
         "type": "range",
         "start": start,
         "end": m[-1],
-        "excludeStart": modifier == "tween",
-        "excludeEnd": modifier in ["tween", "until"],
+        "excludeStart": modifier == "between",
+        "excludeEnd": modifier in ["between", "until"],
     }
 
 

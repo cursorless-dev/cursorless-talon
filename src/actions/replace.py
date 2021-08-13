@@ -1,3 +1,5 @@
+# disabling for now until we can figure out dfa compilation
+# See https://github.com/pokey/cursorless-talon/issues/58
 from talon import Module, actions
 
 mod = Module()
