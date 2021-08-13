@@ -20,8 +20,8 @@ class MakeshiftAction:
 
 
 makeshift_actions = [
-    MakeshiftAction("define", "editor.action.revealDefinition"),
     MakeshiftAction("drink cell", "jupyter.insertCellAbove"),
+    MakeshiftAction("follow", "editor.action.revealDefinition"),
     MakeshiftAction("hover", "editor.action.showHover"),
     MakeshiftAction("inspect", "editor.debug.action.showDebugHover"),
     MakeshiftAction("pour cell", "jupyter.insertCellBelow"),
