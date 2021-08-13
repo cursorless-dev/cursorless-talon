@@ -10,13 +10,13 @@ tag: user.cursorless
 
 mod.list("cursorless_pair_symbol", desc="A symbol that comes in pairs, eg brackets")
 ctx.lists["self.cursorless_pair_symbol"] = {
-    "diamond": "angleBrackets",
+    "skis": "backtickQuotes",
     "curly": "curlyBrackets",
+    "diamond": "angleBrackets",
+    "quad": "doubleQuotes",
     "round": "parentheses",
     "square": "squareBrackets",
-    "quad": "doubleQuotes",
     "twin": "singleQuotes",
-    "brick": "backtickQuotes"
 }
 
 
