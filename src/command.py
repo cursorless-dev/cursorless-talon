@@ -1,5 +1,6 @@
 from talon import actions, Module, speech_system
 from typing import Any, List
+from .primitive_target import STRICT_HERE
 
 mod = Module()
 
@@ -21,6 +22,17 @@ class NotSet:
 
 @mod.action_class
 class Actions:
+    def cursorless_no_target_command(
+        action: str,
+        arg1: Any = NotSet,
+        arg2: Any = NotSet,
+        arg3: Any = NotSet,
+    ):
+        """Execute no-target cursorless command"""
+        actions.user.cursorless_single_target_command(
+            action, STRICT_HERE, arg1, arg2, arg3
+        )
+
     def cursorless_single_target_command(
         action: str,
         target: dict,

@@ -32,6 +32,9 @@ extract <user.cursorless_target> as <user.text>$:
 <user.cursorless_call>:
     user.cursorless_multiple_target_command("call", cursorless_call)
 
+insert <user.cursorless_insert_value> :
+    user.cursorless_no_target_command("insert", cursorless_insert_value)
+
 pour cell:
     user.vscode("jupyter.insertCellBelow")
 
