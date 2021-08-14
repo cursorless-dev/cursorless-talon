@@ -31,7 +31,7 @@ ctx.lists["self.cursorless_scope_type"] = {
     "type": "type",
     "value": "value",
     #  XML, JSX
-    "attribute": "xmlAttribute",
+    "attribute": "attribute",
     "element": "xmlElement",
     "tags": "xmlBothTags",
     "start tag": "xmlStartTag",
