@@ -12,6 +12,7 @@ mod.list("cursorless_scope_type", desc="Supported scope types")
 ctx.lists["self.cursorless_scope_type"] = {
     "arg": "argumentOrParameter",
     "arrow": "arrowFunction",
+    "attribute": "attribute",
     "call": "functionCall",
     "class name": "className",
     "class": "class",
@@ -31,7 +32,6 @@ ctx.lists["self.cursorless_scope_type"] = {
     "type": "type",
     "value": "value",
     #  XML, JSX
-    "attribute": "attribute",
     "element": "xmlElement",
     "tags": "xmlBothTags",
     "start tag": "xmlStartTag",
