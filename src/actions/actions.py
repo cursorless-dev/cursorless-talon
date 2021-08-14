@@ -21,7 +21,7 @@ class MakeshiftAction:
 
 makeshift_actions = [
     MakeshiftAction("drink cell", "jupyter.insertCellAbove"),
-    MakeshiftAction("follow", "editor.action.revealDefinition"),
+    MakeshiftAction("define", "editor.action.revealDefinition"),
     MakeshiftAction("hover", "editor.action.showHover"),
     MakeshiftAction("inspect", "editor.debug.action.showDebugHover"),
     MakeshiftAction("pour cell", "jupyter.insertCellBelow"),
@@ -41,7 +41,7 @@ class CallbackAction:
 
 
 callbacks = [
-    CallbackAction("find", "find", run_find_action),
+    CallbackAction("scout", "find", run_find_action),
     CallbackAction("phones", "nextHomophone", run_homophones_action),
 ]
 
@@ -56,15 +56,15 @@ ctx.lists["self.cursorless_simple_action"] = {
     "center": "scrollToCenter",
     "chuck": "delete",
     "clear": "clear",
+    "clone up": "copyLinesUp",
+    "clone": "copyLinesDown",
     "comment": "commentLines",
     "copy": "copy",
+    "crown": "scrollToTop",
     "dedent": "outdentLines",
     "drink": "editNewLineAbove",
     "drop": "insertEmptyLineAbove",
-    "clone": "copyLinesDown",
-    "clone up": "copyLinesUp",
     "extract": "extractVariable",
-    "find all": "findInFiles",
     "float": "insertEmptyLineBelow",
     "fold": "fold",
     "indent": "indentLines",
@@ -74,12 +74,12 @@ ctx.lists["self.cursorless_simple_action"] = {
     "pre": "setSelectionBefore",
     "puff": "insertEmptyLinesAround",
     "reverse": "reverse",
+    "scout all": "findInFiles",
     "sort": "sort",
     "take": "setSelection",
-    "top": "scrollToTop",
     "unfold": "unfold",
-    **{callback.term: callback.action for callback in callbacks},
     **{action.term: action.term for action in makeshift_actions},
+    **{callback.term: callback.action for callback in callbacks},
 }
 
 
