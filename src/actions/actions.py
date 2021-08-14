@@ -2,6 +2,7 @@ from talon import Context, Module, actions
 from dataclasses import dataclass
 from .homophones import run_homophones_action
 from .find import run_find_action
+from .call import run_call_action
 
 mod = Module()
 
@@ -41,6 +42,7 @@ class CallbackAction:
 
 
 callbacks = [
+    CallbackAction("call", "call", run_call_action),
     CallbackAction("scout", "find", run_find_action),
     CallbackAction("phones", "nextHomophone", run_homophones_action),
 ]

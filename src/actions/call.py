@@ -1,14 +1,9 @@
 from ..primitive_target import STRICT_HERE
-from talon import Module
+from talon import Module, actions
 
 mod = Module()
 
 
-@mod.capture(rule=("call <user.cursorless_target> [on <user.cursorless_target>]"))
-def cursorless_call(m) -> str:
-    target_list = m.cursorless_target_list
-
-    if len(target_list) == 1:
-        target_list = target_list + [STRICT_HERE]
-
-    return target_list
+def run_call_action(target: dict):
+    targets = [target, STRICT_HERE]
+    actions.user.cursorless_multiple_target_command("call", targets)
