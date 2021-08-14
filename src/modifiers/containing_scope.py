@@ -18,7 +18,7 @@ ctx.lists["self.cursorless_scope_type"] = {
     "comment": "comment",
     "funk name": "functionName",
     "funk": "namedFunction",
-    "if": "ifStatement",
+    "if state": "ifStatement",
     "item": "collectionItem",
     "key": "collectionKey",
     "lambda": "arrowFunction",
