@@ -2,6 +2,7 @@ from talon import Context, Module, actions
 from dataclasses import dataclass
 from .homophones import run_homophones_action
 from .find import run_find_action
+from .call import run_call_action
 
 mod = Module()
 
@@ -20,8 +21,8 @@ class MakeshiftAction:
 
 
 makeshift_actions = [
-    MakeshiftAction("define", "editor.action.revealDefinition"),
     MakeshiftAction("drink cell", "jupyter.insertCellAbove"),
+    MakeshiftAction("define", "editor.action.revealDefinition"),
     MakeshiftAction("hover", "editor.action.showHover"),
     MakeshiftAction("inspect", "editor.debug.action.showDebugHover"),
     MakeshiftAction("pour cell", "jupyter.insertCellBelow"),
@@ -41,7 +42,8 @@ class CallbackAction:
 
 
 callbacks = [
-    CallbackAction("find", "find", run_find_action),
+    CallbackAction("call", "call", run_call_action),
+    CallbackAction("scout", "find", run_find_action),
     CallbackAction("phones", "nextHomophone", run_homophones_action),
 ]
 
@@ -56,30 +58,30 @@ ctx.lists["self.cursorless_simple_action"] = {
     "center": "scrollToCenter",
     "chuck": "delete",
     "clear": "clear",
+    "clone up": "copyLinesUp",
+    "clone": "copyLinesDown",
     "comment": "commentLines",
     "copy": "copy",
+    "crown": "scrollToTop",
     "dedent": "outdentLines",
     "drink": "editNewLineAbove",
     "drop": "insertEmptyLineAbove",
-    "clone": "copyLinesDown",
-    "clone up": "copyLinesUp",
     "extract": "extractVariable",
-    "find all": "findInFiles",
     "float": "insertEmptyLineBelow",
     "fold": "fold",
     "indent": "indentLines",
-    "paste": "paste",
+    "paste to": "paste",
     "post": "setSelectionAfter",
     "pour": "editNewLineBelow",
     "pre": "setSelectionBefore",
     "puff": "insertEmptyLinesAround",
     "reverse": "reverse",
+    "scout all": "findInFiles",
     "sort": "sort",
     "take": "setSelection",
-    "top": "scrollToTop",
     "unfold": "unfold",
-    **{callback.term: callback.action for callback in callbacks},
     **{action.term: action.term for action in makeshift_actions},
+    **{callback.term: callback.action for callback in callbacks},
 }
 
 

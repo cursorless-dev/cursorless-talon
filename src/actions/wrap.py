@@ -7,17 +7,18 @@ wrappers = {
     "square": ["[", "]"],
     "round": ["(", ")"],
     "curly": ["{", "}"],
-    "angle": ["<", ">"],
+    "diamond": ["<", ">"],
     "twin": ["'", "'"],
     "quad": ['"', '"'],
     "brick": ["`", "`"],
     "escaped twin": ["\\'", "\\'"],
     "escaped quad": ['\\"', '\\"'],
-    "space": [" ", " "]
+    "space": [" ", " "],
 }
 
 mod.list("cursorless_wrapper", desc="Supported wrappers for cursorless wrap action")
 ctx.lists["self.cursorless_wrapper"] = wrappers.keys()
+
 
 @mod.capture(rule=("{user.cursorless_wrapper}"))
 def cursorless_wrapper(m) -> list[str]:
