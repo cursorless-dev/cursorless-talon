@@ -93,7 +93,16 @@ class CheatSheet:
         self.y = get_y(canvas)
         self.w = 0
 
-        simple_actions = get_list("simple_action")
+        simple_actions = get_list(
+            "simple_action",
+            {
+                "call": "Call T on S",
+                "define": "Reveal definition",
+                "drink cell": "Edit new cell above",
+                "pour cell": "Edit new cell below",
+                "reference": "Show references",
+            },
+        )
 
         move_bring = {}
         for action, desc in get_list("move_bring_action").items():
@@ -109,11 +118,8 @@ class CheatSheet:
             **move_bring,
             "swap T1 with T2": "Swap T1 with T2",
             "swap with T": "Swap S with T",
-            "call T1 on T2": "Call T1 on T2",
-            "call T": "Call T1 on S",
             "wrap": '"round" wrap T',
-            "replace T with *": "Replace T with *",
-            "reformat T as *": "Reformat T as *",
+            "format * at T": "Reformat T as *",
         }
 
         actions_limit = round(len(all_actions) / 2)
@@ -132,7 +138,7 @@ class CheatSheet:
         self.draw_items(
             canvas,
             get_list(
-                "containing_scope_type",
+                "scope_type",
                 {
                     "arg": "Argument",
                     "funk": "Function",
@@ -161,7 +167,8 @@ class CheatSheet:
         self.draw_items(
             canvas,
             get_list(
-                "special_mark", {"this": "Selection", "that": "Last T", "source": "Source T"}
+                "special_mark",
+                {"this": "Selection", "that": "Last T", "source": "Source T"},
             ),
         )
 
