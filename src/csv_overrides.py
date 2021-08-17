@@ -23,7 +23,7 @@ def get_file_path(filename: str) -> str:
 def watch_csv(filename: str, default_values: dict, callback: callable):
     dir_path, file_path = get_file_path(filename)
     print(file_path)
-    print(default_values)
+    # print(default_values)
 
     if not dir_path.is_dir():
         os.mkdir(dir_path)
@@ -34,7 +34,8 @@ def watch_csv(filename: str, default_values: dict, callback: callable):
     else:
         create_file(file_path, default_values)
 
-    # fs.watch(file_path, callback)
+    on_watch = lambda path, flags: callback()
+    fs.watch(file_path, on_watch)
 
 
 def update_file(path, default_values: dict):
@@ -50,12 +51,6 @@ def create_file(path, default_values: dict):
     fo.writelines(lines)
     fo.close()
 
-
-def on_ready():
-    print("On ready")
-
-
-# app.register("ready", on_ready)
 
 # NOTE: This method requires this module to be one folder below the top-level
 #   knausj folder.
