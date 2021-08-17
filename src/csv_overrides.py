@@ -1,9 +1,12 @@
 from talon import actions, fs, app
-import csv
+
+# import csv
 import os
+from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Tuple
-from talon import resource
+
+# from typing import Dict, List, Tuple
+# from talon import resource
 
 directory_name = "cursorless-settings"
 
@@ -22,7 +25,7 @@ def get_file_path(filename: str) -> str:
 
 def watch_csv(filename: str, default_values: dict, callback: callable):
     dir_path, file_path = get_file_path(filename)
-    print(file_path)
+    # print(file_path)
     # print(default_values)
 
     if not dir_path.is_dir():
@@ -30,26 +33,68 @@ def watch_csv(filename: str, default_values: dict, callback: callable):
 
     if file_path.is_file():
         update_file(file_path, default_values)
-        # callback()
+
     else:
         create_file(file_path, default_values)
-
+    #   callback()
     on_watch = lambda path, flags: callback()
     fs.watch(file_path, on_watch)
 
 
 def update_file(path, default_values: dict):
-    print("update file")
+    current_values = read_file(path).values()
+
+    missing = {}
+    for key, value in default_values.items():
+        if value not in current_values:
+            missing[key] = value
+
+    if missing:
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        lines = [
+            "\n",
+            f"# {timestamp} - Added new commands\n",
+            *[create_line(key, missing[key]) for key in sorted(missing)],
+        ]
+        write_file(path, lines, "a")
+
+        message = f"Cursorless added new commands to {path.name}"
+        print(message)
+        for key in sorted(missing):
+            print(f"{key}: {missing[key]}")
+        app.notify(message)
+
+
+def create_line(key: str, value: str):
+    return f"{key}, {value}\n"
 
 
 def create_file(path, default_values: dict):
-    print("create file")
-    lines = [f"{key},{default_values[key]}\n" for key in sorted(default_values)]
-    lines.insert(0, "# Spoken words,Identifier\n")
-    print(lines)
-    fo = open(path, "w")
-    fo.writelines(lines)
-    fo.close()
+    lines = [create_line(key, default_values[key]) for key in sorted(default_values)]
+    lines.insert(0, create_line("# Spoken words", "Identifier"))
+    write_file(path, lines, "w")
+
+
+def write_file(path, lines, mode):
+    with open(path, mode) as f:
+        f.writelines(lines)
+
+
+def read_file(path) -> dict:
+    with open(path, "r") as f:
+        lines = f.read().splitlines()
+
+    result = {}
+    for i in range(len(lines)):
+        line = lines[i].strip()
+        if len(line) == 0 or line.startswith("#"):
+            continue
+        parts = line.split(",")
+        assert len(parts) == 2, f"Malformed {path.name}:{i+1} | {line}"
+        key = parts[0].strip()
+        value = parts[1].strip()
+        result[key] = value
+    return result
 
 
 # NOTE: This method requires this module to be one folder below the top-level

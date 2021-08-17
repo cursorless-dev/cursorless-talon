@@ -110,7 +110,9 @@ def run_makeshift_action(action: str, targets: dict):
 
 
 def on_watch():
+# def on_watch(lists: List[dict]):
     print("On watch")
 
 
 app.register("ready", lambda: watch_csv("actions", simple_actions, on_watch))
+# app.register("ready", lambda: watch_csv("actions", [simple_actions, swap_actions], on_watch))
