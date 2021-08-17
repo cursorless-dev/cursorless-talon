@@ -1,5 +1,6 @@
-from talon import Context, Module, actions
+from talon import Context, Module, actions, app
 from dataclasses import dataclass
+from ..csv_overrides import watch_csv
 from .homophones import run_homophones_action
 from .find import run_find_action
 from .call import run_call_action
@@ -50,8 +51,7 @@ callbacks = [
 callbacks_map = {callback.action: callback.callback for callback in callbacks}
 
 
-mod.list("cursorless_simple_action", desc="Supported actions for cursorless navigation")
-ctx.lists["self.cursorless_simple_action"] = {
+simple_actions = {
     "bottom": "scrollToBottom",
     "breakpoint": "setBreakpoint",
     "carve": "cut",
@@ -84,6 +84,9 @@ ctx.lists["self.cursorless_simple_action"] = {
     **{callback.term: callback.action for callback in callbacks},
 }
 
+mod.list("cursorless_simple_action", desc="Supported actions for cursorless navigation")
+ctx.lists["self.cursorless_simple_action"] = simple_actions
+
 
 @mod.action_class
 class Actions:
@@ -104,3 +107,10 @@ def run_makeshift_action(action: str, targets: dict):
     actions.sleep(makeshift_action.pre_command_sleep)
     actions.user.vscode(makeshift_action.vscode_command_id)
     actions.sleep(makeshift_action.post_command_sleep)
+
+
+def on_watch():
+    print("On watch")
+
+
+app.register("ready", lambda: watch_csv("actions", simple_actions, on_watch))
