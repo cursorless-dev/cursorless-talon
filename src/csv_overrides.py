@@ -61,20 +61,26 @@ def update_file(path: Path, default_values: dict):
         if value not in current_identifiers:
             missing[key] = value
 
-    if missing and not has_errors:
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        lines = [
-            "\n",
-            f"# {timestamp} - New entries automatically added by cursorless\n",
-            *[create_line(key, missing[key]) for key in sorted(missing)],
-        ]
-        write_file(path, lines, "a")
+    if missing:
+        if has_errors:
+            print(
+                "NOTICE: New cursorless features detected, but refusing to update "
+                "csv due to errors.  Please fix csv errors above and restart talon"
+            )
+        else:
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            lines = [
+                "\n",
+                f"# {timestamp} - New entries automatically added by cursorless\n",
+                *[create_line(key, missing[key]) for key in sorted(missing)],
+            ]
+            write_file(path, lines, "a")
 
-        message = f"🎉🎉 New cursorless features in {path.name}"
-        print(message)
-        for key in sorted(missing):
-            print(f"{key}: {missing[key]}")
-        app.notify(message)
+            message = f"🎉🎉 New cursorless features in {path.name}"
+            print(message)
+            for key in sorted(missing):
+                print(f"{key}: {missing[key]}")
+            app.notify(message)
 
     return current_values
 
@@ -121,6 +127,7 @@ def read_file(path: Path, default_identifiers: list[str]):
         if len(parts) != 2:
             has_errors = True
             csv_error(path, i, "Malformed csv entry", line)
+            continue
 
         key = parts[0].strip()
         value = parts[1].strip()
@@ -128,10 +135,12 @@ def read_file(path: Path, default_identifiers: list[str]):
         if value not in default_identifiers:
             has_errors = True
             csv_error(path, i, "Unknown identifier", value)
+            continue
 
         if value in used_identifiers:
             has_errors = True
             csv_error(path, i, "Duplicate identifier", value)
+            continue
 
         result[key] = value
         used_identifiers.append(value)
