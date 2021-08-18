@@ -4,10 +4,6 @@ from talon import Module, Context
 mod = Module()
 ctx = Context()
 
-ctx.matches = r"""
-tag: user.cursorless
-"""
-
 range_specifier = {
     "past",
     "until",

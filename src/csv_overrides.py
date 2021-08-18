@@ -31,16 +31,18 @@ def init_csv_and_watch_changes(
 
 
 def update_dicts(default_values: list[dict], current_values: dict, callback: callable):
+    # Create map with all default values
     results_map = {}
     for i in range(len(default_values)):
         for key, value in default_values[i].items():
             results_map[value] = {"key": key, "value": value, "index": i}
 
+    # Update result with current values
     for key, value in current_values.items():
         results_map[value]["key"] = key
 
+    # Convert result map back to result list
     results = [{} for _ in default_values]
-
     for obj in results_map.values():
         results[obj["index"]][obj["key"]] = obj["value"]
 

@@ -8,9 +8,6 @@ from .call import run_call_action
 mod = Module()
 
 ctx = Context()
-ctx.matches = r"""
-tag: user.cursorless
-"""
 
 
 @dataclass
@@ -54,6 +51,9 @@ callbacks = [
 callbacks_map = {callback.identifier: callback.callback for callback in callbacks}
 
 
+mod.list("cursorless_simple_action", desc="Supported actions for cursorless navigation")
+
+
 simple_actions = {
     "bottom": "scrollToBottom",
     "breakpoint": "setBreakpoint",
@@ -87,9 +87,6 @@ simple_actions = {
     **{callback.term: callback.identifier for callback in callbacks},
 }
 
-mod.list("cursorless_simple_action", desc="Supported actions for cursorless navigation")
-ctx.lists["self.cursorless_simple_action"] = simple_actions
-
 
 @mod.action_class
 class Actions:
@@ -112,13 +109,26 @@ def run_makeshift_action(action: str, targets: dict):
     actions.sleep(makeshift_action.post_command_sleep)
 
 
+all_actions = [
+    ["simple", simple_actions],
+    ["swap", {"swap": "swap"}],
+    ["move_bring", {"bring": "bring", "move": "move"}],
+    ["wrap", {"wrap": "wrap"}],
+    ["reformat", {"format": "format"}],
+]
+
+action_list_names = [line[0] for line in all_actions]
+default_action_values = [line[1] for line in all_actions]
+
+
 def on_csv_change(updated_dicts):
-    print("On watch")
-    print(updated_dicts)
+    for i in range(len(action_list_names)):
+        list_name = action_list_names[i]
+        ctx.lists[f"self.cursorless_{list_name}_action"] = updated_dicts[i]
 
 
 def on_ready():
-    init_csv_and_watch_changes("actions", [simple_actions], on_csv_change)
+    init_csv_and_watch_changes("actions", default_action_values, on_csv_change)
 
 
 app.register("ready", on_ready)

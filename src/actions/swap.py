@@ -1,10 +1,16 @@
-from ..primitive_target import BASE_TARGET
 from talon import Module
+from ..primitive_target import BASE_TARGET
 
 mod = Module()
 
+mod.list("cursorless_swap_action", desc="Cursorless swap action")
 
-@mod.capture(rule=("swap [<user.cursorless_target>] with <user.cursorless_target>"))
+
+@mod.capture(
+    rule=(
+        "{user.cursorless_swap_action} [<user.cursorless_target>] with <user.cursorless_target>"
+    )
+)
 def cursorless_swap(m) -> str:
     target_list = m.cursorless_target_list
 

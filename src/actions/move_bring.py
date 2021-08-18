@@ -1,16 +1,10 @@
+from talon import Module
 from ..primitive_target import STRICT_HERE
-from talon import Context, Module
 
 mod = Module()
 
-ctx = Context()
-ctx.matches = r"""
-tag: user.cursorless
-"""
-
 
 mod.list("cursorless_move_bring_action", desc="Cursorless move or bring actions")
-ctx.lists["self.cursorless_move_bring_action"] = {"bring", "move"}
 
 
 @mod.capture(rule=("<user.cursorless_target> [to <user.cursorless_target>]"))
