@@ -114,7 +114,7 @@ all_actions = [
     ["swap", {"swap": "swap"}],
     ["move_bring", {"bring": "bring", "move": "move"}],
     ["wrap", {"wrap": "wrap"}],
-    ["reformat", {"format": "format"}],
+    ["reformat", {"format": "reformat"}],
 ]
 
 action_list_names = [line[0] for line in all_actions]

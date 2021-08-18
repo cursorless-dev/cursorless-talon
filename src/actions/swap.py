@@ -6,12 +6,8 @@ mod = Module()
 mod.list("cursorless_swap_action", desc="Cursorless swap action")
 
 
-@mod.capture(
-    rule=(
-        "{user.cursorless_swap_action} [<user.cursorless_target>] with <user.cursorless_target>"
-    )
-)
-def cursorless_swap(m) -> str:
+@mod.capture(rule=("[<user.cursorless_target>] with <user.cursorless_target>"))
+def cursorless_swap_targets(m) -> str:
     target_list = m.cursorless_target_list
 
     if len(target_list) == 1:
