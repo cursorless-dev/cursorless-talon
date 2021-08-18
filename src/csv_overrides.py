@@ -63,7 +63,7 @@ def update_file(path, default_values: dict):
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         lines = [
             "\n",
-            f"# {timestamp} - Added new commands\n",
+            f"# {timestamp} - New entries automatically added by cursorless\n",
             *[create_line(key, missing[key]) for key in sorted(missing)],
         ]
         write_file(path, lines, "a")
