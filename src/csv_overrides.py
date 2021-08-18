@@ -79,7 +79,7 @@ def update_file(path, default_values: dict):
 
 def create_file(path, default_values: dict):
     lines = [create_line(key, default_values[key]) for key in sorted(default_values)]
-    lines.insert(0, create_line("# Spoken words", "Identifier"))
+    lines.insert(0, create_line("# Spoken form", "Cursorless identifier"))
     write_file(path, lines, "w")
 
 
