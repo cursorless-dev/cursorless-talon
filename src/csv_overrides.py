@@ -117,6 +117,7 @@ def read_file(path: Path, default_identifiers: list[str]):
     with open(path) as f:
         lines = list(f)
 
+    print(path)
     result = {}
     used_identifiers = []
     has_errors = False
@@ -126,16 +127,16 @@ def read_file(path: Path, default_identifiers: list[str]):
             continue
 
         parts = line.split(",")
-        has_errors = has_errors or csv_assertion(
+        has_errors = has_errors or not csv_assertion(
             len(parts) == 2, path, i, "Malformed csv", line
         )
         key = parts[0].strip()
         value = parts[1].strip()
 
-        has_errors = has_errors or csv_assertion(
+        has_errors = has_errors or not csv_assertion(
             value in default_identifiers, path, i, "Unknown identifier", value
         )
-        has_errors = has_errors or csv_assertion(
+        has_errors = has_errors or not csv_assertion(
             value not in used_identifiers, path, i, "Duplicate identifier", value
         )
 
