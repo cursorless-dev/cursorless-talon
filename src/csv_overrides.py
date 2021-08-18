@@ -90,7 +90,7 @@ def write_file(path, lines, mode):
         f.writelines(lines)
 
 
-def csv_assertion(condition: bool, path: Path, index: int, message: str, value: str):
+def csv_error(path: Path, index: int, message: str, value: str):
     """Check that an expected condition is true
 
     Note that we try to continue reading in this case so cursorless doesn't get bricked
@@ -101,22 +101,15 @@ def csv_assertion(condition: bool, path: Path, index: int, message: str, value: 
         index (int): The index into the file (for error reporting)
         text (str): The text of the error message to report if condition is false
     """
-    if condition:
-        return True
-    error_message = (
-        f"Cursorless settings csv error {path.name}:{index+1} | {message} | {value}"
-    )
-    app.notify(error_message)
+    error_message = f"ERROR: {path}:{index+1}: {message} '{value}'"
+    app.notify("Cursorless settings error; see log")
     print(error_message)
-
-    return False
 
 
 def read_file(path: Path, default_identifiers: list[str]):
     with open(path) as f:
         lines = list(f)
 
-    print(path)
     result = {}
     used_identifiers = []
     has_errors = False
@@ -126,21 +119,25 @@ def read_file(path: Path, default_identifiers: list[str]):
             continue
 
         parts = line.split(",")
-        has_errors = has_errors or not csv_assertion(
-            len(parts) == 2, path, i, "Malformed csv", line
-        )
+
+        if len(parts) != 2:
+            has_errors = True
+            csv_error(path, i, "Malformed csv entry", line)
+
         key = parts[0].strip()
         value = parts[1].strip()
 
-        has_errors = has_errors or not csv_assertion(
-            value in default_identifiers, path, i, "Unknown identifier", value
-        )
-        has_errors = has_errors or not csv_assertion(
-            value not in used_identifiers, path, i, "Duplicate identifier", value
-        )
+        if value not in default_identifiers:
+            has_errors = True
+            csv_error(path, i, "Unknown identifier", value)
+
+        if value in used_identifiers:
+            has_errors = True
+            csv_error(path, i, "Duplicate identifier", value)
 
         result[key] = value
         used_identifiers.append(value)
+
     return result, has_errors
 
 
