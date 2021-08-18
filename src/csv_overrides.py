@@ -125,11 +125,6 @@ def create_line(key: str, value: str):
     return f"{key}, {value}\n"
 
 
-def read_line(line: str, path, index: int):
-
-    return key, value
-
-
 def get_file_paths(filename: str):
     if not filename.endswith(".csv"):
         filename = f"{filename}.csv"
