@@ -3,7 +3,7 @@ from talon.canvas import Canvas
 import re
 import webbrowser
 import math
-from .actions.actions import action_list_names
+from .actions.actions import ACTION_LIST_NAMES
 
 mod = Module()
 mod.mode("cursorless_cheat_sheet", "Mode for showing cursorless cheat sheet gui")
@@ -95,7 +95,7 @@ class CheatSheet:
         self.w = 0
 
         all_actions = {}
-        for name in action_list_names:
+        for name in ACTION_LIST_NAMES:
             all_actions.update(get_raw_list(name))
 
         keys = dict_remove_values(all_actions, "bring", "move", "swap", "reformat")
