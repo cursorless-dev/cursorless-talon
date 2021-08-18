@@ -17,7 +17,9 @@ def init_csv_and_watch_changes(filename: str, default_values: dict[str, dict]):
 
     def on_watch(path, flags):
         if file_path.match(path):
-            current_values = read_file(file_path, super_default_values.values())
+            current_values, has_errors = read_file(
+                file_path, super_default_values.values()
+            )
             update_dicts(default_values, current_values)
 
     fs.watch(dir_path, on_watch)
@@ -51,8 +53,8 @@ def update_dicts(default_values: dict[str, dict], current_values: dict):
         ctx.lists[f"user.cursorless_{list_name}"] = dict
 
 
-def update_file(path, default_values: dict):
-    current_values = read_file(path, default_values.values())
+def update_file(path: Path, default_values: dict):
+    current_values, has_errors = read_file(path, default_values.values())
     current_identifiers = current_values.values()
 
     missing = {}
@@ -60,7 +62,7 @@ def update_file(path, default_values: dict):
         if value not in current_identifiers:
             missing[key] = value
 
-    if missing:
+    if missing and not has_errors:
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         lines = [
             "\n",
@@ -69,7 +71,7 @@ def update_file(path, default_values: dict):
         ]
         write_file(path, lines, "a")
 
-        message = f"Cursorless added new commands to {path.name}"
+        message = f"🎉🎉 New cursorless features in {path.name}"
         print(message)
         for key in sorted(missing):
             print(f"{key}: {missing[key]}")
@@ -78,10 +80,10 @@ def update_file(path, default_values: dict):
     return current_values
 
 
-def create_file(path, default_values: dict):
+def create_file(path: Path, default_values: dict):
     lines = [create_line(key, default_values[key]) for key in sorted(default_values)]
     lines.insert(0, create_line("# Spoken words", "Identifier"))
-    write_file(path, lines, "w")
+    path.write_text("\n".join(lines))
 
 
 def write_file(path, lines, mode):
@@ -89,36 +91,57 @@ def write_file(path, lines, mode):
         f.writelines(lines)
 
 
-def read_file(path, default_identifiers: list[str]) -> dict:
-    with open(path, "r") as f:
-        lines = f.read().splitlines()
+def csv_assertion(condition: bool, path: Path, index: int, message: str, value: str):
+    """Check that an expected condition is true
+
+    Note that we try to continue reading in this case so cursorless doesn't get bricked
+
+    Args:
+        condition (bool): The condition that should be true.
+        path (Path): The path of the CSV (for error reporting)
+        index (int): The index into the file (for error reporting)
+        text (str): The text of the error message to report if condition is false
+    """
+    if condition:
+        return True
+    error_message = (
+        f"Cursorless settings csv error {path.name}:{index+1} | {message} | {value}"
+    )
+    app.notify(error_message)
+    print(error_message)
+
+    return False
+
+
+def read_file(path: Path, default_identifiers: list[str]):
+    with open(path) as f:
+        lines = list(f)
 
     result = {}
     used_identifiers = []
-    for i in range(len(lines)):
-        line = lines[i].strip()
+    has_errors = False
+    for i, raw_line in enumerate(lines):
+        line = raw_line.strip()
         if len(line) == 0 or line.startswith("#"):
             continue
 
         parts = line.split(",")
-        assert len(parts) == 2, error_message(path, i, "Malformed csv", value)
+        has_errors = has_errors or csv_assertion(
+            len(parts) == 2, path, i, "Malformed csv", line
+        )
         key = parts[0].strip()
         value = parts[1].strip()
 
-        assert value in default_identifiers, error_message(
-            path, i, "Unknown identifier", value
+        has_errors = has_errors or csv_assertion(
+            value in default_identifiers, path, i, "Unknown identifier", value
         )
-        assert value not in used_identifiers, error_message(
-            path, i, "Duplicate identifier", value
+        has_errors = has_errors or csv_assertion(
+            value not in used_identifiers, path, i, "Duplicate identifier", value
         )
 
         result[key] = value
         used_identifiers.append(value)
-    return result
-
-
-def error_message(path, index, message, value):
-    return f"{path.name}:{index+1} | {message} | {value}"
+    return result, has_errors
 
 
 def create_line(key: str, value: str):
