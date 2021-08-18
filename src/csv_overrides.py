@@ -1,52 +1,59 @@
 from talon import actions, fs, app
-
-# import csv
 import os
 from datetime import datetime
 from pathlib import Path
 
-# from typing import Dict, List, Tuple
-# from talon import resource
-
 directory_name = "cursorless-settings"
 
-# def update_lists_from_csv(filename: str, *args: [dict]):
-# print()
 
-
-def get_file_path(filename: str) -> str:
-    if not filename.endswith(".csv"):
-        filename = f"{filename}.csv"
-    user_dir = actions.path.talon_user()
-    dir_path = Path(user_dir, directory_name)
-    csv_path = Path(dir_path, filename)
-    return dir_path, csv_path
-
-
-def watch_csv(filename: str, default_values: dict, callback: callable):
-    dir_path, file_path = get_file_path(filename)
-    # print(file_path)
-    # print(default_values)
+def init_csv_and_watch_changes(
+    filename: str, default_values: list[dict], callback: callable
+):
+    dir_path, file_path = get_file_paths(filename)
+    super_default_values = join_dicts(default_values)
 
     if not dir_path.is_dir():
         os.mkdir(dir_path)
 
-    if file_path.is_file():
-        update_file(file_path, default_values)
+    def on_watch(path, flags):
+        if file_path.match(path):
+            current_values = read_file(file_path, super_default_values.values())
+            update_dicts(default_values, current_values, callback)
 
+    fs.watch(dir_path, on_watch)
+
+    if file_path.is_file():
+        current_values = update_file(file_path, super_default_values)
+        update_dicts(default_values, current_values, callback)
     else:
-        create_file(file_path, default_values)
-    #   callback()
-    on_watch = lambda path, flags: callback()
-    fs.watch(file_path, on_watch)
+        create_file(file_path, super_default_values)
+        update_dicts(default_values, super_default_values, callback)
+
+
+def update_dicts(default_values: list[dict], current_values: dict, callback: callable):
+    results_map = {}
+    for i in range(len(default_values)):
+        for key, value in default_values[i].items():
+            results_map[value] = {"key": key, "value": value, "index": i}
+
+    for key, value in current_values.items():
+        results_map[value]["key"] = key
+
+    results = [{} for _ in default_values]
+
+    for obj in results_map.values():
+        results[obj["index"]][obj["key"]] = obj["value"]
+
+    callback(results)
 
 
 def update_file(path, default_values: dict):
-    current_values = read_file(path).values()
+    current_values = read_file(path, default_values.values())
+    current_identifiers = current_values.values()
 
     missing = {}
     for key, value in default_values.items():
-        if value not in current_values:
+        if value not in current_identifiers:
             missing[key] = value
 
     if missing:
@@ -64,9 +71,7 @@ def update_file(path, default_values: dict):
             print(f"{key}: {missing[key]}")
         app.notify(message)
 
-
-def create_line(key: str, value: str):
-    return f"{key}, {value}\n"
+    return current_values
 
 
 def create_file(path, default_values: dict):
@@ -80,7 +85,7 @@ def write_file(path, lines, mode):
         f.writelines(lines)
 
 
-def read_file(path) -> dict:
+def read_file(path, default_identifiers: list[str]) -> dict:
     with open(path, "r") as f:
         lines = f.read().splitlines()
 
@@ -89,65 +94,35 @@ def read_file(path) -> dict:
         line = lines[i].strip()
         if len(line) == 0 or line.startswith("#"):
             continue
-        parts = line.split(",")
-        assert len(parts) == 2, f"Malformed {path.name}:{i+1} | {line}"
-        key = parts[0].strip()
-        value = parts[1].strip()
+        key, value = read_line(line, path, i)
+        assert value in default_identifiers, f"Unknown identifier {value}"
         result[key] = value
     return result
 
 
-# NOTE: This method requires this module to be one folder below the top-level
-#   knausj folder.
-# SETTINGS_DIR = Path(__file__).parents[1] / "settings"
-
-# if not SETTINGS_DIR.is_dir():
-#     os.mkdir(SETTINGS_DIR)
+def create_line(key: str, value: str):
+    return f"{key}, {value}\n"
 
 
-# def get_list_from_csv(
-#     filename: str, headers: Tuple[str, str], default: Dict[str, str] = {}
-# ):
-#     """Retrieves list from CSV"""
-#     path = SETTINGS_DIR / filename
-#     assert filename.endswith(".csv")
+def read_line(line: str, path, index: int):
+    parts = line.split(",")
+    assert len(parts) == 2, f"Malformed {path.name}:{index+1} | {line}"
+    key = parts[0].strip()
+    value = parts[1].strip()
+    return key, value
 
-#     if not path.is_file():
-#         with open(path, "w", encoding="utf-8") as file:
-#             writer = csv.writer(file)
-#             writer.writerow(headers)
-#             for key, value in default.items():
-#                 writer.writerow([key] if key == value else [value, key])
 
-#     # Now read via resource to take advantage of talon's
-#     # ability to reload this script for us when the resource changes
-#     with resource.open(str(path), "r") as f:
-#         rows = list(csv.reader(f))
+def join_dicts(dicts: list[dict]):
+    result = {}
+    for dict in dicts:
+        result.update(dict)
+    return result
 
-#     # print(str(rows))
-#     mapping = {}
-#     if len(rows) >= 2:
-#         actual_headers = rows[0]
-#         if not actual_headers == list(headers):
-#             print(
-#                 f'"{filename}": Malformed headers - {actual_headers}.'
-#                 + f" Should be {list(headers)}. Ignoring row."
-#             )
-#         for row in rows[1:]:
-#             if len(row) == 0:
-#                 # Windows newlines are sometimes read as empty rows. :champagne:
-#                 continue
-#             if len(row) == 1:
-#                 output = spoken_form = row[0]
-#             else:
-#                 output, spoken_form = row[:2]
-#                 if len(row) > 2:
-#                     print(
-#                         f'"{filename}": More than two values in row: {row}.'
-#                         + " Ignoring the extras."
-#                     )
-#             # Leading/trailing whitespace in spoken form can prevent recognition.
-#             spoken_form = spoken_form.strip()
-#             mapping[spoken_form] = output
 
-#     return mapping
+def get_file_paths(filename: str):
+    if not filename.endswith(".csv"):
+        filename = f"{filename}.csv"
+    user_dir = actions.path.talon_user()
+    dir_path = Path(user_dir, directory_name)
+    csv_path = Path(dir_path, filename)
+    return dir_path, csv_path

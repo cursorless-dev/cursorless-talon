@@ -97,10 +97,6 @@ class CheatSheet:
             "simple_action",
             {
                 "call": "Call T on S",
-                "define": "Reveal definition",
-                "drink cell": "Edit new cell above",
-                "pour cell": "Edit new cell below",
-                "reference": "Show references",
             },
         )
 

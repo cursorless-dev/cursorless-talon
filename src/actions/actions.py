@@ -1,6 +1,6 @@
 from talon import Context, Module, actions, app
 from dataclasses import dataclass
-from ..csv_overrides import watch_csv
+from ..csv_overrides import init_csv_and_watch_changes
 from .homophones import run_homophones_action
 from .find import run_find_action
 from .call import run_call_action
@@ -16,29 +16,32 @@ tag: user.cursorless
 @dataclass
 class MakeshiftAction:
     term: str
+    identifier: str
     vscode_command_id: str
     pre_command_sleep: float = 0
     post_command_sleep: float = 0
 
 
 makeshift_actions = [
-    MakeshiftAction("drink cell", "jupyter.insertCellAbove"),
-    MakeshiftAction("define", "editor.action.revealDefinition"),
-    MakeshiftAction("hover", "editor.action.showHover"),
-    MakeshiftAction("inspect", "editor.debug.action.showDebugHover"),
-    MakeshiftAction("pour cell", "jupyter.insertCellBelow"),
-    MakeshiftAction("quick fix", "editor.action.quickFix", pre_command_sleep=0.3),
-    MakeshiftAction("reference", "references-view.find"),
-    MakeshiftAction("rename", "editor.action.rename", post_command_sleep=0.1),
+    MakeshiftAction("drink cell", "editNewCellAbove", "jupyter.insertCellAbove"),
+    MakeshiftAction("define", "revealDefinition", "editor.action.revealDefinition"),
+    MakeshiftAction("hover", "showHover", "editor.action.showHover"),
+    MakeshiftAction("inspect", "showDebugHover", "editor.debug.action.showDebugHover"),
+    MakeshiftAction("pour cell", "editNewCellBelow", "jupyter.insertCellBelow"),
+    MakeshiftAction(
+        "quick fix", "quickFix", "editor.action.quickFix", pre_command_sleep=0.3
+    ),
+    MakeshiftAction("reference", "showReferences", "references-view.find"),
+    MakeshiftAction("rename", "rename", "editor.action.rename", post_command_sleep=0.1),
 ]
 
-makeshift_action_map = {action.term: action for action in makeshift_actions}
+makeshift_action_map = {action.identifier: action for action in makeshift_actions}
 
 
 @dataclass
 class CallbackAction:
     term: str
-    action: str
+    identifier: str
     callback: callable
 
 
@@ -48,7 +51,7 @@ callbacks = [
     CallbackAction("phones", "nextHomophone", run_homophones_action),
 ]
 
-callbacks_map = {callback.action: callback.callback for callback in callbacks}
+callbacks_map = {callback.identifier: callback.callback for callback in callbacks}
 
 
 simple_actions = {
@@ -80,8 +83,8 @@ simple_actions = {
     "sort": "sort",
     "take": "setSelection",
     "unfold": "unfold",
-    **{action.term: action.term for action in makeshift_actions},
-    **{callback.term: callback.action for callback in callbacks},
+    **{action.term: action.identifier for action in makeshift_actions},
+    **{callback.term: callback.identifier for callback in callbacks},
 }
 
 mod.list("cursorless_simple_action", desc="Supported actions for cursorless navigation")
@@ -109,10 +112,13 @@ def run_makeshift_action(action: str, targets: dict):
     actions.sleep(makeshift_action.post_command_sleep)
 
 
-def on_watch():
-# def on_watch(lists: List[dict]):
+def on_csv_change(updated_dicts):
     print("On watch")
+    print(updated_dicts)
 
 
-app.register("ready", lambda: watch_csv("actions", simple_actions, on_watch))
-# app.register("ready", lambda: watch_csv("actions", [simple_actions, swap_actions], on_watch))
+def on_ready():
+    init_csv_and_watch_changes("actions", [simple_actions], on_csv_change)
+
+
+app.register("ready", on_ready)
