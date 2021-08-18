@@ -1,4 +1,4 @@
-from talon import Context, Module, actions, app
+from talon import Module, actions, app
 from dataclasses import dataclass
 from ..csv_overrides import init_csv_and_watch_changes
 from .homophones import run_homophones_action
@@ -6,8 +6,6 @@ from .find import run_find_action
 from .call import run_call_action
 
 mod = Module()
-
-ctx = Context()
 
 
 @dataclass
@@ -109,27 +107,19 @@ def run_makeshift_action(action: str, targets: dict):
     actions.sleep(makeshift_action.post_command_sleep)
 
 
-all_actions = [
-    ["simple", simple_actions],
-    ["swap", {"swap": "swap"}],
-    ["move_bring", {"bring": "bring", "move": "move"}],
-    ["wrap", {"wrap": "wrap"}],
-    ["reformat", {"format": "reformat"}],
-]
+default_values = {
+    "simple_action": simple_actions,
+    "swap_action": {"swap": "swap"},
+    "move_bring_action": {"bring": "bring", "move": "move"},
+    "wrap_action": {"wrap": "wrap"},
+    "reformat_action": {"format": "reformat"},
+}
 
-action_list_names = [
-    "user.cursorless_{0}_action".format(line[0]) for line in all_actions
-]
-default_action_values = [line[1] for line in all_actions]
-
-
-def on_csv_change(updated_dicts):
-    for i in range(len(action_list_names)):
-        ctx.lists[action_list_names[i]] = updated_dicts[i]
+action_list_names = [f"user.cursorless_{key}" for key in default_values]
 
 
 def on_ready():
-    init_csv_and_watch_changes("actions", default_action_values, on_csv_change)
+    init_csv_and_watch_changes("actions", default_values)
 
 
 app.register("ready", on_ready)
