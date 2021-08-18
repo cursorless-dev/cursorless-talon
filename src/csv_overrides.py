@@ -68,7 +68,7 @@ def update_file(path, default_values: dict):
         ]
         write_file(path, lines, "a")
 
-        message = f"Cursorless added new commands to {path.name}"
+        message = f"🎉🎉 New cursorless features in {path.name}"
         print(message)
         for key in sorted(missing):
             print(f"{key}: {missing[key]}")
