@@ -101,9 +101,7 @@ def csv_error(path: Path, index: int, message: str, value: str):
         index (int): The index into the file (for error reporting)
         text (str): The text of the error message to report if condition is false
     """
-    error_message = f"ERROR: {path}:{index+1}: {message} '{value}'"
-    app.notify("Cursorless settings error; see log")
-    print(error_message)
+    print(f"ERROR: {path}:{index+1}: {message} '{value}'")
 
 
 def read_file(path: Path, default_identifiers: list[str]):
@@ -137,6 +135,9 @@ def read_file(path: Path, default_identifiers: list[str]):
 
         result[key] = value
         used_identifiers.append(value)
+
+    if has_errors:
+        app.notify("Cursorless settings error; see log")
 
     return result, has_errors
 
