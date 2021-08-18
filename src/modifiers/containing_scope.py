@@ -1,11 +1,13 @@
-from talon import Context, Module
+from talon import Context, Module, app
+from ..csv_overrides import init_csv_and_watch_changes
 
 mod = Module()
 ctx = Context()
 
 
 mod.list("cursorless_scope_type", desc="Supported scope types")
-ctx.lists["self.cursorless_scope_type"] = {
+
+default_scope_types = {
     "arg": "argumentOrParameter",
     "arrow": "arrowFunction",
     "attribute": "attribute",
@@ -45,3 +47,14 @@ def cursorless_containing_scope(m) -> str:
             "includeSiblings": m[0] == "every",
         }
     }
+
+
+def on_csv_change(updated_scope_types):
+    ctx.lists["self.cursorless_scope_type"] = updated_scope_types
+
+
+def on_ready():
+    init_csv_and_watch_changes("scope_types", default_scope_types, on_csv_change)
+
+
+app.register("ready", on_ready)

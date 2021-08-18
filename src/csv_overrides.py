@@ -8,27 +8,36 @@ directory_name = "cursorless-settings"
 
 
 def init_csv_and_watch_changes(
-    filename: str, default_values: list[dict], callback: callable
+    filename: str, default_values: dict or list[dict], callback: callable
 ):
+    is_list = isinstance(default_values, list)
+    if not is_list:
+        default_values = [default_values]
     dir_path, file_path = get_file_paths(filename)
     super_default_values = flat_dicts(default_values)
 
     if not dir_path.is_dir():
         os.mkdir(dir_path)
 
+    def inner_callback(updated_dicts: list[dict]):
+        if is_list:
+            callback(updated_dicts)
+        else:
+            callback(updated_dicts[0])
+
     def on_watch(path, flags):
         if file_path.match(path):
             current_values = read_file(file_path, super_default_values.values())
-            update_dicts(default_values, current_values, callback)
+            update_dicts(default_values, current_values, inner_callback)
 
     fs.watch(dir_path, on_watch)
 
     if file_path.is_file():
         current_values = update_file(file_path, super_default_values)
-        update_dicts(default_values, current_values, callback)
+        update_dicts(default_values, current_values, inner_callback)
     else:
         create_file(file_path, super_default_values)
-        update_dicts(default_values, super_default_values, callback)
+        update_dicts(default_values, super_default_values, inner_callback)
 
 
 def update_dicts(default_values: list[dict], current_values: dict, callback: callable):
