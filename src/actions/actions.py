@@ -115,7 +115,7 @@ default_values = {
     "reformat_action": {"format": "reformat"},
 }
 
-action_list_names = [f"user.cursorless_{key}" for key in default_values]
+ACTION_LIST_NAMES = [f"user.cursorless_{key}" for key in default_values]
 
 
 def on_ready():

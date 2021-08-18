@@ -12,8 +12,7 @@ def init_csv_and_watch_changes(filename: str, default_values: dict[str, dict]):
     dir_path, file_path = get_file_paths(filename)
     super_default_values = get_super_values(default_values)
 
-    if not dir_path.is_dir():
-        os.mkdir(dir_path)
+    dir_path.mkdir(parents=True, exist_ok=True)
 
     def on_watch(path, flags):
         if file_path.match(path):
@@ -66,7 +65,7 @@ def update_file(path: Path, default_values: dict):
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         lines = [
             "\n",
-            f"# {timestamp} - Added new commands\n",
+            f"# {timestamp} - New entries automatically added by cursorless\n",
             *[create_line(key, missing[key]) for key in sorted(missing)],
         ]
         write_file(path, lines, "a")
@@ -82,7 +81,7 @@ def update_file(path: Path, default_values: dict):
 
 def create_file(path: Path, default_values: dict):
     lines = [create_line(key, default_values[key]) for key in sorted(default_values)]
-    lines.insert(0, create_line("# Spoken words", "Identifier"))
+    lines.insert(0, create_line("# Spoken form", "Cursorless identifier"))
     path.write_text("\n".join(lines))
 
 
