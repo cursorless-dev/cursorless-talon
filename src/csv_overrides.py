@@ -12,8 +12,7 @@ def init_csv_and_watch_changes(filename: str, default_values: dict[str, dict]):
     dir_path, file_path = get_file_paths(filename)
     super_default_values = get_super_values(default_values)
 
-    if not dir_path.is_dir():
-        os.mkdir(dir_path)
+    dir_path.mkdir(parents=True, exist_ok=True)
 
     def on_watch(path, flags):
         if file_path.match(path):
