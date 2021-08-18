@@ -3,10 +3,6 @@ from talon import Context, Module
 mod = Module()
 ctx = Context()
 
-ctx.matches = r"""
-tag: user.cursorless
-"""
-
 
 mod.list("cursorless_scope_type", desc="Supported scope types")
 ctx.lists["self.cursorless_scope_type"] = {

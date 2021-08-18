@@ -3,9 +3,6 @@ from talon import Context, Module
 mod = Module()
 ctx = Context()
 
-ctx.matches = r"""
-tag: user.cursorless
-"""
 
 mod.list("cursorless_subtoken", desc="Supported subcomponent types")
 ctx.lists["self.cursorless_subtoken"] = {"word": "word", "char": "character"}

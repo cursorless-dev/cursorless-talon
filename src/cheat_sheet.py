@@ -3,6 +3,7 @@ from talon.canvas import Canvas
 import re
 import webbrowser
 import math
+from .actions.actions import action_list_names
 
 mod = Module()
 mod.mode("cursorless_cheat_sheet", "Mode for showing cursorless cheat sheet gui")
@@ -93,29 +94,27 @@ class CheatSheet:
         self.y = get_y(canvas)
         self.w = 0
 
-        simple_actions = get_list(
-            "simple_action",
+        all_actions = {}
+        for name in action_list_names:
+            all_actions.update(get_raw_list(name))
+
+        keys = dict_remove_values(all_actions, "bring", "move", "swap", "reformat")
+        make_dict_readable(
+            all_actions,
             {
                 "call": "Call T on S",
+                "wrap": '"round" wrap T',
             },
         )
-
-        move_bring = {}
-        for action, desc in get_list("move_bring_action").items():
-            if desc == "Bring":
-                move_bring[f"{action} T1 to T2"] = "Replace T2 with T1"
-                move_bring[f"{action} T"] = "Replace S with T"
-            if desc == "Move":
-                move_bring[f"{action} T1 to T2"] = "Move T1 to T2"
-                move_bring[f"{action} T"] = "Move T to S"
-
         all_actions = {
-            **simple_actions,
-            **move_bring,
-            "swap T1 with T2": "Swap T1 with T2",
-            "swap with T": "Swap S with T",
-            "wrap": '"round" wrap T',
-            "format * at T": "Reformat T as *",
+            **all_actions,
+            "{0} T1 to T2".format(keys["bring"]): "Replace T2 with T1",
+            "{0} T".format(keys["bring"]): "Replace S with T",
+            "{0} T1 to T2".format(keys["move"]): "Move T1 to T2",
+            "{0} T".format(keys["move"]): "Move T to S",
+            "{0} T1 to T2".format(keys["swap"]): "Swap T1 with T2",
+            "{0} T".format(keys["swap"]): "Swap S with T",
+            "{0} * at T".format(keys["reformat"]): "Reformat T as *",
         }
 
         actions_limit = round(len(all_actions) / 2)
@@ -130,24 +129,21 @@ class CheatSheet:
         self.draw_items(canvas, actions_2)
         self.next_column(canvas)
 
+        all_scopes = get_list("scope_type")
+        scopes_limit = round(len(all_scopes) - 3)
+        scopes_1 = slice_dict(all_scopes, 0, scopes_limit)
+        scopes_2 = slice_dict(all_scopes, scopes_limit)
+
         self.draw_header(canvas, "Scopes")
-        self.draw_items(
-            canvas,
-            get_list(
-                "scope_type",
-                {
-                    "arg": "Argument",
-                    "funk": "Function",
-                    "state": "Statement",
-                    "map": "Map / Dict",
-                    "pair": "Key-val pair",
-                },
-            ),
-        )
+        self.draw_items(canvas, scopes_1)
 
         self.next_column(canvas)
 
         self.draw_header(canvas, "More scopes")
+        self.draw_items(canvas, scopes_2)
+
+        self.next_row()
+        self.draw_header(canvas, "Selection types")
         self.draw_items(canvas, get_list("selection_type"))
 
         self.next_row()
@@ -342,10 +338,14 @@ class Actions:
 
 
 def get_list(name, descriptions={}):
-    items = registry.lists[f"user.cursorless_{name}"][0].copy()
+    items = get_raw_list(f"user.cursorless_{name}")
     if isinstance(items, dict):
         make_dict_readable(items, descriptions)
     return items
+
+
+def get_raw_list(name):
+    return registry.lists[name][0].copy()
 
 
 def get_y(canvas):
@@ -356,7 +356,7 @@ def draw_text(canvas, text, x, y):
     canvas.draw_text(text, x, y + text_size + padding / 2)
 
 
-def make_dict_readable(dict, descriptions):
+def make_dict_readable(dict, descriptions={}):
     for k in dict:
         desc = dict[k]
         if desc in descriptions:
@@ -397,3 +397,13 @@ def is_in_rect(canvas, mouse_pos, rect):
 def slice_dict(dict: dict, start: int, end: int = None):
     keys = sorted(dict)[start:end]
     return {key: dict[key] for key in keys}
+
+
+def dict_remove_values(dict: dict, *values: list):
+    keys = {}
+    for key, value in dict.copy().items():
+        if value in values:
+            del dict[key]
+            keys[value] = key
+    assert len(values) == len(keys)
+    return keys

@@ -3,9 +3,6 @@ from talon import Context, Module
 mod = Module()
 ctx = Context()
 
-ctx.matches = r"""
-tag: user.cursorless
-"""
 
 mod.list("cursorless_symbol_color", desc="Supported symbol colors for cursorless")
 ctx.lists["self.cursorless_symbol_color"] = {
@@ -51,12 +48,16 @@ ctx.lists["self.cursorless_special_mark"] = special_marks.keys()
         "{user.cursorless_special_mark} |"
         # Because of problems with performance we have to have a simple version for now
         # "<user.cursorless_line_number>" # row, up, down
-        "<user.cursorless_line_number_simple>" # up, down
+        "<user.cursorless_line_number_simple>"  # up, down
     )
 )
 def cursorless_mark(m) -> str:
-    try: return m.cursorless_decorated_symbol
-    except AttributeError: pass
-    try: return special_marks[m.cursorless_special_mark]
-    except AttributeError: pass
+    try:
+        return m.cursorless_decorated_symbol
+    except AttributeError:
+        pass
+    try:
+        return special_marks[m.cursorless_special_mark]
+    except AttributeError:
+        pass
     return m.cursorless_line_number_simple

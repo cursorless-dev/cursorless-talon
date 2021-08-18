@@ -3,10 +3,6 @@ from talon import Context, Module
 mod = Module()
 ctx = Context()
 
-ctx.matches = r"""
-tag: user.cursorless
-"""
-
 
 mod.list("cursorless_pair_symbol", desc="A symbol that comes in pairs, eg brackets")
 ctx.lists["self.cursorless_pair_symbol"] = {

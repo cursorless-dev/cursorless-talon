@@ -2,6 +2,7 @@ from talon import actions, fs, app
 import os
 from datetime import datetime
 from pathlib import Path
+from .util import flat_dicts
 
 directory_name = "cursorless-settings"
 
@@ -10,7 +11,7 @@ def init_csv_and_watch_changes(
     filename: str, default_values: list[dict], callback: callable
 ):
     dir_path, file_path = get_file_paths(filename)
-    super_default_values = join_dicts(default_values)
+    super_default_values = flat_dicts(default_values)
 
     if not dir_path.is_dir():
         os.mkdir(dir_path)
@@ -112,13 +113,6 @@ def read_line(line: str, path, index: int):
     key = parts[0].strip()
     value = parts[1].strip()
     return key, value
-
-
-def join_dicts(dicts: list[dict]):
-    result = {}
-    for dict in dicts:
-        result.update(dict)
-    return result
 
 
 def get_file_paths(filename: str):

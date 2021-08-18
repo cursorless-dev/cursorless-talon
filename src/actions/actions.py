@@ -117,14 +117,15 @@ all_actions = [
     ["reformat", {"format": "reformat"}],
 ]
 
-action_list_names = [line[0] for line in all_actions]
+action_list_names = [
+    "user.cursorless_{0}_action".format(line[0]) for line in all_actions
+]
 default_action_values = [line[1] for line in all_actions]
 
 
 def on_csv_change(updated_dicts):
     for i in range(len(action_list_names)):
-        list_name = action_list_names[i]
-        ctx.lists[f"self.cursorless_{list_name}_action"] = updated_dicts[i]
+        ctx.lists[action_list_names[i]] = updated_dicts[i]
 
 
 def on_ready():
