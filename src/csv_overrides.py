@@ -76,11 +76,14 @@ def update_file(path: Path, default_values: dict):
             ]
             write_file(path, lines, "a")
 
-            message = f"🎉🎉 New cursorless features in {path.name}"
-            print(message)
+            print(f"New cursorless features added to {path.name}")
             for key in sorted(missing):
                 print(f"{key}: {missing[key]}")
-            app.notify(message)
+            print(
+                "See release notes for more info: "
+                "https://github.com/pokey/cursorless-vscode/blob/master/CHANGELOG.md"
+            )
+            app.notify(f"🎉🎉 New cursorless features; see log")
 
     return current_values
 
