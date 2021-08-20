@@ -16,8 +16,5 @@ app: vscode
 <user.cursorless_wrapper> {user.cursorless_wrap_action} <user.cursorless_target>:
     user.cursorless_single_target_command_with_arg_list(cursorless_wrap_action, cursorless_target, cursorless_wrapper)
 
-pour cell:                 user.vscode("jupyter.insertCellBelow")
-drink cell:                user.vscode("jupyter.insertCellAbove")
-
 cursorless help:           user.cursorless_cheat_sheet_toggle()
 cursorless instructions:   user.cursorless_open_instructions()

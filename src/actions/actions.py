@@ -18,11 +18,9 @@ class MakeshiftAction:
 
 
 makeshift_actions = [
-    MakeshiftAction("drink cell", "editNewCellAbove", "jupyter.insertCellAbove"),
     MakeshiftAction("define", "revealDefinition", "editor.action.revealDefinition"),
     MakeshiftAction("hover", "showHover", "editor.action.showHover"),
     MakeshiftAction("inspect", "showDebugHover", "editor.debug.action.showDebugHover"),
-    MakeshiftAction("pour cell", "editNewCellBelow", "jupyter.insertCellBelow"),
     MakeshiftAction(
         "quick fix", "quickFix", "editor.action.quickFix", pre_command_sleep=0.3
     ),

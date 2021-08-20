@@ -47,8 +47,21 @@ def cursorless_containing_scope(m) -> str:
     }
 
 
+selection_types = {
+    "block": "paragraph",
+    "cell": "notebookCell",
+    "file": "document",
+    "line": "line",
+    "token": "token",
+}
+
+default_values = {
+    "scope_type": scope_types,
+    "selection_type": selection_types,
+}
+
+
 def on_ready():
-    default_values = {"scope_type": scope_types}
     init_csv_and_watch_changes("scope_types", default_values)
 
 
