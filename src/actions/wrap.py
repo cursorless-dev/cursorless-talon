@@ -1,8 +1,8 @@
 from ..modifiers.surrounding_pair import paired_delimiters_map
-from talon import Module, Context
+from talon import Module
+
 
 mod = Module()
-ctx = Context()
 
 
 mod.list("cursorless_wrap_action", desc="Cursorless wrap action")

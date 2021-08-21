@@ -1,9 +1,8 @@
-from talon import Context, Module, app
+from talon import Module, app
 from dataclasses import dataclass
 from ..csv_overrides import init_csv_and_watch_changes
 
 mod = Module()
-ctx = Context()
 
 
 @dataclass

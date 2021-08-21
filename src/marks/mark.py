@@ -1,9 +1,8 @@
 from dataclasses import dataclass
-from talon import Context, Module, app
+from talon import Module, app
 from ..csv_overrides import init_csv_and_watch_changes
 
 mod = Module()
-ctx = Context()
 
 
 mod.list("cursorless_symbol_color", desc="Supported symbol colors for cursorless")
