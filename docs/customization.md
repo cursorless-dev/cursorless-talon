@@ -14,9 +14,13 @@ csvs found in the `cursorless-settings` subdirectory of your user folder. On
 Linux and Mac, the directory is `~/.talon/user/cursorless-settings`. On
 Windows, it is `%AppData%\Talon\user\cursorless-settings`.
 
-Note that these csv's have no header column, support empty lines, and support
-comment lines beginning with `#`. All spoken forms and cursorless identifiers
-will automatically be stripped of leading and trailing whitespace.
+Note that these csv's
+
+- have no header column,
+- support empty lines,
+- support comment lines beginning with `#`.
+- ignore any leading / trailing whitespace on spoken forms and cursorless
+  identifiers
 
 ### Changing a spoken form
 
