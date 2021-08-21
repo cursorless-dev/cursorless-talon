@@ -1,5 +1,5 @@
+from .conventions import get_cursorless_list_name
 from talon import Context, actions, fs, app
-import os
 from datetime import datetime
 from pathlib import Path
 
@@ -9,6 +9,22 @@ ctx = Context()
 
 
 def init_csv_and_watch_changes(filename: str, default_values: dict[str, dict]):
+    """
+    Initialize a cursorless settings csv, creating it if necessary, and watch
+    for changes to the csv.  Talon lists will be generated based on the keys of
+    `default_values`.  For example, if there is a key `foo`, there will be a
+    list created called `user.cursorless_foo` that will contain entries from
+    the original dict at the key `foo`, updated according to customization in
+    the csv at
+
+        actions.path.talon_user() / "cursorless-settings" / filename
+
+    Args:
+        filename (str): The name of the csv file to be placed in
+        `cursorles-settings` dir
+        default_values (dict[str, dict]): The default values for the lists to
+        be customized in the given csv
+    """
     dir_path, file_path = get_file_paths(filename)
     super_default_values = get_super_values(default_values)
 
@@ -31,6 +47,10 @@ def init_csv_and_watch_changes(filename: str, default_values: dict[str, dict]):
         update_dicts(default_values, super_default_values)
 
 
+def is_removed(value: str):
+    return value == "-"
+
+
 def update_dicts(default_values: dict[str, dict], current_values: dict):
     # Create map with all default values
     results_map = {}
@@ -45,11 +65,15 @@ def update_dicts(default_values: dict[str, dict], current_values: dict):
     # Convert result map back to result list
     results = {key: {} for key in default_values}
     for obj in results_map.values():
-        results[obj["list"]][obj["key"]] = obj["value"]
+        value = obj["value"]
+        if is_removed(value):
+            del results[obj["list"]][obj["key"]]
+        else:
+            results[obj["list"]][obj["key"]] = value
 
     # Assign result to talon context list
     for list_name, dict in results.items():
-        ctx.lists[f"user.cursorless_{list_name}"] = dict
+        ctx.lists[get_cursorless_list_name(list_name)] = dict
 
 
 def update_file(path: Path, default_values: dict):
@@ -70,11 +94,11 @@ def update_file(path: Path, default_values: dict):
         else:
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             lines = [
-                "\n",
-                f"# {timestamp} - New entries automatically added by cursorless\n",
+                f"# {timestamp} - New entries automatically added by cursorless",
                 *[create_line(key, missing[key]) for key in sorted(missing)],
             ]
-            write_file(path, lines, "a")
+            with open(path, "a") as f:
+                f.write("\n\n" + "\n".join(lines))
 
             print(f"New cursorless features added to {path.name}")
             for key in sorted(missing):
@@ -92,11 +116,6 @@ def create_file(path: Path, default_values: dict):
     lines = [create_line(key, default_values[key]) for key in sorted(default_values)]
     lines.insert(0, create_line("# Spoken form", "Cursorless identifier"))
     path.write_text("\n".join(lines))
-
-
-def write_file(path, lines, mode):
-    with open(path, mode) as f:
-        f.writelines(lines)
 
 
 def csv_error(path: Path, index: int, message: str, value: str):
@@ -155,7 +174,7 @@ def read_file(path: Path, default_identifiers: list[str]):
 
 
 def create_line(key: str, value: str):
-    return f"{key}, {value}\n"
+    return f"{key}, {value}"
 
 
 def get_file_paths(filename: str):

@@ -1,3 +1,4 @@
+from .conventions import get_cursorless_list_name
 from talon import Module, ui, registry, skia, actions, cron
 from talon.canvas import Canvas
 import re
@@ -338,7 +339,7 @@ class Actions:
 
 
 def get_list(name, descriptions={}):
-    items = get_raw_list(f"user.cursorless_{name}")
+    items = get_raw_list(get_cursorless_list_name(name))
     if isinstance(items, dict):
         make_dict_readable(items, descriptions)
     return items

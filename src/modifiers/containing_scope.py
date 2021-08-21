@@ -6,6 +6,8 @@ mod = Module()
 
 mod.list("cursorless_scope_type", desc="Supported scope types")
 
+# NOTE: Please do not change these dicts.  Use the CSVs for customization.
+# See https://github.com/pokey/cursorless-talon/blob/master/docs/customization.md
 scope_types = {
     "arg": "argumentOrParameter",
     "arrow": "arrowFunction",
@@ -47,6 +49,8 @@ def cursorless_containing_scope(m) -> str:
     }
 
 
+# NOTE: Please do not change these dicts.  Use the CSVs for customization.
+# See https://github.com/pokey/cursorless-talon/blob/master/docs/customization.md
 selection_types = {
     "block": "paragraph",
     "cell": "notebookCell",

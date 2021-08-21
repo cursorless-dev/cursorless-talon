@@ -1,14 +1,17 @@
 # Cursorless talon
 
-This repository contains the talon side of [Cursorless](https://marketplace.visualstudio.com/items?itemName=pokey.cursorless).  
+This repository contains the talon side of [Cursorless](https://marketplace.visualstudio.com/items?itemName=pokey.cursorless).
 
 ## Documentation
+
 Full documentation can be found in [docs](docs/), or by saying `"cursorless docs"`. Once you understand the concepts, you can pull up a cheat cheat for reference using the command `"cursorless help"`.
 
 ## Installation
+
 First, install the dependencies:
 
 ### Dependencies
+
 1. Install [Talon](https://talonvoice.com/)
 2. Install [knausj_talon](https://github.com/knausj85/knausj_talon). Note that
    even a heavily modified version of knausj should be fine, but make sure you
@@ -17,13 +20,14 @@ First, install the dependencies:
    If rebasing is too painful, or if you are not a user of knausj, you can just
    clone [the command
    client](https://github.com/pokey/talon-vscode-command-client) into your
-   talon user directory. You may need a couple other things from knausj but nothing major.  Please file an issue if you have trouble getting this repo to work without knausj.
+   talon user directory. You may need a couple other things from knausj but nothing major. Please file an issue if you have trouble getting this repo to work without knausj.
 3. Install [VSCode](https://code.visualstudio.com/)
 4. Install the [VSCode talon extension pack](https://marketplace.visualstudio.com/items?itemName=pokey.talon)
 5. Install the [Cursorless VSCode extension](https://marketplace.visualstudio.com/items?itemName=pokey.cursorless)
 6. Follow the instructions below to install cursorless-vscode itself.
 
 ### Installing this repo
+
 #### Linux & Mac
 
 Clone repo into `~/.talon/user`
@@ -32,7 +36,7 @@ Clone repo into `~/.talon/user`
 cd ~/.talon/user
 git clone https://github.com/pokey/cursorless-talon cursorless-talon
 ```
-    
+
 Alternatively, access the directory by right clicking the Talon icon in taskbar, clicking Scripting>Open ~/talon, and navigating to user.
 
 The folder structure should look something like the below:
@@ -49,15 +53,15 @@ The folder structure should look something like the below:
 
 #### Windows
 
-Clone repo into `%AppData%\Talon\user` 
+Clone repo into `%AppData%\Talon\user`
 
 ```insert code:
 cd %AppData%\Talon\user
 git clone https://github.com/pokey/cursorless-talon cursorless-talon
 ```
-    
+
 Alternatively, access the directory by right clicking the Talon icon in taskbar, clicking Scripting>Open ~/talon, and navigating to user.
-    
+
 The folder structure should look something like the below:
 
 ```insert code:
