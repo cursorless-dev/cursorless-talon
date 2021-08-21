@@ -172,18 +172,22 @@ class CheatSheet:
 
         self.next_column(canvas)
 
-        range_specifiers = get_raw_list("range_specifier")
         include_both_term = next(
             spoken_form
-            for spoken_form, value in range_specifiers.items()
-            if value == "includeBoth"
+            for spoken_form, value in get_raw_list("range_specifier").items()
+            if value == "rangeIncludingBothEnds"
+        )
+        list_specifier_term = next(
+            spoken_form
+            for spoken_form, value in get_raw_list("list_specifier").items()
+            if value == "list"
         )
 
         self.draw_header(canvas, "Compound targets")
         self.draw_items(
             canvas,
             {
-                "T1 and T2": "T1 and T2",
+                f"T1 {list_specifier_term} T2": "T1 and T2",
                 f"T1 {include_both_term} T2": "T1 through T2",
                 f"{include_both_term} T": "S through T",
             },

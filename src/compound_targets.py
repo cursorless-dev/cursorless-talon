@@ -9,6 +9,10 @@ mod.list(
     "cursorless_range_specifier",
     desc="A range joiner that indicates whether to include or exclude anchor and active",
 )
+mod.list(
+    "cursorless_list_specifier",
+    desc="A list joiner",
+)
 
 
 @mod.capture(
@@ -33,12 +37,16 @@ def cursorless_range(m) -> str:
         "type": "range",
         "start": start,
         "end": primitive_targets[-1],
-        "excludeStart": range_specifier in ["excludeBoth", "excludeAnchor"],
-        "excludeEnd": range_specifier in ["excludeBoth", "excludeActive"],
+        "excludeStart": range_specifier
+        in ["rangeExcludingBothEnds", "rangeExcludingAnchor"],
+        "excludeEnd": range_specifier
+        in ["rangeExcludingBothEnds", "rangeExcludingActive"],
     }
 
 
-@mod.capture(rule="<user.cursorless_range> (and <user.cursorless_range>)*")
+@mod.capture(
+    rule="<user.cursorless_range> ({user.cursorless_list_specifier} <user.cursorless_range>)*"
+)
 def cursorless_target(m) -> str:
     if len(m.cursorless_range_list) == 1:
         return m.cursorless_range
@@ -46,18 +54,19 @@ def cursorless_target(m) -> str:
 
 
 range_specifiers = {
-    "between": "excludeBoth",
-    "past": "includeBoth",
-    "skip past": "excludeAnchor",
-    "until": "excludeActive",
+    "between": "rangeExcludingBothEnds",
+    "past": "rangeIncludingBothEnds",
+    "skip past": "rangeExcludingAnchor",
+    "until": "rangeExcludingActive",
 }
 
 
 def on_ready():
     init_csv_and_watch_changes(
-        "range_specifiers",
+        "compound_targets",
         {
             "range_specifier": range_specifiers,
+            "list_specifier": {"and": "list"},
         },
     )
 

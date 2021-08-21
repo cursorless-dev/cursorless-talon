@@ -1,4 +1,3 @@
-from ..conventions import get_cursorless_list_name
 from talon import Module, actions, app
 from dataclasses import dataclass
 from ..csv_overrides import init_csv_and_watch_changes
@@ -122,7 +121,7 @@ default_values = {
     "reformat_action": {"format": "reformat"},
 }
 
-ACTION_LIST_NAMES = [get_cursorless_list_name(key) for key in default_values]
+ACTION_LIST_NAMES = default_values.keys()
 
 
 def on_ready():
