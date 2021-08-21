@@ -172,13 +172,20 @@ class CheatSheet:
 
         self.next_column(canvas)
 
+        range_specifiers = get_raw_list("range_specifier")
+        include_both_term = next(
+            spoken_form
+            for spoken_form, value in range_specifiers.items()
+            if value == "includeBoth"
+        )
+
         self.draw_header(canvas, "Compound targets")
         self.draw_items(
             canvas,
             {
-                "T and T": "T1 and T2",
-                "T past T": "T1 past T2",
-                "past T": "S past T",
+                "T1 and T2": "T1 and T2",
+                f"T1 {include_both_term} T2": "T1 through T2",
+                f"{include_both_term} T": "S through T",
             },
         )
 
@@ -347,14 +354,15 @@ def get_list(name, descriptions=None):
     if descriptions is None:
         descriptions = {}
 
-    items = get_raw_list(get_cursorless_list_name(name))
+    items = get_raw_list(name)
     if isinstance(items, dict):
         make_dict_readable(items, descriptions)
     return items
 
 
 def get_raw_list(name):
-    return registry.lists[name][0].copy()
+    cursorless_list_name = get_cursorless_list_name(name)
+    return registry.lists[cursorless_list_name][0].copy()
 
 
 def get_y(canvas):
