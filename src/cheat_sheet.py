@@ -99,7 +99,18 @@ class CheatSheet:
         for name in ACTION_LIST_NAMES:
             all_actions.update(get_raw_list(name))
 
-        keys = dict_remove_values(all_actions, "bring", "move", "swap", "reformat")
+        multiple_target_action_names = ["bring", "move", "swap", "reformat"]
+        simple_actions = {
+            key: value
+            for key, value in all_actions.items()
+            if key not in multiple_target_action_names
+        }
+        complex_actions = {
+            key: value
+            for key, value in all_actions.items()
+            if key in multiple_target_action_names
+        }
+
         make_dict_readable(
             all_actions,
             {
@@ -108,14 +119,14 @@ class CheatSheet:
             },
         )
         all_actions = {
-            **all_actions,
-            "{0} T1 to T2".format(keys["bring"]): "Replace T2 with T1",
-            "{0} T".format(keys["bring"]): "Replace S with T",
-            "{0} T1 to T2".format(keys["move"]): "Move T1 to T2",
-            "{0} T".format(keys["move"]): "Move T to S",
-            "{0} T1 to T2".format(keys["swap"]): "Swap T1 with T2",
-            "{0} T".format(keys["swap"]): "Swap S with T",
-            "{0} * at T".format(keys["reformat"]): "Reformat T as *",
+            **simple_actions,
+            "{0} T1 to T2".format(complex_actions["bring"]): "Replace T2 with T1",
+            "{0} T".format(complex_actions["bring"]): "Replace S with T",
+            "{0} T1 to T2".format(complex_actions["move"]): "Move T1 to T2",
+            "{0} T".format(complex_actions["move"]): "Move T to S",
+            "{0} T1 to T2".format(complex_actions["swap"]): "Swap T1 with T2",
+            "{0} T".format(complex_actions["swap"]): "Swap S with T",
+            "{0} * at T".format(complex_actions["reformat"]): "Reformat T as *",
         }
 
         actions_limit = round(len(all_actions) / 2)
@@ -131,7 +142,7 @@ class CheatSheet:
         self.next_column(canvas)
 
         all_scopes = get_list("scope_type")
-        scopes_limit = round(len(all_scopes) - 3)
+        scopes_limit = len(all_scopes) - 3
         scopes_1 = slice_dict(all_scopes, 0, scopes_limit)
         scopes_2 = slice_dict(all_scopes, scopes_limit)
 
@@ -338,7 +349,10 @@ class Actions:
         webbrowser.open(instructions_url)
 
 
-def get_list(name, descriptions={}):
+def get_list(name, descriptions=None):
+    if descriptions is None:
+        descriptions = {}
+
     items = get_raw_list(get_cursorless_list_name(name))
     if isinstance(items, dict):
         make_dict_readable(items, descriptions)
@@ -357,7 +371,10 @@ def draw_text(canvas, text, x, y):
     canvas.draw_text(text, x, y + text_size + padding / 2)
 
 
-def make_dict_readable(dict, descriptions={}):
+def make_dict_readable(dict, descriptions=None):
+    if descriptions is None:
+        descriptions = {}
+
     for k in dict:
         desc = dict[k]
         if desc in descriptions:
@@ -398,13 +415,3 @@ def is_in_rect(canvas, mouse_pos, rect):
 def slice_dict(dict: dict, start: int, end: int = None):
     keys = sorted(dict)[start:end]
     return {key: dict[key] for key in keys}
-
-
-def dict_remove_values(dict: dict, *values: list):
-    keys = {}
-    for key, value in dict.copy().items():
-        if value in values:
-            del dict[key]
-            keys[value] = key
-    assert len(values) == len(keys)
-    return keys
