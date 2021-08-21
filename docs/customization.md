@@ -3,7 +3,7 @@
 Many of the words used in cursorless can be easily customized without needing
 to fork cursorless or modify the talon / python files contained therein. If you
 find that your customization needs cannot be met without making changes to
-cursorless files, please file an issue so we can try to improve customization.
+cursorless files, please [file an issue](https://github.com/pokey/cursorless-talon/issues/new) so we can try to improve customization.
 
 ## Cursorless settings csvs
 
