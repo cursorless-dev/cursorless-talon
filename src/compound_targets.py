@@ -68,7 +68,7 @@ def on_ready():
         "compound_targets",
         {
             "range_specifier": range_specifiers,
-            "list_specifier": {"and": "list"},
+            "list_specifier": {"and": "listSpecifier"},
         },
     )
 

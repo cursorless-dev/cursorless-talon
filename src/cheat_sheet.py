@@ -180,7 +180,7 @@ class CheatSheet:
         list_specifier_term = next(
             spoken_form
             for spoken_form, value in get_raw_list("list_specifier").items()
-            if value == "list"
+            if value == "listSpecifier"
         )
 
         self.draw_header(canvas, "Compound targets")
