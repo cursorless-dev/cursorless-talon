@@ -106,9 +106,9 @@ class CheatSheet:
             if key not in multiple_target_action_names
         }
         complex_actions = {
-            key: value
+            value: key
             for key, value in all_actions.items()
-            if key in multiple_target_action_names
+            if value in multiple_target_action_names
         }
 
         make_dict_readable(
@@ -168,13 +168,7 @@ class CheatSheet:
 
         self.next_row()
         self.draw_header(canvas, "Special marks")
-        self.draw_items(
-            canvas,
-            get_list(
-                "special_mark",
-                {"this": "Selection", "that": "Last T", "source": "Source T"},
-            ),
-        )
+        self.draw_items(canvas, get_list("special_mark"))
 
         self.next_column(canvas)
 
