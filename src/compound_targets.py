@@ -53,6 +53,8 @@ def cursorless_target(m) -> str:
     return {"type": "list", "elements": m.cursorless_range_list}
 
 
+# NOTE: Please do not change these dicts.  Use the CSVs for customization.
+# See https://github.com/pokey/cursorless-talon/blob/master/docs/customization.md
 range_specifiers = {
     "between": "rangeExcludingBothEnds",
     "past": "rangeIncludingBothEnds",
