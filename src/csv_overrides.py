@@ -1,11 +1,17 @@
 from .conventions import get_cursorless_list_name
-from talon import Context, actions, fs, app
+from talon import Context, Module, actions, fs, app, settings
 from datetime import datetime
 from pathlib import Path
 
-directory_name = "cursorless-settings"
 
+mod = Module()
 ctx = Context()
+cursorless_settings_directory = mod.setting(
+    "cursorless_settings_directory",
+    type=str,
+    default="cursorless-settings",
+    desc="The directory to use for cursorless settings csvs relative to talon user directory",
+)
 
 
 def init_csv_and_watch_changes(filename: str, default_values: dict[str, dict]):
@@ -181,9 +187,13 @@ def get_file_paths(filename: str):
     if not filename.endswith(".csv"):
         filename = f"{filename}.csv"
     user_dir = actions.path.talon_user()
-    dir_path = Path(user_dir, directory_name)
-    csv_path = Path(dir_path, filename)
-    return dir_path, csv_path
+    settings_directory = Path(cursorless_settings_directory.get())
+
+    if not settings_directory.is_absolute():
+        settings_directory = user_dir / settings_directory
+
+    csv_path = Path(settings_directory, filename)
+    return settings_directory, csv_path
 
 
 def get_super_values(values: dict[str, dict]):
