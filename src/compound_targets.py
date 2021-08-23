@@ -37,11 +37,17 @@ def cursorless_range(m) -> str:
         "type": "range",
         "start": start,
         "end": primitive_targets[-1],
-        "excludeStart": range_connective
-        in ["rangeExcludingBothEnds", "rangeExcludingAnchor"],
-        "excludeEnd": range_connective
-        in ["rangeExcludingBothEnds", "rangeExcludingActive"],
+        "excludeStart": not is_anchor_included(range_connective),
+        "excludeEnd": not is_active_included(range_connective),
     }
+
+
+def is_anchor_included(range_connective: str):
+    return range_connective not in ["rangeExcludingBothEnds", "rangeExcludingAnchor"]
+
+
+def is_active_included(range_connective: str):
+    return range_connective not in ["rangeExcludingBothEnds", "rangeExcludingActive"]
 
 
 @mod.capture(

@@ -1,5 +1,7 @@
 from talon import Context, Module
 
+from ..compound_targets import is_active_included, is_anchor_included
+
 mod = Module()
 ctx = Context()
 
@@ -16,12 +18,24 @@ def ordinal_or_last(m) -> str:
     return m.ordinals_small - 1
 
 
-@mod.capture(rule="<user.ordinal_or_last> [past <user.ordinal_or_last>]")
+@mod.capture(
+    rule="<user.ordinal_or_last> [{user.cursorless_range_connective} <user.ordinal_or_last>]"
+)
 def cursorless_ordinal_range(m) -> str:
     """Ordinal range"""
+    try:
+        range_connective = m.cursorless_range_connective
+        include_anchor = is_anchor_included(range_connective)
+        include_active = is_active_included(range_connective)
+    except AttributeError:
+        include_anchor = True
+        include_active = True
+
     return {
         "anchor": m.ordinal_or_last_list[0],
         "active": m.ordinal_or_last_list[-1],
+        "includeAnchor": include_anchor,
+        "includeActive": include_active,
     }
 
 
