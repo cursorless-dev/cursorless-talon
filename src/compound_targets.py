@@ -6,26 +6,26 @@ mod = Module()
 
 
 mod.list(
-    "cursorless_range_specifier",
+    "cursorless_range_connective",
     desc="A range joiner that indicates whether to include or exclude anchor and active",
 )
 mod.list(
-    "cursorless_list_specifier",
+    "cursorless_list_connective",
     desc="A list joiner",
 )
 
 
 @mod.capture(
     rule=(
-        "[{user.cursorless_range_specifier}] <user.cursorless_primitive_target> | "
-        "<user.cursorless_primitive_target> {user.cursorless_range_specifier} <user.cursorless_primitive_target>"
+        "[{user.cursorless_range_connective}] <user.cursorless_primitive_target> | "
+        "<user.cursorless_primitive_target> {user.cursorless_range_connective} <user.cursorless_primitive_target>"
     )
 )
 def cursorless_range(m) -> str:
     primitive_targets = m.cursorless_primitive_target_list
-    range_specifier = getattr(m, "cursorless_range_specifier", None)
+    range_connective = getattr(m, "cursorless_range_connective", None)
 
-    if range_specifier is None:
+    if range_connective is None:
         return primitive_targets[0]
 
     if len(primitive_targets) == 1:
@@ -37,15 +37,15 @@ def cursorless_range(m) -> str:
         "type": "range",
         "start": start,
         "end": primitive_targets[-1],
-        "excludeStart": range_specifier
+        "excludeStart": range_connective
         in ["rangeExcludingBothEnds", "rangeExcludingAnchor"],
-        "excludeEnd": range_specifier
+        "excludeEnd": range_connective
         in ["rangeExcludingBothEnds", "rangeExcludingActive"],
     }
 
 
 @mod.capture(
-    rule="<user.cursorless_range> ({user.cursorless_list_specifier} <user.cursorless_range>)*"
+    rule="<user.cursorless_range> ({user.cursorless_list_connective} <user.cursorless_range>)*"
 )
 def cursorless_target(m) -> str:
     if len(m.cursorless_range_list) == 1:
@@ -55,7 +55,7 @@ def cursorless_target(m) -> str:
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
 # See https://github.com/pokey/cursorless-talon/blob/master/docs/customization.md
-range_specifiers = {
+range_connectives = {
     "between": "rangeExcludingBothEnds",
     "past": "rangeIncludingBothEnds",
     "skip past": "rangeExcludingAnchor",
@@ -67,8 +67,8 @@ def on_ready():
     init_csv_and_watch_changes(
         "compound_targets",
         {
-            "range_specifier": range_specifiers,
-            "list_specifier": {"and": "listSpecifier"},
+            "range_connective": range_connectives,
+            "list_connective": {"and": "listConnective"},
         },
     )
 

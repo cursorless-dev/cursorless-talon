@@ -174,20 +174,20 @@ class CheatSheet:
 
         include_both_term = next(
             spoken_form
-            for spoken_form, value in get_raw_list("range_specifier").items()
+            for spoken_form, value in get_raw_list("range_connective").items()
             if value == "rangeIncludingBothEnds"
         )
-        list_specifier_term = next(
+        list_connective_term = next(
             spoken_form
-            for spoken_form, value in get_raw_list("list_specifier").items()
-            if value == "listSpecifier"
+            for spoken_form, value in get_raw_list("list_connective").items()
+            if value == "listConnective"
         )
 
         self.draw_header(canvas, "Compound targets")
         self.draw_items(
             canvas,
             {
-                f"T1 {list_specifier_term} T2": "T1 and T2",
+                f"T1 {list_connective_term} T2": "T1 and T2",
                 f"T1 {include_both_term} T2": "T1 through T2",
                 f"{include_both_term} T": "S through T",
             },
