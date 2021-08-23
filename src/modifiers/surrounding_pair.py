@@ -20,7 +20,6 @@ mod.list(
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
 # See https://github.com/pokey/cursorless-talon/blob/master/docs/customization.md
 paired_delimiters = [
-    PairedDelimiter("box", "squareBrackets", "[", "]"),
     PairedDelimiter("curly", "curlyBrackets", "{", "}"),
     PairedDelimiter("diamond", "angleBrackets", "<", ">"),
     PairedDelimiter("escaped quad", "escapedDoubleQuotes", '\\"', '\\"'),
@@ -29,6 +28,7 @@ paired_delimiters = [
     PairedDelimiter("round", "parentheses", "(", ")"),
     PairedDelimiter("skis", "backtickQuotes", "`", "`"),
     PairedDelimiter("space", "spaces", " ", " "),
+    PairedDelimiter("square", "squareBrackets", "[", "]"),
     PairedDelimiter("twin", "singleQuotes", "'", "'"),
 ]
 
