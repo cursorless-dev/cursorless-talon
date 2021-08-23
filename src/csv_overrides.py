@@ -118,9 +118,18 @@ def update_file(path: Path, default_values: dict):
     return current_values
 
 
+def create_line(key: str, value: str):
+    return f"{key}, {value}"
+
+
+SPOKEN_FORM_HEADER = "Spoken form"
+CURSORLESS_IDENTIFIER_HEADER = "Cursorless identifier"
+header_row = create_line(SPOKEN_FORM_HEADER, CURSORLESS_IDENTIFIER_HEADER)
+
+
 def create_file(path: Path, default_values: dict):
     lines = [create_line(key, default_values[key]) for key in sorted(default_values)]
-    lines.insert(0, create_line("# Spoken form", "Cursorless identifier"))
+    lines.insert(0, header_row)
     path.write_text("\n".join(lines))
 
 
@@ -145,6 +154,7 @@ def read_file(path: Path, default_identifiers: list[str]):
     result = {}
     used_identifiers = []
     has_errors = False
+    seen_header = False
     for i, raw_line in enumerate(lines):
         line = raw_line.strip()
         if len(line) == 0 or line.startswith("#"):
@@ -159,6 +169,14 @@ def read_file(path: Path, default_identifiers: list[str]):
 
         key = parts[0].strip()
         value = parts[1].strip()
+
+        if not seen_header:
+            if key != SPOKEN_FORM_HEADER or value != CURSORLESS_IDENTIFIER_HEADER:
+                has_errors = True
+                csv_error(path, i, "Malformed header", line)
+                print(f"Expected '{header_row}'")
+            seen_header = True
+            continue
 
         if value not in default_identifiers:
             has_errors = True
@@ -177,10 +195,6 @@ def read_file(path: Path, default_identifiers: list[str]):
         app.notify("Cursorless settings error; see log")
 
     return result, has_errors
-
-
-def create_line(key: str, value: str):
-    return f"{key}, {value}"
 
 
 def get_file_paths(filename: str):
