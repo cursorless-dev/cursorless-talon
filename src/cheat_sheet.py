@@ -160,7 +160,7 @@ class CheatSheet:
 
         self.next_row()
         self.draw_header(canvas, "Subtokens")
-        self.draw_items(canvas, get_list("subtoken"))
+        self.draw_items(canvas, get_list("subtoken_scope_type"))
 
         self.next_row()
         self.draw_header(canvas, "Positions")

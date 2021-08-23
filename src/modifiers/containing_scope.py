@@ -59,9 +59,17 @@ selection_types = {
     "token": "token",
 }
 
+# NOTE: Please do not change these dicts.  Use the CSVs for customization.
+# See https://github.com/pokey/cursorless-talon/blob/master/docs/customization.md
+subtoken_scope_types = {
+    "word": "word",
+    "char": "character",
+}
+
 default_values = {
     "scope_type": scope_types,
     "selection_type": selection_types,
+    "subtoken_scope_type": subtoken_scope_types,
 }
 
 

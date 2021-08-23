@@ -1,13 +1,11 @@
-from talon import Context, Module
+from talon import Module
 
 from ..compound_targets import is_active_included, is_anchor_included
 
 mod = Module()
-ctx = Context()
 
 
-mod.list("cursorless_subtoken", desc="Supported subcomponent types")
-ctx.lists["self.cursorless_subtoken"] = {"word": "word", "char": "character"}
+mod.list("cursorless_subtoken_scope_type", desc="Supported subtoken scope types")
 
 
 @mod.capture(rule="<user.ordinals_small> | last")
@@ -50,10 +48,10 @@ def cursorless_first_last_range(m) -> str:
 @mod.capture(
     rule=(
         "(<user.cursorless_ordinal_range> | <user.cursorless_first_last_range>)"
-        "{user.cursorless_subtoken}"
+        "{user.cursorless_subtoken_scope_type}"
     )
 )
-def cursorless_subtoken(m) -> str:
+def cursorless_subtoken_scope(m) -> str:
     """Subtoken ranges such as subwords or characters"""
     try:
         range = m.cursorless_ordinal_range
@@ -61,5 +59,9 @@ def cursorless_subtoken(m) -> str:
         range = m.cursorless_first_last_range
     return {
         "selectionType": "token",
-        "modifier": {"type": "subpiece", "pieceType": m.cursorless_subtoken, **range},
+        "modifier": {
+            "type": "subpiece",
+            "pieceType": m.cursorless_subtoken_scope_type,
+            **range,
+        },
     }
