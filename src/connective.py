@@ -17,7 +17,7 @@ def on_ready():
         {
             "range_connective": range_connectives,
             "list_connective": {"and": "listConnective"},
-            "swap_connective": {"swap": "swapConnective"},
+            "swap_connective": {"with": "swapConnective"},
             "source_destination_connective": {"to": "sourceDestinationConnective"},
         },
     )
