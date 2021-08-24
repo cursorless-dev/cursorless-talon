@@ -72,10 +72,9 @@ def update_dicts(default_values: dict[str, dict], current_values: dict):
     results = {key: {} for key in default_values}
     for obj in results_map.values():
         value = obj["value"]
-        if is_removed(value):
-            del results[obj["list"]][obj["key"]]
-        else:
-            results[obj["list"]][obj["key"]] = value
+        key = obj["key"]
+        if not is_removed(key):
+            results[obj["list"]][key] = value
 
     # Assign result to talon context list
     for list_name, dict in results.items():

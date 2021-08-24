@@ -64,7 +64,7 @@ def cursorless_target(m) -> str:
 range_connectives = {
     "between": "rangeExcludingBothEnds",
     "past": "rangeIncludingBothEnds",
-    "skip past": "rangeExcludingAnchor",
+    "-": "rangeExcludingAnchor",
     "until": "rangeExcludingActive",
 }
 
