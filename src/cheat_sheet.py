@@ -99,11 +99,16 @@ class CheatSheet:
         for name in ACTION_LIST_NAMES:
             all_actions.update(get_raw_list(name))
 
-        multiple_target_action_names = ["bring", "move", "swap", "reformat"]
+        multiple_target_action_names = [
+            "replaceWithTarget",
+            "moveToTarget",
+            "swapTargets",
+            "applyFormatter",
+        ]
         simple_actions = {
             key: value
             for key, value in all_actions.items()
-            if key not in multiple_target_action_names
+            if value not in multiple_target_action_names
         }
         complex_actions = {
             value: key
@@ -112,21 +117,23 @@ class CheatSheet:
         }
 
         make_dict_readable(
-            all_actions,
+            simple_actions,
             {
-                "call": "Call T on S",
-                "wrap": '"round" wrap T',
+                "callAsFunction": "Call T on S",
+                "wrapWithPairedDelimiter": '"round" wrap T',
             },
         )
         all_actions = {
             **simple_actions,
-            "{0} T1 to T2".format(complex_actions["bring"]): "Replace T2 with T1",
-            "{0} T".format(complex_actions["bring"]): "Replace S with T",
-            "{0} T1 to T2".format(complex_actions["move"]): "Move T1 to T2",
-            "{0} T".format(complex_actions["move"]): "Move T to S",
-            "{0} T1 to T2".format(complex_actions["swap"]): "Swap T1 with T2",
-            "{0} T".format(complex_actions["swap"]): "Swap S with T",
-            "{0} * at T".format(complex_actions["reformat"]): "Reformat T as *",
+            "{0} T1 to T2".format(
+                complex_actions["replaceWithTarget"]
+            ): "Replace T2 with T1",
+            "{0} T".format(complex_actions["replaceWithTarget"]): "Replace S with T",
+            "{0} T1 to T2".format(complex_actions["moveToTarget"]): "Move T1 to T2",
+            "{0} T".format(complex_actions["moveToTarget"]): "Move T to S",
+            "{0} T1 to T2".format(complex_actions["swapTargets"]): "Swap T1 with T2",
+            "{0} T".format(complex_actions["swapTargets"]): "Swap S with T",
+            "{0} * at T".format(complex_actions["applyFormatter"]): "Reformat T as *",
         }
 
         actions_limit = round(len(all_actions) / 2)
@@ -141,7 +148,7 @@ class CheatSheet:
         self.draw_items(canvas, actions_2)
         self.next_column(canvas)
 
-        all_scopes = get_list("scope_type")
+        all_scopes = get_list("scope_type", {"argumentOrParameter": "Argument"})
         scopes_limit = len(all_scopes) - 3
         scopes_1 = slice_dict(all_scopes, 0, scopes_limit)
         scopes_2 = slice_dict(all_scopes, scopes_limit)

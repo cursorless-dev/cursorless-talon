@@ -10,7 +10,6 @@ mod.list("cursorless_scope_type", desc="Supported scope types")
 # See https://github.com/pokey/cursorless-talon/blob/master/docs/customization.md
 scope_types = {
     "arg": "argumentOrParameter",
-    "arrow": "arrowFunction",
     "attribute": "attribute",
     "call": "functionCall",
     "class name": "className",
@@ -21,10 +20,11 @@ scope_types = {
     "if state": "ifStatement",
     "item": "collectionItem",
     "key": "collectionKey",
+    "lambda": "anonymousFunction",
     "list": "list",
-    "map": "dictionary",
+    "map": "map",
     "name": "name",
-    "regex": "regex",
+    "regex": "regularExpression",
     "state": "statement",
     "string": "string",
     "type": "type",
@@ -74,7 +74,7 @@ default_values = {
 
 
 def on_ready():
-    init_csv_and_watch_changes("scope_types", default_values)
+    init_csv_and_watch_changes("modifier_scope_types", default_values)
 
 
 app.register("ready", on_ready)

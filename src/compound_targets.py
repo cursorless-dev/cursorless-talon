@@ -1,6 +1,5 @@
 from .primitive_target import BASE_TARGET
-from talon import Module, app
-from .csv_overrides import init_csv_and_watch_changes
+from talon import Module
 
 mod = Module()
 
@@ -57,26 +56,3 @@ def cursorless_target(m) -> str:
     if len(m.cursorless_range_list) == 1:
         return m.cursorless_range
     return {"type": "list", "elements": m.cursorless_range_list}
-
-
-# NOTE: Please do not change these dicts.  Use the CSVs for customization.
-# See https://github.com/pokey/cursorless-talon/blob/master/docs/customization.md
-range_connectives = {
-    "between": "rangeExclusive",
-    "past": "rangeInclusive",
-    "-": "rangeExcludingStart",
-    "until": "rangeExcludingEnd",
-}
-
-
-def on_ready():
-    init_csv_and_watch_changes(
-        "compound_targets",
-        {
-            "range_connective": range_connectives,
-            "list_connective": {"and": "listConnective"},
-        },
-    )
-
-
-app.register("ready", on_ready)

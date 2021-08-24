@@ -1,4 +1,4 @@
-from ..modifiers.surrounding_pair import paired_delimiters_map
+from ..paired_delimiter import paired_delimiters_map
 from talon import Module
 
 
