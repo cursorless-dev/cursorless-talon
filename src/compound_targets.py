@@ -43,11 +43,11 @@ def cursorless_range(m) -> str:
 
 
 def is_anchor_included(range_connective: str):
-    return range_connective not in ["rangeExcludingBothEnds", "rangeExcludingAnchor"]
+    return range_connective not in ["rangeExclusive", "rangeExcludingStart"]
 
 
 def is_active_included(range_connective: str):
-    return range_connective not in ["rangeExcludingBothEnds", "rangeExcludingActive"]
+    return range_connective not in ["rangeExclusive", "rangeExcludingEnd"]
 
 
 @mod.capture(
@@ -62,10 +62,10 @@ def cursorless_target(m) -> str:
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
 # See https://github.com/pokey/cursorless-talon/blob/master/docs/customization.md
 range_connectives = {
-    "between": "rangeExcludingBothEnds",
-    "past": "rangeIncludingBothEnds",
-    "-": "rangeExcludingAnchor",
-    "until": "rangeExcludingActive",
+    "between": "rangeExclusive",
+    "past": "rangeInclusive",
+    "-": "rangeExcludingStart",
+    "until": "rangeExcludingEnd",
 }
 
 

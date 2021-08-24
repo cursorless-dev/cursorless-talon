@@ -175,7 +175,7 @@ class CheatSheet:
         include_both_term = next(
             spoken_form
             for spoken_form, value in get_raw_list("range_connective").items()
-            if value == "rangeIncludingBothEnds"
+            if value == "rangeInclusive"
         )
         list_connective_term = next(
             spoken_form
