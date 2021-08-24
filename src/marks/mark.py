@@ -10,7 +10,7 @@ mod.list("cursorless_symbol_color", desc="Supported symbol colors for cursorless
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
 # See https://github.com/pokey/cursorless-talon/blob/master/docs/customization.md
 symbol_colors = {
-    "gray": "default",
+    "-": "default",
     "blue": "blue",
     "green": "green",
     "rose": "red",
