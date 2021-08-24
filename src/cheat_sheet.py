@@ -116,6 +116,11 @@ class CheatSheet:
             if value in multiple_target_action_names
         }
 
+        swap_connective = list(get_raw_list("swap_connective").keys())[0]
+        source_destination_connective = list(
+            get_raw_list("source_destination_connective").keys()
+        )[0]
+
         make_dict_readable(
             simple_actions,
             {
@@ -125,15 +130,13 @@ class CheatSheet:
         )
         all_actions = {
             **simple_actions,
-            "{0} T1 to T2".format(
-                complex_actions["replaceWithTarget"]
-            ): "Replace T2 with T1",
-            "{0} T".format(complex_actions["replaceWithTarget"]): "Replace S with T",
-            "{0} T1 to T2".format(complex_actions["moveToTarget"]): "Move T1 to T2",
-            "{0} T".format(complex_actions["moveToTarget"]): "Move T to S",
-            "{0} T1 to T2".format(complex_actions["swapTargets"]): "Swap T1 with T2",
-            "{0} T".format(complex_actions["swapTargets"]): "Swap S with T",
-            "{0} * at T".format(complex_actions["applyFormatter"]): "Reformat T as *",
+            f"{complex_actions['replaceWithTarget']} T1 {source_destination_connective} T2": "Replace T2 with T1",
+            f"{complex_actions['replaceWithTarget']} T": "Replace S with T",
+            f"{complex_actions['moveToTarget']} T1 {source_destination_connective} T2": "Move T1 to T2",
+            f"{complex_actions['moveToTarget']} T": "Move T to S",
+            f"{complex_actions['swapTargets']} T1 {swap_connective} T2": "Swap T1 with T2",
+            f"{complex_actions['swapTargets']} T": "Swap S with T",
+            f"{complex_actions['applyFormatter']} * at T": "Reformat T as *",
         }
 
         actions_limit = round(len(all_actions) / 2)
