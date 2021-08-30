@@ -25,6 +25,9 @@ def init_csv_and_watch_changes(filename: str, default_values: dict[str, dict]):
 
         actions.path.talon_user() / "cursorless-settings" / filename
 
+    Note that the settings directory location can be customized using the
+    `user.cursorless_settings_directory` setting.
+
     Args:
         filename (str): The name of the csv file to be placed in
         `cursorles-settings` dir

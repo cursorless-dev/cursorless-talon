@@ -32,8 +32,8 @@ def cursorless_ordinal_range(m) -> str:
     return {
         "anchor": m.ordinal_or_last_list[0],
         "active": m.ordinal_or_last_list[-1],
-        "includeAnchor": include_anchor,
-        "includeActive": include_active,
+        "excludeAnchor": not include_anchor,
+        "excludeActive": not include_active,
     }
 
 
