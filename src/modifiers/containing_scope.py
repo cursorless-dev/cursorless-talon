@@ -1,17 +1,15 @@
-from talon import Context, Module
+from talon import Module, app
+from ..csv_overrides import init_csv_and_watch_changes
 
 mod = Module()
-ctx = Context()
-
-ctx.matches = r"""
-tag: user.cursorless
-"""
 
 
 mod.list("cursorless_scope_type", desc="Supported scope types")
-ctx.lists["self.cursorless_scope_type"] = {
+
+# NOTE: Please do not change these dicts.  Use the CSVs for customization.
+# See https://github.com/pokey/cursorless-talon/blob/master/docs/customization.md
+scope_types = {
     "arg": "argumentOrParameter",
-    "arrow": "arrowFunction",
     "attribute": "attribute",
     "call": "functionCall",
     "class name": "className",
@@ -22,11 +20,11 @@ ctx.lists["self.cursorless_scope_type"] = {
     "if state": "ifStatement",
     "item": "collectionItem",
     "key": "collectionKey",
-    "lambda": "arrowFunction",
+    "lambda": "anonymousFunction",
     "list": "list",
-    "map": "dictionary",
+    "map": "map",
     "name": "name",
-    "regex": "regex",
+    "regex": "regularExpression",
     "state": "statement",
     "string": "string",
     "type": "type",
@@ -49,3 +47,34 @@ def cursorless_containing_scope(m) -> str:
             "includeSiblings": m[0] == "every",
         }
     }
+
+
+# NOTE: Please do not change these dicts.  Use the CSVs for customization.
+# See https://github.com/pokey/cursorless-talon/blob/master/docs/customization.md
+selection_types = {
+    "block": "paragraph",
+    "cell": "notebookCell",
+    "file": "document",
+    "line": "line",
+    "token": "token",
+}
+
+# NOTE: Please do not change these dicts.  Use the CSVs for customization.
+# See https://github.com/pokey/cursorless-talon/blob/master/docs/customization.md
+subtoken_scope_types = {
+    "word": "word",
+    "char": "character",
+}
+
+default_values = {
+    "scope_type": scope_types,
+    "selection_type": selection_types,
+    "subtoken_scope_type": subtoken_scope_types,
+}
+
+
+def on_ready():
+    init_csv_and_watch_changes("modifier_scope_types", default_values)
+
+
+app.register("ready", on_ready)

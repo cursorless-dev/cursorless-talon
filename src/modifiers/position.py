@@ -3,10 +3,6 @@ from talon import Context, Module
 mod = Module()
 ctx = Context()
 
-ctx.matches = r"""
-tag: user.cursorless
-"""
-
 
 positions = {
     "after": {"position": "after"},

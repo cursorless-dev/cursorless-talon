@@ -1,8 +1,10 @@
+from .conventions import get_cursorless_list_name
 from talon import Module, ui, registry, skia, actions, cron
 from talon.canvas import Canvas
 import re
 import webbrowser
 import math
+from .actions.actions import ACTION_LIST_NAMES
 
 mod = Module()
 mod.mode("cursorless_cheat_sheet", "Mode for showing cursorless cheat sheet gui")
@@ -93,33 +95,48 @@ class CheatSheet:
         self.y = get_y(canvas)
         self.w = 0
 
-        simple_actions = get_list(
-            "simple_action",
+        all_actions = {}
+        for name in ACTION_LIST_NAMES:
+            all_actions.update(get_raw_list(name))
+
+        multiple_target_action_names = [
+            "replaceWithTarget",
+            "moveToTarget",
+            "swapTargets",
+            "applyFormatter",
+        ]
+        simple_actions = {
+            key: value
+            for key, value in all_actions.items()
+            if value not in multiple_target_action_names
+        }
+        complex_actions = {
+            value: key
+            for key, value in all_actions.items()
+            if value in multiple_target_action_names
+        }
+
+        swap_connective = list(get_raw_list("swap_connective").keys())[0]
+        source_destination_connective = list(
+            get_raw_list("source_destination_connective").keys()
+        )[0]
+
+        make_dict_readable(
+            simple_actions,
             {
-                "call": "Call T on S",
-                "define": "Reveal definition",
-                "drink cell": "Edit new cell above",
-                "pour cell": "Edit new cell below",
-                "reference": "Show references",
+                "callAsFunction": "Call T on S",
+                "wrapWithPairedDelimiter": '"round" wrap T',
             },
         )
-
-        move_bring = {}
-        for action, desc in get_list("move_bring_action").items():
-            if desc == "Bring":
-                move_bring[f"{action} T1 to T2"] = "Replace T2 with T1"
-                move_bring[f"{action} T"] = "Replace S with T"
-            if desc == "Move":
-                move_bring[f"{action} T1 to T2"] = "Move T1 to T2"
-                move_bring[f"{action} T"] = "Move T to S"
-
         all_actions = {
             **simple_actions,
-            **move_bring,
-            "swap T1 with T2": "Swap T1 with T2",
-            "swap with T": "Swap S with T",
-            "wrap": '"round" wrap T',
-            "format * at T": "Reformat T as *",
+            f"{complex_actions['replaceWithTarget']} T1 {source_destination_connective} T2": "Replace T2 with T1",
+            f"{complex_actions['replaceWithTarget']} T": "Replace S with T",
+            f"{complex_actions['moveToTarget']} T1 {source_destination_connective} T2": "Move T1 to T2",
+            f"{complex_actions['moveToTarget']} T": "Move T to S",
+            f"{complex_actions['swapTargets']} T1 {swap_connective} T2": "Swap T1 with T2",
+            f"{complex_actions['swapTargets']} T": "Swap S with T",
+            f"{complex_actions['applyFormatter']} * at T": "Reformat T as *",
         }
 
         actions_limit = round(len(all_actions) / 2)
@@ -134,29 +151,26 @@ class CheatSheet:
         self.draw_items(canvas, actions_2)
         self.next_column(canvas)
 
+        all_scopes = get_list("scope_type", {"argumentOrParameter": "Argument"})
+        scopes_limit = len(all_scopes) - 3
+        scopes_1 = slice_dict(all_scopes, 0, scopes_limit)
+        scopes_2 = slice_dict(all_scopes, scopes_limit)
+
         self.draw_header(canvas, "Scopes")
-        self.draw_items(
-            canvas,
-            get_list(
-                "scope_type",
-                {
-                    "arg": "Argument",
-                    "funk": "Function",
-                    "state": "Statement",
-                    "map": "Map / Dict",
-                    "pair": "Key-val pair",
-                },
-            ),
-        )
+        self.draw_items(canvas, scopes_1)
 
         self.next_column(canvas)
 
         self.draw_header(canvas, "More scopes")
+        self.draw_items(canvas, scopes_2)
+
+        self.next_row()
+        self.draw_header(canvas, "Selection types")
         self.draw_items(canvas, get_list("selection_type"))
 
         self.next_row()
         self.draw_header(canvas, "Subtokens")
-        self.draw_items(canvas, get_list("subtoken"))
+        self.draw_items(canvas, get_list("subtoken_scope_type"))
 
         self.next_row()
         self.draw_header(canvas, "Positions")
@@ -164,29 +178,38 @@ class CheatSheet:
 
         self.next_row()
         self.draw_header(canvas, "Special marks")
-        self.draw_items(
-            canvas,
-            get_list(
-                "special_mark",
-                {"this": "Selection", "that": "Last T", "source": "Source T"},
-            ),
-        )
+        self.draw_items(canvas, get_list("special_mark"))
 
         self.next_column(canvas)
+
+        include_both_term = next(
+            spoken_form
+            for spoken_form, value in get_raw_list("range_connective").items()
+            if value == "rangeInclusive"
+        )
+        list_connective_term = next(
+            spoken_form
+            for spoken_form, value in get_raw_list("list_connective").items()
+            if value == "listConnective"
+        )
 
         self.draw_header(canvas, "Compound targets")
         self.draw_items(
             canvas,
             {
-                "T and T": "T1 and T2",
-                "T past T": "T1 past T2",
-                "past T": "S past T",
+                f"T1 {list_connective_term} T2": "T1 and T2",
+                f"T1 {include_both_term} T2": "T1 through T2",
+                f"{include_both_term} T": "S through T",
             },
         )
 
         self.next_row()
         self.draw_header(canvas, "Colors")
-        self.draw_items(canvas, get_list("symbol_color"))
+        self.draw_items(canvas, get_list("hat_color"))
+
+        self.next_row()
+        self.draw_header(canvas, "Shapes")
+        self.draw_items(canvas, get_list("hat_shape"))
 
         self.next_row()
         self.draw_header(canvas, "Examples")
@@ -345,11 +368,19 @@ class Actions:
         webbrowser.open(instructions_url)
 
 
-def get_list(name, descriptions={}):
-    items = registry.lists[f"user.cursorless_{name}"][0].copy()
+def get_list(name, descriptions=None):
+    if descriptions is None:
+        descriptions = {}
+
+    items = get_raw_list(name)
     if isinstance(items, dict):
         make_dict_readable(items, descriptions)
     return items
+
+
+def get_raw_list(name):
+    cursorless_list_name = get_cursorless_list_name(name)
+    return registry.lists[cursorless_list_name][0].copy()
 
 
 def get_y(canvas):
@@ -360,7 +391,10 @@ def draw_text(canvas, text, x, y):
     canvas.draw_text(text, x, y + text_size + padding / 2)
 
 
-def make_dict_readable(dict, descriptions):
+def make_dict_readable(dict, descriptions=None):
+    if descriptions is None:
+        descriptions = {}
+
     for k in dict:
         desc = dict[k]
         if desc in descriptions:
