@@ -18,8 +18,8 @@ hat_colors = {
     "plum": "purple",
 }
 hat_shapes = {
-    "splat": "star",
-    "scoop": "valley",
+    "star": "star",
+    "bird": "chevron",
 }
 
 
