@@ -1,8 +1,10 @@
 from dataclasses import dataclass
-from talon import Module, app
+from ..conventions import get_cursorless_list_name
+from talon import Module, app, Context
 from ..csv_overrides import init_csv_and_watch_changes
 
 mod = Module()
+ctx = Context()
 
 
 mod.list("cursorless_hat_color", desc="Supported hat colors for cursorless")
@@ -17,10 +19,13 @@ hat_colors = {
     "squash": "yellow",
     "plum": "purple",
 }
+
+# TODO: Re-add to settings csv
 hat_shapes = {
     "star": "star",
     "bird": "chevron",
 }
+ctx.lists[get_cursorless_list_name("hat_shape")] = hat_shapes
 
 
 @mod.capture(
@@ -100,7 +105,8 @@ def on_ready():
         "hat_styles",
         {
             "hat_color": hat_colors,
-            "hat_shape": hat_shapes,
+            # TODO: Re-add to settings csv
+            # "hat_shape": hat_shapes,
         },
     )
 
