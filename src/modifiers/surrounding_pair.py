@@ -45,13 +45,14 @@ def cursorless_surrounding_pair(m) -> str:
     }
 
 
-def on_ready():
-    init_csv_and_watch_changes(
-        "modifier_surrounding_pair",
-        {
-            "delimiter_inclusion": delimiter_inclusions,
-        },
-    )
+# TODO: add these to a "modifiers" csv
+# def on_ready():
+#     init_csv_and_watch_changes(
+#         "modifiers",
+#         {
+#             "delimiter_inclusion": delimiter_inclusions,
+#         },
+#     )
 
 
-app.register("ready", on_ready)
+# app.register("ready", on_ready)
