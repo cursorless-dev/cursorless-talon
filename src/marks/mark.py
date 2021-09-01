@@ -22,8 +22,13 @@ hat_colors = {
 
 # TODO: Re-add to settings csv
 hat_shapes = {
-    "splat": "star",
+    "splat": "fourPointStar",
     "fox": "chevron",
+    "wing": "threePointStar",
+    "hole": "hole",
+    "frame": "frame",
+    "curve": "curve",
+    "stare": "eye",
 }
 ctx.lists[get_cursorless_list_name("hat_shape")] = hat_shapes
 
