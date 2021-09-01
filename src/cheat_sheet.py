@@ -208,6 +208,10 @@ class CheatSheet:
         self.draw_items(canvas, get_list("hat_color"))
 
         self.next_row()
+        self.draw_header(canvas, "Shapes")
+        self.draw_items(canvas, get_list("hat_shape"))
+
+        self.next_row()
         self.draw_header(canvas, "Examples")
         self.draw_items(
             canvas,

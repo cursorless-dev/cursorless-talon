@@ -8,6 +8,7 @@ ctx = Context()
 
 
 mod.list("cursorless_hat_color", desc="Supported hat colors for cursorless")
+mod.list("cursorless_hat_shape", desc="Supported hat shapes for cursorless")
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
 # See https://github.com/pokey/cursorless-talon/blob/master/docs/customization.md
@@ -19,16 +20,28 @@ hat_colors = {
     "plum": "purple",
 }
 
+# TODO: Re-add to settings csv
+hat_shapes = {
+    "splat": "star",
+    "fox": "chevron",
+}
+ctx.lists[get_cursorless_list_name("hat_shape")] = hat_shapes
 
-@mod.capture(rule="[{user.cursorless_hat_color}] <user.any_alphanumeric_key>")
+
+@mod.capture(
+    rule="[{user.cursorless_hat_color}] [{user.cursorless_hat_shape}] <user.any_alphanumeric_key>"
+)
 def cursorless_decorated_symbol(m) -> str:
     """A decorated symbol"""
     hat_color = getattr(m, "cursorless_hat_color", "default")
-
+    try:
+        hat_style_name = f"{hat_color}-{m.cursorless_hat_shape}"
+    except AttributeError:
+        hat_style_name = hat_color
     return {
         "mark": {
             "type": "decoratedSymbol",
-            "symbolColor": hat_color,
+            "symbolColor": hat_style_name,
             "character": m.any_alphanumeric_key,
         }
     }
@@ -92,6 +105,8 @@ def on_ready():
         "hat_styles",
         {
             "hat_color": hat_colors,
+            # TODO: Re-add to settings csv
+            # "hat_shape": hat_shapes,
         },
     )
 
