@@ -20,12 +20,15 @@ hat_colors = {
     "plum": "purple",
 }
 
-# TODO: Re-add to settings csv
 hat_shapes = {
-    "splat": "star",
+    "splat": "fourPointStar",
     "fox": "chevron",
+    "-wing": "threePointStar",
+    "-hole": "hole",
+    "-frame": "frame",
+    "-curve": "curve",
+    "-stare": "eye",
 }
-ctx.lists[get_cursorless_list_name("hat_shape")] = hat_shapes
 
 
 @mod.capture(
@@ -105,8 +108,7 @@ def on_ready():
         "hat_styles",
         {
             "hat_color": hat_colors,
-            # TODO: Re-add to settings csv
-            # "hat_shape": hat_shapes,
+            "hat_shape": hat_shapes,
         },
     )
 
