@@ -12,7 +12,7 @@ improve customization.
 The spoken forms for actions, scope types, colors, etc can be customized using the
 csvs found in the `cursorless-settings` subdirectory of your user folder. On
 Linux and Mac, the directory is `~/.talon/user/cursorless-settings`. On
-Windows, it is `%AppData%\Talon\user\cursorless-settings`.  The directory location can be customized using the `user.cursorless_settings_directory` Talon setting.  If the path is relative, it will be taken relative to your Talon user directory.
+Windows, it is `%AppData%\Talon\user\cursorless-settings`. The directory location can be customized using the `user.cursorless_settings_directory` Talon setting. If the path is relative, it will be taken relative to your Talon user directory.
 
 Note that these csv's:
 
@@ -21,6 +21,10 @@ Note that these csv's:
 - support comment lines beginning with `#`, and
 - ignore any leading / trailing whitespace on spoken forms and cursorless
   identifiers
+
+If the spoken form begins with a `-`, it will be disabled. Please do not remove
+these lines, because that will trigger cursorless to add them back on next
+reload, as cursorless uses these lines to track disabled spoken forms.
 
 ### Changing a spoken form
 
@@ -34,6 +38,6 @@ When new actions, scope types, etc are added, Cursorless will detect that they'r
 ### Removing a term
 
 If you'd like to remove an action, scope type, etc, you can simply set the
-spoken form in the first column to `-`. Please don't delete any lines, as that
-will trigger cursorless to automatically add the spoken form back on talon
-restart.
+spoken form in the first column to any thing starting with `-`. Please don't
+delete any lines, as that will trigger cursorless to automatically add the
+spoken form back on talon restart.

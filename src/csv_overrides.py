@@ -57,7 +57,7 @@ def init_csv_and_watch_changes(filename: str, default_values: dict[str, dict]):
 
 
 def is_removed(value: str):
-    return value == "-"
+    return value.startswith("-")
 
 
 def update_dicts(default_values: dict[str, dict], current_values: dict):
