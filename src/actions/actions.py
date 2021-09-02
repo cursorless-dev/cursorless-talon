@@ -21,6 +21,9 @@ class MakeshiftAction:
 # See https://github.com/pokey/cursorless-talon/blob/master/docs/customization.md
 makeshift_actions = [
     MakeshiftAction("define", "revealDefinition", "editor.action.revealDefinition"),
+    MakeshiftAction(
+        "type deaf", "revealTypeDefinition", "editor.action.goToTypeDefinition"
+    ),
     MakeshiftAction("hover", "showHover", "editor.action.showHover"),
     MakeshiftAction("inspect", "showDebugHover", "editor.debug.action.showDebugHover"),
     MakeshiftAction(
