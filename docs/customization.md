@@ -12,7 +12,9 @@ improve customization.
 The spoken forms for actions, scope types, colors, etc can be customized using the
 csvs found in the `cursorless-settings` subdirectory of your user folder. On
 Linux and Mac, the directory is `~/.talon/user/cursorless-settings`. On
-Windows, it is `%AppData%\Talon\user\cursorless-settings`. The directory location can be customized using the `user.cursorless_settings_directory` Talon setting. If the path is relative, it will be taken relative to your Talon user directory.
+Windows, it is `%AppData%\Talon\user\cursorless-settings`.
+
+The directory location can be customized using the `user.cursorless_settings_directory` Talon setting. If the path is relative, it will be taken relative to your Talon user directory.
 
 Note that these csv's:
 
