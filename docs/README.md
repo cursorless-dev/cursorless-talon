@@ -104,6 +104,11 @@ The following shapes are supported:
 | `"curve"` | Curve            | ❌                  |
 | `"stare"` | Eye              | ❌                  |
 
+To enable or disable shapes requires the following two steps:
+
+1. Check the box corresponding to the given shape in the `cursorless.hatEnablement.shapes` field of the cursorless vscode settings
+2. Enable the corresponding spoken form in the [spoken form customization csvs](customization.md) for cursorless talon
+
 ##### `"this"`
 
 The word `"this"` can be used as a mark to refer to the current cursor(s) or selection(s). Note that when combined with a modifier, the `"this"` mark can be omitted, and it will be implied.
