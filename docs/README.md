@@ -63,31 +63,51 @@ There are several types of marks:
 
 ##### Decorated symbol
 
-This is the first type of mark you'll notice when you start using cursorless. You'll see that for every token on the screen, one of its characters will have a hat on top of it. We can refer to the given token by saying the name of the character that has a hat, along with the color if the hat is not gray:
+This is the first type of mark you'll notice when you start using cursorless. You'll see that for every token on the screen, one of its characters will have a hat on top of it. We can refer to the given token by saying the name of the character that has a hat, along with the color if the hat is not gray, and the shape of the hat if the hat is not the default dot:
 
 - `"air"` (if the color is gray)
 - `"blue bat"`
 - `"blue dash"`
 - `"blue five"`
+- `"fox bat"`
+- `"blue fox bat"`
 
 The general form of this type of mark is:
 
-`"[<color>] (<letter> | <symbol> | <number>)"`
+`"[<color>] [<shape>] (<letter> | <symbol> | <number>)"`
 
 Combining this with an action, we might say `"take blue air"` to select the token containing letter `'a'` with a blue hat over it.
 
 ###### Colors
 
-The following colors are supported. As mentioned above, note that gray is optional: `"gray air"` and `"air"` are equivalent
+The following colors are supported:
 
 | Command    | Visible color |
 | ---------- | ------------- |
-| `"gray"`   | default       |
-| `"blue"`   | blue          |
-| `"green"`  | green         |
-| `"rose"`   | red           |
-| `"squash"` | yellow        |
-| `"plum"`   | mauve         |
+| `"blue"`   | Blue          |
+| `"green"`  | Green         |
+| `"rose"`   | Red           |
+| `"squash"` | Yellow        |
+| `"plum"`   | Purple        |
+
+###### Shapes
+
+The following shapes are supported:
+
+| Command   | Visible color    | Enabled by default? |
+| --------- | ---------------- | ------------------- |
+| `"splat"` | Four-point star  | ✅                  |
+| `"fox"`   | Chevron          | ✅                  |
+| `"wing"`  | Three-point star | ❌                  |
+| `"hole"`  | Hole             | ❌                  |
+| `"frame"` | Frame            | ❌                  |
+| `"curve"` | Curve            | ❌                  |
+| `"stare"` | Eye              | ❌                  |
+
+To enable or disable shapes requires the following two steps:
+
+1. Check the box corresponding to the given shape in the `cursorless.hatEnablement.shapes` field of the cursorless vscode settings
+2. Enable the corresponding spoken form in the [spoken form customization csvs](customization.md) for cursorless talon
 
 ##### `"this"`
 
