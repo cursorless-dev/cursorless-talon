@@ -1,7 +1,7 @@
 # Cursorless - Instructions
 You may find it helpful to start with the [tutorial video](https://www.youtube.com/watch?v=JxcNW0hnfTk).
 
-Once you understand the concepts, you can pull up a cheat cheat for reference using the command `"cursorless help"`.
+Once you understand the concepts, you can pull up a cheatsheet for reference using the command `"cursorless help"`.
 
 You can get back to these docs by saying `"cursorless docs"`.
 
