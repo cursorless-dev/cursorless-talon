@@ -16,8 +16,8 @@ hat_colors = {
     "blue": "blue",
     "green": "green",
     "rose": "red",
+    "plum": "pink",
     "squash": "yellow",
-    "plum": "purple",
 }
 
 hat_shapes = {
