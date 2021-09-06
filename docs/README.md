@@ -88,7 +88,7 @@ The following colors are supported:
 | `"green"`  | Green         |
 | `"rose"`   | Red           |
 | `"squash"` | Yellow        |
-| `"plum"`   | Purple        |
+| `"plum"`   | Pink          |
 
 ###### Shapes
 
