@@ -7,7 +7,7 @@ mod = Module()
 mod.list("cursorless_scope_type", desc="Supported scope types")
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
-# See https://github.com/pokey/cursorless-talon/blob/master/docs/customization.md
+# See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
 scope_types = {
     "arg": "argumentOrParameter",
     "attribute": "attribute",
@@ -50,7 +50,7 @@ def cursorless_containing_scope(m) -> str:
 
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
-# See https://github.com/pokey/cursorless-talon/blob/master/docs/customization.md
+# See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
 selection_types = {
     "block": "paragraph",
     "cell": "notebookCell",
@@ -60,7 +60,7 @@ selection_types = {
 }
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
-# See https://github.com/pokey/cursorless-talon/blob/master/docs/customization.md
+# See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
 subtoken_scope_types = {
     "word": "word",
     "char": "character",

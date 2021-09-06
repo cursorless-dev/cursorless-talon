@@ -18,7 +18,7 @@ class MakeshiftAction:
 
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
-# See https://github.com/pokey/cursorless-talon/blob/master/docs/customization.md
+# See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
 makeshift_actions = [
     MakeshiftAction("define", "revealDefinition", "editor.action.revealDefinition"),
     MakeshiftAction(
@@ -44,7 +44,7 @@ class CallbackAction:
 
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
-# See https://github.com/pokey/cursorless-talon/blob/master/docs/customization.md
+# See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
 callbacks = [
     CallbackAction("call", "callAsFunction", run_call_action),
     CallbackAction("scout", "findInDocument", run_find_action),
@@ -58,7 +58,7 @@ mod.list("cursorless_simple_action", desc="Supported actions for cursorless navi
 
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
-# See https://github.com/pokey/cursorless-talon/blob/master/docs/customization.md
+# See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
 simple_actions = {
     "bottom": "scrollToBottom",
     "breakpoint": "toggleLineBreakpoint",
@@ -115,7 +115,7 @@ def run_makeshift_action(action: str, targets: dict):
 
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
-# See https://github.com/pokey/cursorless-talon/blob/master/docs/customization.md
+# See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
 default_values = {
     "simple_action": simple_actions,
     "swap_action": {"swap": "swapTargets"},

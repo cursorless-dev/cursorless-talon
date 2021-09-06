@@ -113,7 +113,7 @@ def update_file(path: Path, default_values: dict):
                 print(f"{key}: {missing[key]}")
             print(
                 "See release notes for more info: "
-                "https://github.com/pokey/cursorless-vscode/blob/master/CHANGELOG.md"
+                "https://github.com/pokey/cursorless-vscode/blob/main/CHANGELOG.md"
             )
             app.notify(f"🎉🎉 New cursorless features; see log")
 
