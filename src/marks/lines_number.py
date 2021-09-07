@@ -3,10 +3,6 @@ from talon import Context, Module
 mod = Module()
 ctx = Context()
 
-ctx.matches = r"""
-tag: user.cursorless
-"""
-
 mod.list("cursorless_line_direction", desc="Supported directions for line modifier")
 
 directions = {
@@ -63,10 +59,9 @@ def cursorless_line_number(m) -> str:
         },
     }
 
+
 # This is the simplified version that we are using for now that only implements a subset of the features
-@mod.capture(
-    rule="(up | down) <number_small>"
-)
+@mod.capture(rule="(up | down) <number_small>")
 def cursorless_line_number_simple(m) -> str:
     position = {"direction": m[0], "lineNumber": m.number_small}
     return {
