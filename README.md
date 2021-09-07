@@ -4,7 +4,7 @@ This repository contains the talon side of [Cursorless](https://marketplace.visu
 
 ## Documentation
 
-Full documentation can be found in [docs](docs/), or by saying `"cursorless docs"`. Once you understand the concepts, you can pull up a cheat cheat for reference using the command `"cursorless help"`.
+Full documentation can be found in [docs](docs/), or by saying `"cursorless docs"`. Once you understand the concepts, you can pull up a cheatsheet for reference using the command `"cursorless help"`.
 
 ## Installation
 
