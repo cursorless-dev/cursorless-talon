@@ -4,6 +4,7 @@ mod = Module()
 
 mod.list("cursorless_insert_action", desc="Cursorless insert action")
 
+
 @mod.capture(rule="count [from <number_small>]")
 def cursorless_range_generator(m) -> str:
     try:
@@ -13,9 +14,9 @@ def cursorless_range_generator(m) -> str:
     return {"type": "range", "start": start}
 
 
-@mod.capture(rule="{user.cursorless_pair_symbol}")
+@mod.capture(rule="{user.cursorless_paired_delimiter}")
 def cursorless_pair_generator(m) -> str:
-    return {"type": "pair", "pair": m.cursorless_pair_symbol}
+    return {"type": "pair", "pair": m.cursorless_paired_delimiter}
 
 
 @mod.capture(
