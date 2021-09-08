@@ -1,66 +1,80 @@
-from talon import Context, Module
-import copy
+from talon import Module, app
+from ..csv_overrides import init_csv_and_watch_changes
 
 mod = Module()
-ctx = Context()
 
-ctx.matches = r"""
-tag: user.cursorless
-"""
 
-containing_scope_type_map = {
+mod.list("cursorless_scope_type", desc="Supported scope types")
+
+# NOTE: Please do not change these dicts.  Use the CSVs for customization.
+# See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
+scope_types = {
     "arg": "argumentOrParameter",
-    "arrow": "arrowFunction",
+    "attribute": "attribute",
     "call": "functionCall",
     "class name": "className",
     "class": "class",
     "comment": "comment",
     "funk name": "functionName",
     "funk": "namedFunction",
-    "if": "ifStatement",
+    "if state": "ifStatement",
     "item": "collectionItem",
     "key": "collectionKey",
-    "lambda": "arrowFunction",
+    "lambda": "anonymousFunction",
     "list": "list",
-    "map": "dictionary",
+    "map": "map",
     "name": "name",
-    "regex": "regex",
+    "regex": "regularExpression",
     "state": "statement",
     "string": "string",
     "type": "type",
     "value": "value",
     #  XML, JSX
-    "attribute": "xmlAttribute",
     "element": "xmlElement",
     "tags": "xmlBothTags",
     "start tag": "xmlStartTag",
     "end tag": "xmlEndTag",
 }
 
-containing_scope_types = {
-    term: {
+
+@mod.capture(rule="[every] {user.cursorless_scope_type}")
+def cursorless_containing_scope(m) -> str:
+    """Expand to containing scope"""
+    return {
         "modifier": {
             "type": "containingScope",
-            "scopeType": containing_scope_type,
+            "scopeType": m.cursorless_scope_type,
+            "includeSiblings": m[0] == "every",
         }
     }
-    for term, containing_scope_type in containing_scope_type_map.items()
+
+
+# NOTE: Please do not change these dicts.  Use the CSVs for customization.
+# See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
+selection_types = {
+    "block": "paragraph",
+    "cell": "notebookCell",
+    "file": "document",
+    "line": "line",
+    "token": "token",
 }
 
-mod.list("cursorless_containing_scope_type", desc="Supported containing scope types")
-ctx.lists["self.cursorless_containing_scope_type"] = containing_scope_types.keys()
+# NOTE: Please do not change these dicts.  Use the CSVs for customization.
+# See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
+subtoken_scope_types = {
+    "word": "word",
+    "char": "character",
+}
+
+default_values = {
+    "scope_type": scope_types,
+    "selection_type": selection_types,
+    "subtoken_scope_type": subtoken_scope_types,
+}
 
 
-@mod.capture(rule="{user.cursorless_containing_scope_type}")
-def cursorless_containing_scope_type(m) -> str:
-    return containing_scope_types[m.cursorless_containing_scope_type]
+def on_ready():
+    init_csv_and_watch_changes("modifier_scope_types", default_values)
 
 
-@mod.capture(rule=("[every] <user.cursorless_containing_scope_type>"))
-def cursorless_containing_scope(m) -> str:
-    """Supported containing scope types"""
-    if m[0] == "every":
-        current_target = copy.deepcopy(m.cursorless_containing_scope_type)
-        current_target["modifier"]["includeSiblings"] = True
-        return current_target
-    return m.cursorless_containing_scope_type
+app.register("ready", on_ready)

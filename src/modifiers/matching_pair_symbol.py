@@ -1,14 +1,8 @@
-from talon import Context, Module
-from dataclasses import dataclass
+from talon import Module
 
 mod = Module()
-ctx = Context()
-
-ctx.matches = r"""
-tag: user.cursorless
-"""
 
 
 @mod.capture(rule="matching")
-def cursorless_matching_pair_symbol(m) -> str:
-    return {"modifier": {"type": "matchingPairSymbol"}}
+def cursorless_matching_paired_delimiter(m) -> str:
+    return {"modifier": {"type": "matchingPairedDelimiter"}}

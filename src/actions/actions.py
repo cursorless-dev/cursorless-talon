@@ -1,85 +1,95 @@
-from talon import Context, Module, actions
+from talon import Module, actions, app
 from dataclasses import dataclass
+from ..csv_overrides import init_csv_and_watch_changes
 from .homophones import run_homophones_action
 from .find import run_find_action
+from .call import run_call_action
 
 mod = Module()
-
-ctx = Context()
-ctx.matches = r"""
-tag: user.cursorless
-"""
 
 
 @dataclass
 class MakeshiftAction:
     term: str
+    identifier: str
     vscode_command_id: str
     pre_command_sleep: float = 0
     post_command_sleep: float = 0
 
 
+# NOTE: Please do not change these dicts.  Use the CSVs for customization.
+# See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
 makeshift_actions = [
-    MakeshiftAction("define", "editor.action.revealDefinition"),
-    MakeshiftAction("drink cell", "jupyter.insertCellAbove"),
-    MakeshiftAction("hover", "editor.action.showHover"),
-    MakeshiftAction("inspect", "editor.debug.action.showDebugHover"),
-    MakeshiftAction("pour cell", "jupyter.insertCellBelow"),
-    MakeshiftAction("quick fix", "editor.action.quickFix", pre_command_sleep=0.3),
-    MakeshiftAction("reference", "references-view.find"),
-    MakeshiftAction("rename", "editor.action.rename", post_command_sleep=0.1),
+    MakeshiftAction("define", "revealDefinition", "editor.action.revealDefinition"),
+    MakeshiftAction(
+        "type deaf", "revealTypeDefinition", "editor.action.goToTypeDefinition"
+    ),
+    MakeshiftAction("hover", "showHover", "editor.action.showHover"),
+    MakeshiftAction("inspect", "showDebugHover", "editor.debug.action.showDebugHover"),
+    MakeshiftAction(
+        "quick fix", "showQuickFix", "editor.action.quickFix", pre_command_sleep=0.3
+    ),
+    MakeshiftAction("reference", "showReferences", "references-view.find"),
+    MakeshiftAction("rename", "rename", "editor.action.rename", post_command_sleep=0.1),
 ]
 
-makeshift_action_map = {action.term: action for action in makeshift_actions}
+makeshift_action_map = {action.identifier: action for action in makeshift_actions}
 
 
 @dataclass
 class CallbackAction:
     term: str
-    action: str
+    identifier: str
     callback: callable
 
 
+# NOTE: Please do not change these dicts.  Use the CSVs for customization.
+# See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
 callbacks = [
-    CallbackAction("find", "find", run_find_action),
+    CallbackAction("call", "callAsFunction", run_call_action),
+    CallbackAction("scout", "findInDocument", run_find_action),
     CallbackAction("phones", "nextHomophone", run_homophones_action),
 ]
 
-callbacks_map = {callback.action: callback.callback for callback in callbacks}
+callbacks_map = {callback.identifier: callback.callback for callback in callbacks}
 
 
 mod.list("cursorless_simple_action", desc="Supported actions for cursorless navigation")
-ctx.lists["self.cursorless_simple_action"] = {
+
+
+# NOTE: Please do not change these dicts.  Use the CSVs for customization.
+# See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
+simple_actions = {
     "bottom": "scrollToBottom",
-    "breakpoint": "setBreakpoint",
-    "carve": "cut",
+    "breakpoint": "toggleLineBreakpoint",
+    "carve": "cutToClipboard",
     "center": "scrollToCenter",
-    "chuck": "delete",
-    "clear": "clear",
-    "comment": "commentLines",
-    "copy": "copy",
-    "dedent": "outdentLines",
-    "drink": "editNewLineAbove",
-    "drop": "insertEmptyLineAbove",
-    "clone": "copyLinesDown",
-    "clone up": "copyLinesUp",
+    "chuck": "remove",
+    "clear": "clearAndSetSelection",
+    "clone up": "insertCopyBefore",
+    "clone": "insertCopyAfter",
+    "comment": "toggleLineComment",
+    "copy": "copyToClipboard",
+    "crown": "scrollToTop",
+    "dedent": "outdentLine",
+    "drink": "editNewLineBefore",
+    "drop": "insertEmptyLineBefore",
     "extract": "extractVariable",
-    "find all": "findInFiles",
-    "float": "insertEmptyLineBelow",
-    "fold": "fold",
-    "indent": "indentLines",
-    "paste": "paste",
+    "float": "insertEmptyLineAfter",
+    "fold": "foldRegion",
+    "indent": "indentLine",
+    "paste to": "pasteFromClipboard",
     "post": "setSelectionAfter",
-    "pour": "editNewLineBelow",
+    "pour": "editNewLineAfter",
     "pre": "setSelectionBefore",
     "puff": "insertEmptyLinesAround",
-    "reverse": "reverse",
-    "sort": "sort",
+    "reverse": "reverseTargets",
+    "scout all": "findInWorkspace",
+    "sort": "sortTargets",
     "take": "setSelection",
-    "top": "scrollToTop",
-    "unfold": "unfold",
-    **{callback.term: callback.action for callback in callbacks},
-    **{action.term: action.term for action in makeshift_actions},
+    "unfold": "unfoldRegion",
+    **{action.term: action.identifier for action in makeshift_actions},
+    **{callback.term: callback.identifier for callback in callbacks},
 }
 
 
@@ -102,3 +112,23 @@ def run_makeshift_action(action: str, targets: dict):
     actions.sleep(makeshift_action.pre_command_sleep)
     actions.user.vscode(makeshift_action.vscode_command_id)
     actions.sleep(makeshift_action.post_command_sleep)
+
+
+# NOTE: Please do not change these dicts.  Use the CSVs for customization.
+# See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
+default_values = {
+    "simple_action": simple_actions,
+    "swap_action": {"swap": "swapTargets"},
+    "move_bring_action": {"bring": "replaceWithTarget", "move": "moveToTarget"},
+    "wrap_action": {"wrap": "wrapWithPairedDelimiter"},
+    "reformat_action": {"format": "applyFormatter"},
+}
+
+ACTION_LIST_NAMES = default_values.keys()
+
+
+def on_ready():
+    init_csv_and_watch_changes("actions", default_values)
+
+
+app.register("ready", on_ready)

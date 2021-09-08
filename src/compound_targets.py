@@ -4,33 +4,54 @@ from talon import Module
 mod = Module()
 
 
+mod.list(
+    "cursorless_range_connective",
+    desc="A range joiner that indicates whether to include or exclude anchor and active",
+)
+mod.list(
+    "cursorless_list_connective",
+    desc="A list joiner",
+)
+
+
 @mod.capture(
     rule=(
-        "<user.cursorless_primitive_target> | "
-        "(past|until|tween) <user.cursorless_primitive_target> | "
-        "<user.cursorless_primitive_target> (past|until|tween) <user.cursorless_primitive_target>"
+        "[{user.cursorless_range_connective}] <user.cursorless_primitive_target> | "
+        "<user.cursorless_primitive_target> {user.cursorless_range_connective} <user.cursorless_primitive_target>"
     )
 )
 def cursorless_range(m) -> str:
-    length = len(m)
-    if length == 1:
-        return m[0]
+    primitive_targets = m.cursorless_primitive_target_list
+    range_connective = getattr(m, "cursorless_range_connective", None)
 
-    if length == 2:
+    if range_connective is None:
+        return primitive_targets[0]
+
+    if len(primitive_targets) == 1:
         start = BASE_TARGET.copy()
     else:
-        start = m[0]
-    modifier = m[-2]
+        start = primitive_targets[0]
+
     return {
         "type": "range",
         "start": start,
-        "end": m[-1],
-        "excludeStart": modifier == "tween",
-        "excludeEnd": modifier in ["tween", "until"],
+        "end": primitive_targets[-1],
+        "excludeStart": not is_anchor_included(range_connective),
+        "excludeEnd": not is_active_included(range_connective),
     }
 
 
-@mod.capture(rule="<user.cursorless_range> (and <user.cursorless_range>)*")
+def is_anchor_included(range_connective: str):
+    return range_connective not in ["rangeExclusive", "rangeExcludingStart"]
+
+
+def is_active_included(range_connective: str):
+    return range_connective not in ["rangeExclusive", "rangeExcludingEnd"]
+
+
+@mod.capture(
+    rule="<user.cursorless_range> ({user.cursorless_list_connective} <user.cursorless_range>)*"
+)
 def cursorless_target(m) -> str:
     if len(m.cursorless_range_list) == 1:
         return m.cursorless_range

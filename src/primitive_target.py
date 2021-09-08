@@ -1,13 +1,7 @@
-from dataclasses import dataclass
-from talon import Context, Module
-from .modifiers.selection_type import SELECTION_TYPE_KEY, RANKED_SELECTION_TYPES
+from talon import Module
 
-ctx = Context()
+
 mod = Module()
-
-ctx.matches = r"""
-tag: user.cursorless
-"""
 
 BASE_TARGET = {"type": "primitive"}
 STRICT_HERE = {
@@ -19,36 +13,30 @@ STRICT_HERE = {
     "insideOutsideType": "inside",
 }
 
+
 modifiers = [
     "<user.cursorless_position>",  # before, end of
     "<user.cursorless_selection_type>",  # token, line, file
-    "<user.cursorless_containing_scope>",  # funk, state, class
-    "<user.cursorless_subtoken>",  # first past second word
     "<user.cursorless_head_tail>",  # head, tail
-    "<user.cursorless_inside_outside>",  # inner, outer
-    "<user.cursorless_surrounding_pair>",  # curly, round
-    # "<user.cursorless_matching_pair_symbol>",  # matching
+    "<user.cursorless_containing_scope>",  # funk, state, class
+    "<user.cursorless_subtoken_scope>",  # first past second word
+    # "<user.cursorless_surrounding_pair>",  # matching/pair [curly, round]
+    # "<user.cursorless_matching_paired_delimiter>",  # matching
 ]
 
-modifiers_and_mark = (
-    f"({'|'.join(modifiers)})* "  # 0 or more parameters
-    "<user.cursorless_mark>"  # 1 mark
+
+@mod.capture(rule="|".join(modifiers))
+def cursorless_modifier(m) -> str:
+    """Cursorless modifier"""
+    return m[0]
+
+
+@mod.capture(
+    rule="<user.cursorless_modifier>+ [<user.cursorless_mark>] | <user.cursorless_mark>"
 )
-
-modifiers_only = f"({'|'.join(modifiers)})+"  # 1 or more parameters
-
-
-@mod.capture(rule=f"({modifiers_and_mark}) | ({modifiers_only})")
 def cursorless_primitive_target(m) -> str:
     """Supported extents for cursorless navigation"""
-    object = BASE_TARGET.copy()
+    result = BASE_TARGET.copy()
     for capture in m:
-        for key, value in capture.items():
-            if (
-                key in object
-                and key == SELECTION_TYPE_KEY
-                and RANKED_SELECTION_TYPES[value] < RANKED_SELECTION_TYPES[object[key]]
-            ):
-                continue
-            object[key] = value
-    return object
+        result.update(capture)
+    return result
