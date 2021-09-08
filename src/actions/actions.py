@@ -122,6 +122,7 @@ default_values = {
     "move_bring_action": {"bring": "replaceWithTarget", "move": "moveToTarget"},
     "wrap_action": {"wrap": "wrapWithPairedDelimiter"},
     "reformat_action": {"format": "applyFormatter"},
+    "insert_action": {"insert": "insert"},
 }
 
 ACTION_LIST_NAMES = default_values.keys()

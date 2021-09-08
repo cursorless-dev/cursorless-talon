@@ -2,6 +2,7 @@ from talon import Module
 
 mod = Module()
 
+mod.list("cursorless_insert_action", desc="Cursorless insert action")
 
 @mod.capture(rule="count [from <number_small>]")
 def cursorless_range_generator(m) -> str:
