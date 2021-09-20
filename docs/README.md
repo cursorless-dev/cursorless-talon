@@ -82,27 +82,28 @@ Combining this with an action, we might say `"take blue air"` to select the toke
 
 The following colors are supported:
 
-| Command    | Visible color |
-| ---------- | ------------- |
-| `"blue"`   | Blue          |
-| `"green"`  | Green         |
-| `"rose"`   | Red           |
-| `"squash"` | Yellow        |
-| `"plum"`   | Pink          |
+| Spoken form | Visible color |
+| ----------- | ------------- |
+| `"blue"`    | Blue          |
+| `"green"`   | Green         |
+| `"rose"`    | Red           |
+| `"squash"`  | Yellow        |
+| `"plum"`    | Pink          |
 
 ###### Shapes
 
 The following shapes are supported:
 
-| Command   | Visible color    | Enabled by default? |
-| --------- | ---------------- | ------------------- |
-| `"splat"` | Four-point star  | ✅                  |
-| `"fox"`   | Chevron          | ✅                  |
-| `"wing"`  | Three-point star | ❌                  |
-| `"hole"`  | Hole             | ❌                  |
-| `"frame"` | Frame            | ❌                  |
-| `"curve"` | Curve            | ❌                  |
-| `"stare"` | Eye              | ❌                  |
+| Spoken form | Shape            | Enabled by default? |
+| ----------- | ---------------- | ------------------- |
+| `"ex"`      | Four-point star  | ❌                  |
+| `"fox"`     | Chevron          | ❌                  |
+| `"wing"`    | Three-point star | ❌                  |
+| `"hole"`    | Hole             | ❌                  |
+| `"frame"`   | Frame            | ❌                  |
+| `"curve"`   | Curve            | ❌                  |
+| `"eye"`     | Eye              | ❌                  |
+| `"play"`    | Play             | ❌                  |
 
 To enable or disable shapes requires the following two steps:
 
