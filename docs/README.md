@@ -17,6 +17,7 @@ Note: If you'd like to customize any of the spoken forms, please see the [docume
     - [Marks](#marks)
       - [Decorated symbol](#decorated-symbol)
         - [Colors](#colors)
+        - [Shapes](#shapes)
       - [`"this"`](#this)
       - [`"that"`](#that)
     - [Modifiers](#modifiers)
@@ -94,8 +95,8 @@ The following colors are supported:
 
 The following shapes are supported:
 
-| Spoken form | Shape                                                                                                          | Enabled by default? |
-| ----------- | -------------------------------------------------------------------------------------------------------------- | ------------------- |
+| Spoken form | Shape                                                                                          | Enabled by default? |
+| ----------- | ---------------------------------------------------------------------------------------------- | ------------------- |
 | `"ex"`      | ![Ex](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/ex.svg)       | ❌                  |
 | `"fox"`     | ![Fox](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/fox.svg)     | ❌                  |
 | `"wing"`    | ![Wing](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/wing.svg)   | ❌                  |
