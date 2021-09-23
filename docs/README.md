@@ -94,16 +94,19 @@ The following colors are supported:
 
 The following shapes are supported:
 
-| Spoken form | Shape            | Enabled by default? |
-| ----------- | ---------------- | ------------------- |
-| `"ex"`      | Four-point star  | ❌                  |
-| `"fox"`     | Chevron          | ❌                  |
-| `"wing"`    | Three-point star | ❌                  |
-| `"hole"`    | Hole             | ❌                  |
-| `"frame"`   | Frame            | ❌                  |
-| `"curve"`   | Curve            | ❌                  |
-| `"eye"`     | Eye              | ❌                  |
-| `"play"`    | Play             | ❌                  |
+![image](https://user-images.githubusercontent.com/755842/134565170-4b8246a2-c2b4-4fc2-b3b5-fe66e3f20108.png)
+
+| Spoken form | Shape | Enabled by default? |
+| ----------- | ----- | ------------------- |
+| `"ex"`      | Ex    | ❌                  |
+| `"fox"`     | Fox   | ❌                  |
+| `"wing"`    | Wing  | ❌                  |
+| `"hole"`    | Hole  | ❌                  |
+| `"frame"`   | Frame | ❌                  |
+| `"curve"`   | Curve | ❌                  |
+| `"eye"`     | Eye   | ❌                  |
+| `"play"`    | Play  | ❌                  |
+| `"star"`    | Star  | ❌                  |
 
 To enable or disable shapes requires the following two steps:
 
