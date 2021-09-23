@@ -94,7 +94,7 @@ The following colors are supported:
 
 The following shapes are supported:
 
-![image](https://user-images.githubusercontent.com/755842/134565170-4b8246a2-c2b4-4fc2-b3b5-fe66e3f20108.png)
+![image](https://raw.githubusercontent.com/pokey/cursorless-vscode/pokey-icon-alignment/images/hats/eye.svg)
 
 | Spoken form | Shape | Enabled by default? |
 | ----------- | ----- | ------------------- |
