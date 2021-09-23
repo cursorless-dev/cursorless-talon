@@ -94,19 +94,17 @@ The following colors are supported:
 
 The following shapes are supported:
 
-![image](https://raw.githubusercontent.com/pokey/cursorless-vscode/pokey-icon-alignment/images/hats/eye.svg)
-
 | Spoken form | Shape                                                                                                          | Enabled by default? |
 | ----------- | -------------------------------------------------------------------------------------------------------------- | ------------------- |
-| `"ex"`      | ![Ex](https://raw.githubusercontent.com/pokey/cursorless-vscode/pokey-icon-alignment/images/hats/ex.svg)       | ❌                  |
-| `"fox"`     | ![Fox](https://raw.githubusercontent.com/pokey/cursorless-vscode/pokey-icon-alignment/images/hats/fox.svg)     | ❌                  |
-| `"wing"`    | ![Wing](https://raw.githubusercontent.com/pokey/cursorless-vscode/pokey-icon-alignment/images/hats/wing.svg)   | ❌                  |
-| `"hole"`    | ![Hole](https://raw.githubusercontent.com/pokey/cursorless-vscode/pokey-icon-alignment/images/hats/hole.svg)   | ❌                  |
-| `"frame"`   | ![Frame](https://raw.githubusercontent.com/pokey/cursorless-vscode/pokey-icon-alignment/images/hats/frame.svg) | ❌                  |
-| `"curve"`   | ![Curve](https://raw.githubusercontent.com/pokey/cursorless-vscode/pokey-icon-alignment/images/hats/curve.svg) | ❌                  |
-| `"eye"`     | ![Eye](https://raw.githubusercontent.com/pokey/cursorless-vscode/pokey-icon-alignment/images/hats/eye.svg)     | ❌                  |
-| `"play"`    | ![Play](https://raw.githubusercontent.com/pokey/cursorless-vscode/pokey-icon-alignment/images/hats/play.svg)   | ❌                  |
-| `"star"`    | ![Star](https://raw.githubusercontent.com/pokey/cursorless-vscode/pokey-icon-alignment/images/hats/star.svg)   | ❌                  |
+| `"ex"`      | ![Ex](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/ex.svg)       | ❌                  |
+| `"fox"`     | ![Fox](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/fox.svg)     | ❌                  |
+| `"wing"`    | ![Wing](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/wing.svg)   | ❌                  |
+| `"hole"`    | ![Hole](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/hole.svg)   | ❌                  |
+| `"frame"`   | ![Frame](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/frame.svg) | ❌                  |
+| `"curve"`   | ![Curve](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/curve.svg) | ❌                  |
+| `"eye"`     | ![Eye](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/eye.svg)     | ❌                  |
+| `"play"`    | ![Play](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/play.svg)   | ❌                  |
+| `"star"`    | ![Star](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/star.svg)   | ❌                  |
 
 To enable or disable shapes requires the following two steps:
 
