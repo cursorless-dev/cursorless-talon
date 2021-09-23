@@ -21,14 +21,15 @@ hat_colors = {
 }
 
 hat_shapes = {
-    "-ex": "fourPointStar",
-    "-fox": "chevron",
-    "-wing": "threePointStar",
+    "-ex": "ex",
+    "-fox": "fox",
+    "-wing": "wing",
     "-hole": "hole",
     "-frame": "frame",
     "-curve": "curve",
     "-eye": "eye",
     "-play": "play",
+    "-star": "star",
 }
 
 
