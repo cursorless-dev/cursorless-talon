@@ -30,6 +30,7 @@ hat_shapes = {
     "-eye": "eye",
     "-play": "play",
     "-star": "star",
+    "-bolt": "bolt",
 }
 
 
