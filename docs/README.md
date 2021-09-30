@@ -91,6 +91,9 @@ The following colors are supported:
 | `"squash"`  | Yellow        |
 | `"plum"`    | Pink          |
 
+Note that if you find these color names unintuitive / tough to remember, their
+spoken forms can be [customized](customization.md) like any other spoken form in cursorless.
+
 ###### Shapes
 
 The following shapes are supported:
@@ -109,6 +112,9 @@ The following shapes are supported:
 | `"bolt"`    | `bolt`      | ![Bolt](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/bolt.svg)   | ❌                  |
 
 To enable or disable shapes, simply check the box next to the internal ID the given shape in the `cursorless.hatEnablement.shapes` field of the cursorless vscode settings.
+
+Note that if you find these shape names unintuitive / tough to remember, their
+spoken forms can be [customized](customization.md) like any other spoken form in cursorless.
 
 ##### `"this"`
 
