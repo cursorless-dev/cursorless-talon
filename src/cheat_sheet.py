@@ -62,7 +62,7 @@ class CheatSheet:
             width,
             height,
         )
-        self.canvas.set_rect(rect)
+        self.canvas.rect = rect
 
     def mouse(self, e):
         if e.event == "mousedown" and e.button == 0:
