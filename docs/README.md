@@ -95,22 +95,20 @@ The following colors are supported:
 
 The following shapes are supported:
 
-| Spoken form | Shape                                                                                          | Enabled by default? |
-| ----------- | ---------------------------------------------------------------------------------------------- | ------------------- |
-| `"ex"`      | ![Ex](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/ex.svg)       | ❌                  |
-| `"fox"`     | ![Fox](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/fox.svg)     | ❌                  |
-| `"wing"`    | ![Wing](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/wing.svg)   | ❌                  |
-| `"hole"`    | ![Hole](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/hole.svg)   | ❌                  |
-| `"frame"`   | ![Frame](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/frame.svg) | ❌                  |
-| `"curve"`   | ![Curve](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/curve.svg) | ❌                  |
-| `"eye"`     | ![Eye](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/eye.svg)     | ❌                  |
-| `"play"`    | ![Play](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/play.svg)   | ❌                  |
-| `"star"`    | ![Star](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/star.svg)   | ❌                  |
+| Spoken form | Internal ID | Shape                                                                                          | Enabled by default? |
+| ----------- | ----------- | ---------------------------------------------------------------------------------------------- | ------------------- |
+| `"ex"`      | `ex`        | ![Ex](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/ex.svg)       | ❌                  |
+| `"fox"`     | `fox`       | ![Fox](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/fox.svg)     | ❌                  |
+| `"wing"`    | `wing`      | ![Wing](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/wing.svg)   | ❌                  |
+| `"hole"`    | `hole`      | ![Hole](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/hole.svg)   | ❌                  |
+| `"frame"`   | `frame`     | ![Frame](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/frame.svg) | ❌                  |
+| `"curve"`   | `curve`     | ![Curve](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/curve.svg) | ❌                  |
+| `"eye"`     | `eye`       | ![Eye](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/eye.svg)     | ❌                  |
+| `"play"`    | `play`      | ![Play](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/play.svg)   | ❌                  |
+| `"star"`    | `star`      | ![Star](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/star.svg)   | ❌                  |
+| `"bolt"`    | `bolt`      | ![Bolt](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/bolt.svg)   | ❌                  |
 
-To enable or disable shapes requires the following two steps:
-
-1. Check the box corresponding to the given shape in the `cursorless.hatEnablement.shapes` field of the cursorless vscode settings
-2. Enable the corresponding spoken form in the [spoken form customization csvs](customization.md) for cursorless talon
+To enable or disable shapes, simply check the box next to the internal ID the given shape in the `cursorless.hatEnablement.shapes` field of the cursorless vscode settings.
 
 ##### `"this"`
 
