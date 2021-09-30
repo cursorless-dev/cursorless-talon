@@ -95,8 +95,12 @@ You can enable or disable colors in your VSCode settings, by searching for `curs
 
 You can also tweak the visible colors for any of these colors in your VSCode settings, by searching for `cursorless.colors` and changing the hex color code next to the internal ID for the given shape as listed above. Note that you can configure different colors for dark and light themes.
 
-Note that if you find these color names unintuitive / tough to remember, their
-spoken forms can be [customized](customization.md) like any other spoken form in cursorless.
+If you find these color names unintuitive / tough to remember, their
+spoken forms can be [customized](customization.md) like any other spoken form
+in cursorless. If you change a spoken form to be more than one syllable, you
+can change the penalty in the `cursorless.hatPenalties.colors` setting to the
+number of syllables you use, so that cursorless can optimize hat allocation to
+minimize syllables.
 
 ###### Shapes
 
@@ -117,8 +121,12 @@ The following shapes are supported:
 
 You can enable or disable shapes in your VSCode settings, by searching for `cursorless.hatEnablement.shapes` and checking the box next to the internal ID for the given shape as listed above.
 
-Note that if you find these shape names unintuitive / tough to remember, their
-spoken forms can be [customized](customization.md) like any other spoken form in cursorless.
+If you find these shape names unintuitive / tough to remember, their
+spoken forms can be [customized](customization.md) like any other spoken form
+in cursorless. If you change a spoken form to be more than one syllable, you
+can change the penalty in the `cursorless.hatPenalties.shapes` setting to the
+number of syllables you use, so that cursorless can optimize hat allocation to
+minimize syllables.
 
 ##### `"this"`
 
