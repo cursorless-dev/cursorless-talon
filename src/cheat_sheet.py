@@ -203,13 +203,17 @@ class CheatSheet:
             },
         )
 
-        self.next_row()
-        self.draw_header(canvas, "Colors")
-        self.draw_items(canvas, get_list("hat_color"))
+        hat_colors = get_list("hat_color")
+        if hat_colors:
+            self.next_row()
+            self.draw_header(canvas, "Colors")
+            self.draw_items(canvas, hat_colors)
 
-        self.next_row()
-        self.draw_header(canvas, "Shapes")
-        self.draw_items(canvas, get_list("hat_shape"))
+        hat_shapes = get_list("hat_shape")
+        if hat_shapes:
+            self.next_row()
+            self.draw_header(canvas, "Shapes")
+            self.draw_items(canvas, hat_shapes)
 
         self.next_row()
         self.draw_header(canvas, "Examples")

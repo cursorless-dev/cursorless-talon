@@ -14,7 +14,11 @@ cursorless_settings_directory = mod.setting(
 )
 
 
-def init_csv_and_watch_changes(filename: str, default_values: dict[str, dict]):
+def init_csv_and_watch_changes(
+    filename: str,
+    default_values: dict[str, dict],
+    extra_acceptable_values: list[str] = None,
+):
     """
     Initialize a cursorless settings csv, creating it if necessary, and watch
     for changes to the csv.  Talon lists will be generated based on the keys of
@@ -33,7 +37,12 @@ def init_csv_and_watch_changes(filename: str, default_values: dict[str, dict]):
         `cursorles-settings` dir
         default_values (dict[str, dict]): The default values for the lists to
         be customized in the given csv
+        extra_acceptable_values list[str]: Don't throw an exception if any of
+        these appear as values
     """
+    if extra_acceptable_values is None:
+        extra_acceptable_values = []
+
     dir_path, file_path = get_file_paths(filename)
     super_default_values = get_super_values(default_values)
 
@@ -42,25 +51,36 @@ def init_csv_and_watch_changes(filename: str, default_values: dict[str, dict]):
     def on_watch(path, flags):
         if file_path.match(path):
             current_values, has_errors = read_file(
-                file_path, super_default_values.values()
+                file_path, super_default_values.values(), extra_acceptable_values
             )
-            update_dicts(default_values, current_values)
+            update_dicts(default_values, current_values, extra_acceptable_values)
 
     fs.watch(dir_path, on_watch)
 
     if file_path.is_file():
-        current_values = update_file(file_path, super_default_values)
-        update_dicts(default_values, current_values)
+        current_values = update_file(
+            file_path, super_default_values, extra_acceptable_values
+        )
+        update_dicts(default_values, current_values, extra_acceptable_values)
     else:
         create_file(file_path, super_default_values)
-        update_dicts(default_values, super_default_values)
+        update_dicts(default_values, super_default_values, extra_acceptable_values)
+
+    def unsubscribe():
+        fs.unwatch(dir_path, on_watch)
+
+    return unsubscribe
 
 
 def is_removed(value: str):
     return value.startswith("-")
 
 
-def update_dicts(default_values: dict[str, dict], current_values: dict):
+def update_dicts(
+    default_values: dict[str, dict],
+    current_values: dict,
+    extra_acceptable_values: list[str],
+):
     # Create map with all default values
     results_map = {}
     for list_name, dict in default_values.items():
@@ -69,7 +89,13 @@ def update_dicts(default_values: dict[str, dict], current_values: dict):
 
     # Update result with current values
     for key, value in current_values.items():
-        results_map[value]["key"] = key
+        try:
+            results_map[value]["key"] = key
+        except KeyError:
+            if value in extra_acceptable_values:
+                pass
+            else:
+                raise
 
     # Convert result map back to result list
     results = {key: {} for key in default_values}
@@ -84,8 +110,10 @@ def update_dicts(default_values: dict[str, dict], current_values: dict):
         ctx.lists[get_cursorless_list_name(list_name)] = dict
 
 
-def update_file(path: Path, default_values: dict):
-    current_values, has_errors = read_file(path, default_values.values())
+def update_file(path: Path, default_values: dict, extra_acceptable_values: list[str]):
+    current_values, has_errors = read_file(
+        path, default_values.values(), extra_acceptable_values
+    )
     current_identifiers = current_values.values()
 
     missing = {}
@@ -149,7 +177,9 @@ def csv_error(path: Path, index: int, message: str, value: str):
     print(f"ERROR: {path}:{index+1}: {message} '{value}'")
 
 
-def read_file(path: Path, default_identifiers: list[str]):
+def read_file(
+    path: Path, default_identifiers: list[str], extra_acceptable_values: list[str]
+):
     with open(path) as f:
         lines = list(f)
 
@@ -180,7 +210,7 @@ def read_file(path: Path, default_identifiers: list[str]):
             seen_header = True
             continue
 
-        if value not in default_identifiers:
+        if value not in default_identifiers and value not in extra_acceptable_values:
             has_errors = True
             csv_error(path, i, "Unknown identifier", value)
             continue
