@@ -83,13 +83,17 @@ Combining this with an action, we might say `"take blue air"` to select the toke
 
 The following colors are supported:
 
-| Spoken form | Visible color |
-| ----------- | ------------- |
-| `"blue"`    | Blue          |
-| `"green"`   | Green         |
-| `"rose"`    | Red           |
-| `"squash"`  | Yellow        |
-| `"plum"`    | Pink          |
+| Spoken form | Visible color | Internal ID |
+| ----------- | ------------- | ----------- |
+| `"blue"`    | Blue          | `blue`      |
+| `"green"`   | Green         | `green`     |
+| `"rose"`    | Red           | `rose`      |
+| `"squash"`  | Yellow        | `yellow`    |
+| `"plum"`    | Pink          | `pink`      |
+
+You can enable or disable colors in your VSCode settings, by searching for `cursorless.hatEnablement.colors` and checking the box next to the internal ID for the given shape as listed above.
+
+You can also tweak the visible colors for any of these colors in your VSCode settings, by searching for `cursorless.colors` and changing the hex color code next to the internal ID for the given shape as listed above. Note that you can configure different colors for dark and light themes.
 
 Note that if you find these color names unintuitive / tough to remember, their
 spoken forms can be [customized](customization.md) like any other spoken form in cursorless.
@@ -111,7 +115,7 @@ The following shapes are supported:
 | `"star"`    | `star`      | ![Star](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/star.svg)   | ❌                  |
 | `"bolt"`    | `bolt`      | ![Bolt](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/bolt.svg)   | ❌                  |
 
-To enable or disable shapes, simply check the box next to the internal ID the given shape in the `cursorless.hatEnablement.shapes` field of the cursorless vscode settings.
+You can enable or disable shapes in your VSCode settings, by searching for `cursorless.hatEnablement.shapes` and checking the box next to the internal ID for the given shape as listed above.
 
 Note that if you find these shape names unintuitive / tough to remember, their
 spoken forms can be [customized](customization.md) like any other spoken form in cursorless.
