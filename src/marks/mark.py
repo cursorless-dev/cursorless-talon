@@ -101,51 +101,37 @@ def cursorless_mark(m) -> str:
     return m.cursorless_line_number_simple
 
 
-DEFAULT_COLOR_ENABLEMENT = {
-    "blue": True,
-    "green": True,
-    "red": True,
-    "pink": True,
-    "yellow": True,
-}
-
-DEFAULT_SHAPE_ENABLEMENT = {
-    "ex": False,
-    "fox": False,
-    "wing": False,
-    "hole": False,
-    "frame": False,
-    "curve": False,
-    "eye": False,
-    "play": False,
-    "bolt": False,
-    "star": False,
-}
-
 unsubscribe_hat_styles = None
 
 
-def setup_hat_styles_csv():
-    global unsubscribe_hat_styles
+color_enablements = set()
+shape_enablements = set()
 
-    color_enablement = {
-        **DEFAULT_COLOR_ENABLEMENT,
-        **actions.user.vscode_get_setting("cursorless.hatEnablement.colors", {}),
-    }
-    shape_enablement = {
-        **DEFAULT_SHAPE_ENABLEMENT,
-        **actions.user.vscode_get_setting("cursorless.hatEnablement.shapes", {}),
-    }
+
+def setup_hat_styles_csv(enablements: dict):
+    global unsubscribe_hat_styles, color_enablements, shape_enablements
+
+    new_color_enablements = set(enablements["colors"])
+    new_shape_enablements = set(enablements["shapes"])
+
+    if (
+        color_enablements == new_color_enablements
+        and shape_enablements == new_shape_enablements
+    ):
+        return
+
+    shape_enablements = new_shape_enablements
+    color_enablements = new_color_enablements
 
     active_hat_colors = {
         spoken_form: value
         for spoken_form, value in hat_colors.items()
-        if color_enablement[value]
+        if value in enablements["colors"]
     }
     active_hat_shapes = {
         spoken_form: value
         for spoken_form, value in hat_shapes.items()
-        if shape_enablement[value]
+        if value in enablements["shapes"]
     }
 
     if unsubscribe_hat_styles is not None:
@@ -169,15 +155,7 @@ def on_ready():
         },
     )
 
-    setup_hat_styles_csv()
-
-    vscode_settings_path: Path = actions.user.vscode_settings_path()
-
-    def on_watch(path, flags):
-        if vscode_settings_path.match(path):
-            cron.after("500ms", setup_hat_styles_csv)
-
-    fs.watch(vscode_settings_path.parents[0], on_watch)
+    actions.user.watch_vscode_state("cursorless.hatEnablement", setup_hat_styles_csv)
 
 
 app.register("ready", on_ready)
