@@ -175,7 +175,7 @@ def on_ready():
 
     def on_watch(path, flags):
         if vscode_settings_path.match(path):
-            cron.after("500ms", setup_hat_styles_csv)
+            cron.after("1s", setup_hat_styles_csv)
 
     fs.watch(vscode_settings_path.parents[0], on_watch)
 

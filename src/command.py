@@ -72,10 +72,10 @@ class Actions:
 
     def cursorless_multiple_target_command(
         action: str,
-        targets: List[dict],
-        arg1: Any = NotSet,
-        arg2: Any = NotSet,
-        arg3: Any = NotSet,
+        targets: list[dict],
+        arg1: any = NotSet,
+        arg2: any = NotSet,
+        arg3: any = NotSet,
     ):
         """Execute multi-target cursorless command"""
         args = list(filter(lambda x: x is not NotSet, [arg1, arg2, arg3]))

@@ -1,6 +1,5 @@
-import json
 import os
-from talon import Context, Module, actions, cron
+from talon import Context, Module, actions
 from pathlib import Path
 from ..vendor.jstyleson import loads
 
@@ -38,21 +37,43 @@ class Actions:
             return settings[key]
 
 
+def pick_path(paths: list[Path]):
+    existing_paths = [path for path in paths if path.exists()]
+    return max(existing_paths, key=lambda path: path.stat().st_mtime)
+
+
 @mac_ctx.action_class("user")
 class MacUserActions:
     def vscode_settings_path() -> Path:
-        return Path(
-            f"{os.environ['HOME']}/Library/Application Support/Code/User/settings.json"
+        return pick_path(
+            [
+                Path(
+                    f"{os.environ['HOME']}/Library/Application Support/Code/User/settings.json"
+                ),
+                Path(
+                    f"{os.environ['HOME']}/Library/Application Support/VSCodium/User/settings.json"
+                ),
+            ]
         )
 
 
 @linux_ctx.action_class("user")
 class LinuxUserActions:
     def vscode_settings_path() -> Path:
-        return Path(f"{os.environ['HOME']}/.config/Code/User/settings.json")
+        return pick_path(
+            [
+                Path(f"{os.environ['HOME']}/.config/Code/User/settings.json"),
+                Path(f"{os.environ['HOME']}/.config/VSCodium/User/settings.json"),
+            ]
+        )
 
 
 @windows_ctx.action_class("user")
 class WindowsUserActions:
     def vscode_settings_path() -> Path:
-        return Path(f"{os.environ['APPDATA']}/Code/User/settings.json")
+        return pick_path(
+            [
+                Path(f"{os.environ['APPDATA']}/Code/User/settings.json"),
+                Path(f"{os.environ['APPDATA']}/VSCodium/User/settings.json"),
+            ]
+        )

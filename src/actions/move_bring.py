@@ -16,7 +16,7 @@ mod.list("cursorless_move_bring_action", desc="Cursorless move or bring actions"
         "<user.cursorless_target> [{user.cursorless_source_destination_connective} <user.cursorless_target>]"
     )
 )
-def cursorless_move_bring_targets(m) -> str:
+def cursorless_move_bring_targets(m) -> list[dict]:
     target_list = m.cursorless_target_list
 
     if len(target_list) == 1:
