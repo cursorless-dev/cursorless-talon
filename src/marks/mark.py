@@ -31,9 +31,9 @@ hat_shapes = {
     "hole": "hole",
     "frame": "frame",
     "curve": "curve",
-    "eye": "eye",
+    "eyeball": "eye",
     "play": "play",
-    "star": "star",
+    "cross": "crosshairs",
     "bolt": "bolt",
 }
 
