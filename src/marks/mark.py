@@ -161,6 +161,10 @@ def setup_hat_styles_csv():
     )
 
 
+fast_reload_job = None
+slow_reload_job = None
+
+
 def on_ready():
     init_csv_and_watch_changes(
         "special_marks",
@@ -174,8 +178,12 @@ def on_ready():
     vscode_settings_path: Path = actions.user.vscode_settings_path()
 
     def on_watch(path, flags):
+        global fast_reload_job, slow_reload_job
         if vscode_settings_path.match(path):
-            cron.after("1s", setup_hat_styles_csv)
+            cron.cancel(fast_reload_job)
+            cron.cancel(slow_reload_job)
+            fast_reload_job = cron.after("500ms", setup_hat_styles_csv)
+            slow_reload_job = cron.after("10s", setup_hat_styles_csv)
 
     fs.watch(vscode_settings_path.parents[0], on_watch)
 
