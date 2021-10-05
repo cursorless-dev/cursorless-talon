@@ -1,6 +1,7 @@
 from dataclasses import dataclass
+from pathlib import Path
 from ..conventions import get_cursorless_list_name
-from talon import Module, app, Context
+from talon import Module, actions, app, Context, fs, cron
 from ..csv_overrides import init_csv_and_watch_changes
 
 mod = Module()
@@ -21,13 +22,16 @@ hat_colors = {
 }
 
 hat_shapes = {
-    "splat": "fourPointStar",
-    "fox": "chevron",
-    "-wing": "threePointStar",
-    "-hole": "hole",
-    "-frame": "frame",
-    "-curve": "curve",
-    "-stare": "eye",
+    "ex": "ex",
+    "fox": "fox",
+    "wing": "wing",
+    "hole": "hole",
+    "frame": "frame",
+    "curve": "curve",
+    "eye": "eye",
+    "play": "play",
+    "cross": "crosshairs",
+    "bolt": "bolt",
 }
 
 
@@ -97,6 +101,70 @@ def cursorless_mark(m) -> str:
     return m.cursorless_line_number_simple
 
 
+DEFAULT_COLOR_ENABLEMENT = {
+    "blue": True,
+    "green": True,
+    "red": True,
+    "pink": True,
+    "yellow": True,
+}
+
+DEFAULT_SHAPE_ENABLEMENT = {
+    "ex": False,
+    "fox": False,
+    "wing": False,
+    "hole": False,
+    "frame": False,
+    "curve": False,
+    "eye": False,
+    "play": False,
+    "bolt": False,
+    "star": False,
+}
+
+unsubscribe_hat_styles = None
+
+
+def setup_hat_styles_csv():
+    global unsubscribe_hat_styles
+
+    color_enablement = {
+        **DEFAULT_COLOR_ENABLEMENT,
+        **actions.user.vscode_get_setting("cursorless.hatEnablement.colors", {}),
+    }
+    shape_enablement = {
+        **DEFAULT_SHAPE_ENABLEMENT,
+        **actions.user.vscode_get_setting("cursorless.hatEnablement.shapes", {}),
+    }
+
+    active_hat_colors = {
+        spoken_form: value
+        for spoken_form, value in hat_colors.items()
+        if color_enablement[value]
+    }
+    active_hat_shapes = {
+        spoken_form: value
+        for spoken_form, value in hat_shapes.items()
+        if shape_enablement[value]
+    }
+
+    if unsubscribe_hat_styles is not None:
+        unsubscribe_hat_styles()
+
+    unsubscribe_hat_styles = init_csv_and_watch_changes(
+        "hat_styles",
+        {
+            "hat_color": active_hat_colors,
+            "hat_shape": active_hat_shapes,
+        },
+        [*hat_colors.values(), *hat_shapes.values()],
+    )
+
+
+fast_reload_job = None
+slow_reload_job = None
+
+
 def on_ready():
     init_csv_and_watch_changes(
         "special_marks",
@@ -104,13 +172,20 @@ def on_ready():
             "special_mark": special_marks_defaults,
         },
     )
-    init_csv_and_watch_changes(
-        "hat_styles",
-        {
-            "hat_color": hat_colors,
-            "hat_shape": hat_shapes,
-        },
-    )
+
+    setup_hat_styles_csv()
+
+    vscode_settings_path: Path = actions.user.vscode_settings_path()
+
+    def on_watch(path, flags):
+        global fast_reload_job, slow_reload_job
+        if vscode_settings_path.match(path):
+            cron.cancel(fast_reload_job)
+            cron.cancel(slow_reload_job)
+            fast_reload_job = cron.after("500ms", setup_hat_styles_csv)
+            slow_reload_job = cron.after("10s", setup_hat_styles_csv)
+
+    fs.watch(vscode_settings_path.parents[0], on_watch)
 
 
 app.register("ready", on_ready)

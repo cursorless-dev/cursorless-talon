@@ -17,6 +17,7 @@ Note: If you'd like to customize any of the spoken forms, please see the [docume
     - [Marks](#marks)
       - [Decorated symbol](#decorated-symbol)
         - [Colors](#colors)
+        - [Shapes](#shapes)
       - [`"this"`](#this)
       - [`"that"`](#that)
     - [Modifiers](#modifiers)
@@ -82,32 +83,50 @@ Combining this with an action, we might say `"take blue air"` to select the toke
 
 The following colors are supported:
 
-| Command    | Visible color |
-| ---------- | ------------- |
-| `"blue"`   | Blue          |
-| `"green"`  | Green         |
-| `"rose"`   | Red           |
-| `"squash"` | Yellow        |
-| `"plum"`   | Pink          |
+| Spoken form | Visible color | Internal ID |
+| ----------- | ------------- | ----------- |
+| `"blue"`    | Blue          | `blue`      |
+| `"green"`   | Green         | `green`     |
+| `"rose"`    | Red           | `rose`      |
+| `"squash"`  | Yellow        | `yellow`    |
+| `"plum"`    | Pink          | `pink`      |
+
+You can enable or disable colors in your VSCode settings, by searching for `cursorless.hatEnablement.colors` and checking the box next to the internal ID for the given shape as listed above.
+
+You can also tweak the visible colors for any of these colors in your VSCode settings, by searching for `cursorless.colors` and changing the hex color code next to the internal ID for the given shape as listed above. Note that you can configure different colors for dark and light themes.
+
+If you find these color names unintuitive / tough to remember, their
+spoken forms can be [customized](customization.md) like any other spoken form
+in cursorless. If you change a spoken form to be more than one syllable, you
+can change the penalty in the `cursorless.hatPenalties.colors` setting to the
+number of syllables you use, so that cursorless can optimize hat allocation to
+minimize syllables.
 
 ###### Shapes
 
 The following shapes are supported:
 
-| Command   | Visible color    | Enabled by default? |
-| --------- | ---------------- | ------------------- |
-| `"splat"` | Four-point star  | ✅                  |
-| `"fox"`   | Chevron          | ✅                  |
-| `"wing"`  | Three-point star | ❌                  |
-| `"hole"`  | Hole             | ❌                  |
-| `"frame"` | Frame            | ❌                  |
-| `"curve"` | Curve            | ❌                  |
-| `"stare"` | Eye              | ❌                  |
+| Spoken form    | Internal ID  | Shape                                                                                                    | Enabled by default? |
+| -------------- | ------------ | -------------------------------------------------------------------------------------------------------- | ------------------- |
+| `"ex"`         | `ex`         | ![Ex](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/ex.svg)                 | ❌                  |
+| `"fox"`        | `fox`        | ![Fox](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/fox.svg)               | ❌                  |
+| `"wing"`       | `wing`       | ![Wing](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/wing.svg)             | ❌                  |
+| `"hole"`       | `hole`       | ![Hole](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/hole.svg)             | ❌                  |
+| `"frame"`      | `frame`      | ![Frame](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/frame.svg)           | ❌                  |
+| `"curve"`      | `curve`      | ![Curve](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/curve.svg)           | ❌                  |
+| `"eye"`        | `eye`        | ![Eye](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/eye.svg)               | ❌                  |
+| `"play"`       | `play`       | ![Play](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/play.svg)             | ❌                  |
+| `"crosshairs"` | `crosshairs` | ![Crosshairs](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/crosshairs.svg) | ❌                  |
+| `"bolt"`       | `bolt`       | ![Bolt](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/bolt.svg)             | ❌                  |
 
-To enable or disable shapes requires the following two steps:
+You can enable or disable shapes in your VSCode settings, by searching for `cursorless.hatEnablement.shapes` and checking the box next to the internal ID for the given shape as listed above.
 
-1. Check the box corresponding to the given shape in the `cursorless.hatEnablement.shapes` field of the cursorless vscode settings
-2. Enable the corresponding spoken form in the [spoken form customization csvs](customization.md) for cursorless talon
+If you find these shape names unintuitive / tough to remember, their
+spoken forms can be [customized](customization.md) like any other spoken form
+in cursorless. If you change a spoken form to be more than one syllable, you
+can change the penalty in the `cursorless.hatPenalties.shapes` setting to the
+number of syllables you use, so that cursorless can optimize hat allocation to
+minimize syllables.
 
 ##### `"this"`
 

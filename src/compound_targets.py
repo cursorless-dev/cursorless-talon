@@ -52,7 +52,7 @@ def is_active_included(range_connective: str):
 @mod.capture(
     rule="<user.cursorless_range> ({user.cursorless_list_connective} <user.cursorless_range>)*"
 )
-def cursorless_target(m) -> str:
+def cursorless_target(m) -> dict:
     if len(m.cursorless_range_list) == 1:
         return m.cursorless_range
     return {"type": "list", "elements": m.cursorless_range_list}

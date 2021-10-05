@@ -15,7 +15,7 @@ mod.list(
         "[<user.cursorless_target>] {user.cursorless_swap_connective} <user.cursorless_target>"
     )
 )
-def cursorless_swap_targets(m) -> str:
+def cursorless_swap_targets(m) -> list[dict]:
     target_list = m.cursorless_target_list
 
     if len(target_list) == 1:
