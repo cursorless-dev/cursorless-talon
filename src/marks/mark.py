@@ -119,7 +119,7 @@ DEFAULT_SHAPE_ENABLEMENT = {
     "eye": False,
     "play": False,
     "bolt": False,
-    "star": False,
+    "crosshairs": False,
 }
 
 unsubscribe_hat_styles = None
