@@ -1,11 +1,8 @@
-import os
-from tempfile import gettempdir
 from dataclasses import dataclass
 from pathlib import Path
 from ..conventions import get_cursorless_list_name
 from talon import Module, actions, app, Context, fs, cron
 from ..csv_overrides import init_csv_and_watch_changes
-from ..read_json_with_timeout import read_json_with_timeout
 
 mod = Module()
 ctx = Context()
@@ -104,24 +101,51 @@ def cursorless_mark(m) -> str:
     return m.cursorless_line_number_simple
 
 
+DEFAULT_COLOR_ENABLEMENT = {
+    "blue": True,
+    "green": True,
+    "red": True,
+    "pink": True,
+    "yellow": True,
+}
+
+DEFAULT_SHAPE_ENABLEMENT = {
+    "ex": False,
+    "fox": False,
+    "wing": False,
+    "hole": False,
+    "frame": False,
+    "curve": False,
+    "eye": False,
+    "play": False,
+    "bolt": False,
+    "star": False,
+}
+
 unsubscribe_hat_styles = None
 
 
 def setup_hat_styles_csv():
     global unsubscribe_hat_styles
 
-    cursorless_enablements_path = get_cursorless_enablements_path()
-    hat_enablements = read_json_with_timeout(cursorless_enablements_path)
+    color_enablement = {
+        **DEFAULT_COLOR_ENABLEMENT,
+        **actions.user.vscode_get_setting("cursorless.hatEnablement.colors", {}),
+    }
+    shape_enablement = {
+        **DEFAULT_SHAPE_ENABLEMENT,
+        **actions.user.vscode_get_setting("cursorless.hatEnablement.shapes", {}),
+    }
 
     active_hat_colors = {
         spoken_form: value
         for spoken_form, value in hat_colors.items()
-        if value in hat_enablements["colors"]
+        if color_enablement[value]
     }
     active_hat_shapes = {
         spoken_form: value
         for spoken_form, value in hat_shapes.items()
-        if value in hat_enablements["shapes"]
+        if shape_enablement[value]
     }
 
     if unsubscribe_hat_styles is not None:
@@ -137,16 +161,6 @@ def setup_hat_styles_csv():
     )
 
 
-def get_cursorless_enablements_path():
-    if hasattr(os, "getuid"):
-        suffix = f"-{os.getuid()}"
-
-    return Path(gettempdir()) / f"cursorless-enablements{suffix}.json"
-
-
-hat_style_job = None
-
-
 def on_ready():
     init_csv_and_watch_changes(
         "special_marks",
@@ -157,14 +171,13 @@ def on_ready():
 
     setup_hat_styles_csv()
 
-    cursorless_enablements_path = get_cursorless_enablements_path().resolve()
+    vscode_settings_path: Path = actions.user.vscode_settings_path()
 
     def on_watch(path, flags):
-        global hat_style_job
-        cron.cancel(hat_style_job)
-        hat_style_job = cron.after("500ms", setup_hat_styles_csv)
+        if vscode_settings_path.match(path):
+            cron.after("1s", setup_hat_styles_csv)
 
-    fs.watch(cursorless_enablements_path, on_watch)
+    fs.watch(vscode_settings_path.parents[0], on_watch)
 
 
 app.register("ready", on_ready)
