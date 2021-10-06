@@ -175,17 +175,16 @@ def on_ready():
 
     setup_hat_styles_csv()
 
-    vscode_settings_path: Path = actions.user.vscode_settings_path()
+    vscode_settings_path: Path = actions.user.vscode_settings_path().resolve()
 
     def on_watch(path, flags):
         global fast_reload_job, slow_reload_job
-        if vscode_settings_path.match(path):
-            cron.cancel(fast_reload_job)
-            cron.cancel(slow_reload_job)
-            fast_reload_job = cron.after("500ms", setup_hat_styles_csv)
-            slow_reload_job = cron.after("10s", setup_hat_styles_csv)
+        cron.cancel(fast_reload_job)
+        cron.cancel(slow_reload_job)
+        fast_reload_job = cron.after("500ms", setup_hat_styles_csv)
+        slow_reload_job = cron.after("10s", setup_hat_styles_csv)
 
-    fs.watch(vscode_settings_path.parents[0], on_watch)
+    fs.watch(vscode_settings_path, on_watch)
 
 
 app.register("ready", on_ready)
