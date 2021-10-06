@@ -6,4 +6,4 @@ mod = Module()
 
 def run_call_action(target: dict):
     targets = [target, STRICT_HERE]
-    actions.user.cursorless_multiple_target_command("call", targets)
+    actions.user.cursorless_multiple_target_command("callAsFunction", targets)

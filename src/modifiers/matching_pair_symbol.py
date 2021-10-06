@@ -4,5 +4,5 @@ mod = Module()
 
 
 @mod.capture(rule="matching")
-def cursorless_matching_pair_symbol(m) -> str:
-    return {"modifier": {"type": "matchingPairSymbol"}}
+def cursorless_matching_paired_delimiter(m) -> str:
+    return {"modifier": {"type": "matchingPairedDelimiter"}}
