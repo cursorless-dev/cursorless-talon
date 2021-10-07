@@ -1,8 +1,9 @@
-from talon import Module, app
+from talon import Module, app, Context
 from ..paired_delimiter import paired_delimiters_map
 from ..csv_overrides import init_csv_and_watch_changes
 
 mod = Module()
+ctx = Context()
 
 
 mod.list(
@@ -17,6 +18,8 @@ delimiter_inclusions = {
     "outside": "includeDelimiters",
     "pair": "delimitersOnly",
 }
+
+ctx.lists["user.cursorless_delimiter_inclusion"] = delimiter_inclusions
 
 
 @mod.capture(
