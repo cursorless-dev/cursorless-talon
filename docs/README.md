@@ -106,18 +106,18 @@ minimize syllables.
 
 The following shapes are supported:
 
-| Spoken form    | Internal ID  | Shape                                                                                                    | Enabled by default? |
-| -------------- | ------------ | -------------------------------------------------------------------------------------------------------- | ------------------- |
-| `"ex"`         | `ex`         | ![Ex](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/ex.svg)                 | ❌                  |
-| `"fox"`        | `fox`        | ![Fox](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/fox.svg)               | ❌                  |
-| `"wing"`       | `wing`       | ![Wing](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/wing.svg)             | ❌                  |
-| `"hole"`       | `hole`       | ![Hole](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/hole.svg)             | ❌                  |
-| `"frame"`      | `frame`      | ![Frame](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/frame.svg)           | ❌                  |
-| `"curve"`      | `curve`      | ![Curve](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/curve.svg)           | ❌                  |
-| `"eye"`        | `eye`        | ![Eye](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/eye.svg)               | ❌                  |
-| `"play"`       | `play`       | ![Play](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/play.svg)             | ❌                  |
-| `"crosshairs"` | `crosshairs` | ![Crosshairs](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/crosshairs.svg) | ❌                  |
-| `"bolt"`       | `bolt`       | ![Bolt](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/bolt.svg)             | ❌                  |
+| Spoken form | Internal ID  | Shape                                                                                                    | Enabled by default? |
+| ----------- | ------------ | -------------------------------------------------------------------------------------------------------- | ------------------- |
+| `"ex"`      | `ex`         | ![Ex](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/ex.svg)                 | ❌                  |
+| `"fox"`     | `fox`        | ![Fox](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/fox.svg)               | ❌                  |
+| `"wing"`    | `wing`       | ![Wing](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/wing.svg)             | ❌                  |
+| `"hole"`    | `hole`       | ![Hole](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/hole.svg)             | ❌                  |
+| `"frame"`   | `frame`      | ![Frame](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/frame.svg)           | ❌                  |
+| `"curve"`   | `curve`      | ![Curve](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/curve.svg)           | ❌                  |
+| `"eye"`     | `eye`        | ![Eye](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/eye.svg)               | ❌                  |
+| `"play"`    | `play`       | ![Play](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/play.svg)             | ❌                  |
+| `"cross"`   | `crosshairs` | ![Crosshairs](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/crosshairs.svg) | ❌                  |
+| `"bolt"`    | `bolt`       | ![Bolt](https://raw.githubusercontent.com/pokey/cursorless-vscode/main/images/hats/bolt.svg)             | ❌                  |
 
 You can enable or disable shapes in your VSCode settings, by searching for `cursorless.hatEnablement.shapes` and checking the box next to the internal ID for the given shape as listed above.
 
