@@ -1,23 +1,61 @@
 from typing import Union
 from ..paired_delimiter import paired_delimiters_map
-from talon import Module, Context
+from talon import Module, actions, app
+from ..csv_overrides import init_csv_and_watch_changes
 
 
 mod = Module()
-ctx = Context()
 
 
 mod.list("cursorless_wrap_action", desc="Cursorless wrap action")
-mod.list("cursorless_wrapper_scope_type", desc="Cursorless wrapper scope type")
-ctx.lists["user.cursorless_wrapper_scope_type"] = {"try catch": "tryCatchStatement"}
+mod.list("cursorless_built_in_wrapper_snippet", desc="Cursorless wrapper scope type")
+
+
+# NOTE: Please do not change these dicts.  Use the CSVs for customization.
+# See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
+built_in_wrapper_snippet = {
+    "else state": "ifElseStatementElseBranch",
+    "if else": "ifElseStatementIfBranch",
+    "if state": "ifStatement",
+    "try catch": "tryCatchStatement",
+}
 
 
 @mod.capture(
-    rule=("{user.cursorless_paired_delimiter} | {user.cursorless_wrapper_scope_type}")
+    rule=(
+        "({user.cursorless_paired_delimiter} | {user.cursorless_built_in_wrapper_snippet}) {user.cursorless_wrap_action}"
+    )
 )
 def cursorless_wrapper(m) -> Union[list[str], str]:
     try:
         paired_delimiter_info = paired_delimiters_map[m.cursorless_paired_delimiter]
+        return {
+            "action": "wrapWithPairedDelimiter",
+            "extra_args": [paired_delimiter_info.left, paired_delimiter_info.right],
+        }
     except AttributeError:
-        return [m.cursorless_wrapper_scope_type]
-    return [paired_delimiter_info.left, paired_delimiter_info.right]
+        return {
+            "action": "wrapWithSnippet",
+            "extra_args": [m.cursorless_built_in_wrapper_snippet],
+        }
+
+
+@mod.action_class
+class Actions:
+    def cursorless_wrap(cursorless_wrapper: dict, targets: dict):
+        """Perform cursorless wrap action"""
+        actions.user.cursorless_single_target_command_with_arg_list(
+            cursorless_wrapper["action"], targets, cursorless_wrapper["extra_args"]
+        )
+
+
+def on_ready():
+    init_csv_and_watch_changes(
+        "built_in_snippets",
+        {
+            "built_in_wrapper_snippet": built_in_wrapper_snippet,
+        },
+    )
+
+
+app.register("ready", on_ready)
