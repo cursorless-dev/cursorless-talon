@@ -55,6 +55,8 @@ def on_ready():
         {
             "wrapper_snippet": wrapper_snippets,
         },
+        allow_unknown_values=True,
+        default_list_name="wrapper_snippet",
     )
 
 
