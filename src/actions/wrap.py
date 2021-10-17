@@ -8,22 +8,22 @@ mod = Module()
 
 
 mod.list("cursorless_wrap_action", desc="Cursorless wrap action")
-mod.list("cursorless_built_in_wrapper_snippet", desc="Cursorless wrapper scope type")
+mod.list("cursorless_wrapper_snippet", desc="Cursorless wrapper scope type")
 
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
 # See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
-built_in_wrapper_snippet = {
-    "else state": "ifElseStatementElseBranch",
-    "if else": "ifElseStatementIfBranch",
-    "if state": "ifStatement",
-    "try catch": "tryCatchStatement",
+wrapper_snippets = {
+    "else state": "cursorless.wrapper.ifElseStatementElseBranch",
+    "if else": "cursorless.wrapper.ifElseStatementIfBranch",
+    "if state": "cursorless.wrapper.ifStatement",
+    "try catch": "cursorless.wrapper.tryCatchStatement",
 }
 
 
 @mod.capture(
     rule=(
-        "({user.cursorless_paired_delimiter} | {user.cursorless_built_in_wrapper_snippet}) {user.cursorless_wrap_action}"
+        "({user.cursorless_paired_delimiter} | {user.cursorless_wrapper_snippet}) {user.cursorless_wrap_action}"
     )
 )
 def cursorless_wrapper(m) -> Union[list[str], str]:
@@ -36,7 +36,7 @@ def cursorless_wrapper(m) -> Union[list[str], str]:
     except AttributeError:
         return {
             "action": "wrapWithSnippet",
-            "extra_args": [m.cursorless_built_in_wrapper_snippet],
+            "extra_args": [m.cursorless_wrapper_snippet],
         }
 
 
@@ -51,9 +51,9 @@ class Actions:
 
 def on_ready():
     init_csv_and_watch_changes(
-        "built_in_snippets",
+        "wrapper_snippets",
         {
-            "built_in_wrapper_snippet": built_in_wrapper_snippet,
+            "wrapper_snippet": wrapper_snippets,
         },
     )
 
