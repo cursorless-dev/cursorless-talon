@@ -41,7 +41,7 @@ def init_csv_and_watch_changes(
         default_values (dict[str, dict]): The default values for the lists to
         be customized in the given csv
         extra_ignored_values list[str]: Don't throw an exception if any of
-        these appear as values
+        these appear as values; just ignore them and don't add them to any list
         allow_unknown_values bool: If unknown values appear, just put them in the list
         default_list_name Optional[str]: If unknown values are allowed, put any
         unknown values in this list

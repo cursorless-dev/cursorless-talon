@@ -8,7 +8,7 @@ mod = Module()
 
 
 mod.list("cursorless_wrap_action", desc="Cursorless wrap action")
-mod.list("cursorless_wrapper_snippet", desc="Cursorless wrapper scope type")
+mod.list("cursorless_wrapper_snippet", desc="Cursorless wrapper snippet")
 
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
