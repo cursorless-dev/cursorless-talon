@@ -46,7 +46,7 @@ Each snippet wrapper has a default scope type. When you refer to a target, by de
 
 ### Customizing spoken forms
 
-As usual, the spoken forms for these wrapper snippets can be [customized by csv](customization.md). The csvs are in the file `cursorless-settings/experimental_wrapper_snippets.csv`.
+As usual, the spoken forms for these wrapper snippets can be [customized by csv](customization.md). The csvs are in the file `cursorless-settings/experimental/wrapper_snippets.csv`.
 
 ### Adding your own snippets
 
@@ -58,7 +58,7 @@ First, define your snippets in the vscode snippets json file for your given lang
 
 #### 2. Add snippet to spoken forms csv
 
-For each snippet that you'd like to be able to use as a wrapper snippet, add a line to the `cursorless-settings/experimental_wrapper_snippets.csv` csv overrides file. The first column is the desired spoken form, and the second column is the name of the snippet (ie the key in your vscode snippet json file).
+For each snippet that you'd like to be able to use as a wrapper snippet, add a line to the `cursorless-settings/experimental/wrapper_snippets.csv` csv overrides file. The first column is the desired spoken form, and the second column is the name of the snippet (ie the key in your vscode snippet json file).
 
 #### 3. (Optional) Configure snippet default scope type
 
