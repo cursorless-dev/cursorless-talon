@@ -33,7 +33,7 @@ The command syntax is as follows:
 
 #### Default scope types
 
-Each snippet wrapper has a default scope type. When you refer to a target, by default it will expand to the given scope type. This way, for example, when you say "try wrap air", it will refer to the statement containing `a` rather than just the token.
+Each snippet wrapper has a default scope type. When you refer to a target, by default it will expand to the given scope type. This way, for example, when you say `"try wrap air"`, it will refer to the statement containing `a` rather than just the token.
 
 ### Built-in wrapper snippets
 
