@@ -66,4 +66,4 @@ By default, your snippet will expand referenced targets to refer to the containi
 
 ### Customizing built-in snippets
 
-Unfortunately, there is no easy way to customize a built-in cursorless snippet. Your best bet is to [disable](customization.md#removing-a-term) the built-in snippet and then create your own as documented above.
+Unfortunately, there is no easy way to customize a built-in cursorless snippet. Your best bet is to [disable](customization.md#removing-a-term) the built-in snippet and then create your own (with the same spoken form, if you'd like), as documented above.
