@@ -10,14 +10,21 @@ mod = Module()
 mod.list("cursorless_wrap_action", desc="Cursorless wrap action")
 mod.list("cursorless_wrapper_snippet", desc="Cursorless wrapper snippet")
 
+cursorless_experimental_wrapper_snippets = mod.setting(
+    "cursorless_experimental_wrapper_snippets",
+    type=bool,
+    default=False,
+    desc="Whether to enable experimental wrapper snippet support",
+)
+
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
 # See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
 wrapper_snippets = {
-    "else state": "cursorless.wrapper.ifElseStatementElseBranch",
+    "else": "cursorless.wrapper.ifElseStatementElseBranch",
     "if else": "cursorless.wrapper.ifElseStatementIfBranch",
-    "if state": "cursorless.wrapper.ifStatement",
-    "try catch": "cursorless.wrapper.tryCatchStatement",
+    "if": "cursorless.wrapper.ifStatement",
+    "try": "cursorless.wrapper.tryCatchStatement",
 }
 
 
@@ -50,14 +57,15 @@ class Actions:
 
 
 def on_ready():
-    init_csv_and_watch_changes(
-        "wrapper_snippets",
-        {
-            "wrapper_snippet": wrapper_snippets,
-        },
-        allow_unknown_values=True,
-        default_list_name="wrapper_snippet",
-    )
+    if cursorless_experimental_wrapper_snippets.get():
+        init_csv_and_watch_changes(
+            "experimental_wrapper_snippets",
+            {
+                "wrapper_snippet": wrapper_snippets,
+            },
+            allow_unknown_values=True,
+            default_list_name="wrapper_snippet",
+        )
 
 
 app.register("ready", on_ready)
