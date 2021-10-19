@@ -42,10 +42,10 @@ Note: If you'd like to customize any of the spoken forms, please see the [docume
   - [Scroll](#scroll)
   - [Insert/Use/Repeat](#insertuserepeat)
   - [Wrap](#wrap)
+    - [\[experimental\] Wrap with snippet](#experimental-wrap-with-snippet)
   - [Show definition/reference/quick fix](#show-definitionreferencequick-fix)
   - [Fold/unfold](#foldunfold)
   - [Extract](#extract)
-  - [\[experimental\] Wrap with snippet](#experimental-wrap-with-snippet)
 
 ## Overview
 
@@ -383,6 +383,10 @@ eg:
 `square wrap blue air`  
 Wraps the token containing letter 'a' with a blue hat in square brackets.
 
+#### \[experimental\] Wrap with snippet
+
+See [experimental documentation](experimental.md#wrapper-snippets).
+
 ### Show definition/reference/quick fix
 
 - `"def show"`
@@ -416,7 +420,3 @@ eg:
 `extract call air`
 
 Extracts the function call containing the decorated 'a' into its own variable.
-
-### \[experimental\] Wrap with snippet
-
-See [experimental documentation](https://github.com/pokey/cursorless-talon/blob/snippet-wrap/docs/experimental.md#wrapper-snippets).
