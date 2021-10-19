@@ -10,13 +10,11 @@ In addition to wrapping with paired delimiters (eg `"square wrap"`, `"round wrap
 
 ### Enabling wrapper snippets
 
-1. Add the following line to your `settings.talon`:
+Add the following line to the end of your `settings.talon` (or any other `.talon` file that will be active when vscode is focused):
 
-   ```
-       user.cursorless_experimental_wrapper_snippets = 1
-   ```
-
-2. Restart talon
+```
+tag(): user.cursorless_experimental_wrapper_snippets
+```
 
 ### Using wrapper snippets
 

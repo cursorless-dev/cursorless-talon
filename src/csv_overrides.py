@@ -6,7 +6,6 @@ from pathlib import Path
 
 
 mod = Module()
-ctx = Context()
 cursorless_settings_directory = mod.setting(
     "cursorless_settings_directory",
     type=str,
@@ -21,6 +20,7 @@ def init_csv_and_watch_changes(
     extra_ignored_values: list[str] = None,
     allow_unknown_values: bool = False,
     default_list_name: Optional[str] = None,
+    ctx: Context = Context(),
 ):
     """
     Initialize a cursorless settings csv, creating it if necessary, and watch
@@ -49,13 +49,13 @@ def init_csv_and_watch_changes(
     if extra_ignored_values is None:
         extra_ignored_values = []
 
-    dir_path, file_path = get_file_paths(filename)
+    file_path = get_full_path(filename)
     super_default_values = get_super_values(default_values)
 
-    dir_path.mkdir(parents=True, exist_ok=True)
+    file_path.parent.mkdir(parents=True, exist_ok=True)
 
     def on_watch(path, flags):
-        if file_path.match(path):
+        if file_path == path:
             current_values, has_errors = read_file(
                 file_path,
                 super_default_values.values(),
@@ -68,9 +68,10 @@ def init_csv_and_watch_changes(
                 extra_ignored_values,
                 allow_unknown_values,
                 default_list_name,
+                ctx,
             )
 
-    fs.watch(dir_path, on_watch)
+    fs.watch(file_path.parent, on_watch)
 
     if file_path.is_file():
         current_values = update_file(
@@ -85,6 +86,7 @@ def init_csv_and_watch_changes(
             extra_ignored_values,
             allow_unknown_values,
             default_list_name,
+            ctx,
         )
     else:
         create_file(file_path, super_default_values)
@@ -94,10 +96,11 @@ def init_csv_and_watch_changes(
             extra_ignored_values,
             allow_unknown_values,
             default_list_name,
+            ctx,
         )
 
     def unsubscribe():
-        fs.unwatch(dir_path, on_watch)
+        fs.unwatch(file_path.parent, on_watch)
 
     return unsubscribe
 
@@ -112,6 +115,7 @@ def update_dicts(
     extra_ignored_values: list[str],
     allow_unknown_values: bool,
     default_list_name: Optional[str],
+    ctx: Context,
 ):
     # Create map with all default values
     results_map = {}
@@ -279,17 +283,17 @@ def read_file(
     return result, has_errors
 
 
-def get_file_paths(filename: str):
+def get_full_path(filename: str):
     if not filename.endswith(".csv"):
         filename = f"{filename}.csv"
+
     user_dir = actions.path.talon_user()
     settings_directory = Path(cursorless_settings_directory.get())
 
     if not settings_directory.is_absolute():
         settings_directory = user_dir / settings_directory
 
-    csv_path = Path(settings_directory, filename)
-    return settings_directory, csv_path
+    return (settings_directory / filename).resolve()
 
 
 def get_super_values(values: dict[str, dict]):

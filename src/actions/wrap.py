@@ -1,21 +1,23 @@
 from typing import Union
 from ..paired_delimiter import paired_delimiters_map
-from talon import Module, actions, app
+from talon import Module, actions, app, Context
 from ..csv_overrides import init_csv_and_watch_changes
 
 
 mod = Module()
 
+mod.tag(
+    "cursorless_experimental_wrapper_snippets",
+    desc="tag for enabling experimental wrapper snippet support",
+)
 
 mod.list("cursorless_wrap_action", desc="Cursorless wrap action")
 mod.list("cursorless_wrapper_snippet", desc="Cursorless wrapper snippet")
 
-cursorless_experimental_wrapper_snippets = mod.setting(
-    "cursorless_experimental_wrapper_snippets",
-    type=bool,
-    default=False,
-    desc="Whether to enable experimental wrapper snippet support",
-)
+experimental_wrapper_snippets_ctx = Context()
+experimental_wrapper_snippets_ctx.matches = r"""
+tag: user.cursorless_experimental_wrapper_snippets
+"""
 
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
@@ -57,15 +59,15 @@ class Actions:
 
 
 def on_ready():
-    if cursorless_experimental_wrapper_snippets.get():
-        init_csv_and_watch_changes(
-            "experimental_wrapper_snippets",
-            {
-                "wrapper_snippet": wrapper_snippets,
-            },
-            allow_unknown_values=True,
-            default_list_name="wrapper_snippet",
-        )
+    init_csv_and_watch_changes(
+        "experimental/wrapper_snippets",
+        {
+            "wrapper_snippet": wrapper_snippets,
+        },
+        allow_unknown_values=True,
+        default_list_name="wrapper_snippet",
+        ctx=experimental_wrapper_snippets_ctx,
+    )
 
 
 app.register("ready", on_ready)
