@@ -55,7 +55,7 @@ def init_csv_and_watch_changes(
     file_path.parent.mkdir(parents=True, exist_ok=True)
 
     def on_watch(path, flags):
-        if file_path == path:
+        if file_path.match(path):
             current_values, has_errors = read_file(
                 file_path,
                 super_default_values.values(),
