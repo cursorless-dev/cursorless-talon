@@ -23,10 +23,10 @@ tag: user.cursorless_experimental_wrapper_snippets
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
 # See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
 wrapper_snippets = {
-    "else": "ifElseStatement/alternative",
-    "if else": "ifElseStatement/consequence",
-    "if": "ifStatement/consequence",
-    "try": "tryCatchStatement/body",
+    "else": "ifElseStatement.alternative",
+    "if else": "ifElseStatement.consequence",
+    "if": "ifStatement.consequence",
+    "try": "tryCatchStatement.body",
 }
 
 
