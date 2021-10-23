@@ -55,7 +55,7 @@ To define your own wrapper snippets, proceed as follows:
 #### Define snippets in vscode
 
 1. Set the `cursorless.experimental.snippetsDir` setting to a directory in which you'd like to create your snippets.
-2. Add snippets to the directory in files ending in `.cursorless-snippets`. See the [documentation](https://github.com/pokey/cursorless-vscode/tree/main/docs/snippets.md) for the cursorless snippet format.
+2. Add snippets to the directory in files ending in `.cursorless-snippets`. See the [documentation](https://github.com/pokey/cursorless-vscode/tree/main/docs/experimental/snippets.md) for the cursorless snippet format.
 
 #### 2. Add snippet to spoken forms csv
 
