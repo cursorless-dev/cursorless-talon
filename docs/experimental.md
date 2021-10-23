@@ -52,18 +52,46 @@ As usual, the spoken forms for these wrapper snippets can be [customized by csv]
 
 To define your own wrapper snippets, proceed as follows:
 
-#### 1. Define snippets in vscode
+#### Define snippets in vscode
 
-First, define your snippets in the vscode snippets json file for your given language, as per the [vscode instructions](https://code.visualstudio.com/docs/editor/userdefinedsnippets). The cursorless target will be inserted wherever the variable `$TM_SELECTED_TEXT` appears. See the cursorless built-in [snippet definitions](https://github.com/pokey/cursorless-vscode/tree/main/snippets) for examples.
+1. Set the `cursorless.experimental.snippetsDir` setting to a directory in which you'd like to create your snippets.
+2. Add snippets to the directory in files ending in `.cursorless-snippets`. See the [documentation](https://github.com/pokey/cursorless-vscode/tree/main/docs/snippets.md) for the cursorless snippet format.
 
 #### 2. Add snippet to spoken forms csv
 
-For each snippet that you'd like to be able to use as a wrapper snippet, add a line to the `cursorless-settings/experimental/wrapper_snippets.csv` csv overrides file. The first column is the desired spoken form, and the second column is the name of the snippet (ie the key in your vscode snippet json file).
-
-#### 3. (Optional) Configure snippet default scope type
-
-By default, your snippet will expand referenced targets to refer to the containing statement. If you'd like a different default scope type, you can use the `cursorless.wrapperSnippetPreferences` option.
+For each snippet that you'd like to be able to use as a wrapper snippet, add a line to the `cursorless-settings/experimental/wrapper_snippets.csv` csv overrides file. The first column is the desired spoken form, and the second column is of the form `<name>.<placeholder>`, where `name` is the name of the snippet (ie the key in your snippet json file), and `placeholder` is one of the placeholder variables in your snippet.
 
 ### Customizing built-in snippets
 
-Unfortunately, there is no easy way to customize a built-in cursorless snippet. Your best bet is to [disable](customization.md#removing-a-term) the built-in snippet and then create your own (with the same spoken form, if you'd like), as documented above.
+To customize a built-in snippet, just define a custom snippet (as above), but
+use the same name as the cursorless core snippet you'd like to change, and give
+definitions along with scopes where you'd like your override to be active. Here
+is an example:
+
+```json
+{
+    "tryCatchStatement": {
+        "definitions": [
+            {
+                "scope": {
+                    "langIds": [
+                        "typescript",
+                        "typescriptreact",
+                        "javascript",
+                        "javascriptreact"
+                    ]
+                },
+                "body": [
+                    "try {",
+                    "\t$body",
+                    "} catch (err) {",
+                    "\t$exceptBody",
+                    "}"
+                ]
+            }
+        ]
+    }
+}
+```
+
+The above will change the definition of the try-catch statement in typescript.
