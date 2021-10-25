@@ -13,7 +13,7 @@ In addition to wrapping with paired delimiters (eg `"square wrap"`, `"round wrap
 Add the following line to the end of your `settings.talon` (or any other `.talon` file that will be active when vscode is focused):
 
 ```
-tag(): user.cursorless_experimental_wrapper_snippets
+tag(): user.cursorless_experimental_snippets
 ```
 
 ### Using wrapper snippets
@@ -70,27 +70,27 @@ is an example:
 
 ```json
 {
-    "tryCatchStatement": {
-        "definitions": [
-            {
-                "scope": {
-                    "langIds": [
-                        "typescript",
-                        "typescriptreact",
-                        "javascript",
-                        "javascriptreact"
-                    ]
-                },
-                "body": [
-                    "try {",
-                    "\t$body",
-                    "} catch (err) {",
-                    "\t$exceptBody",
-                    "}"
-                ]
-            }
+  "tryCatchStatement": {
+    "definitions": [
+      {
+        "scope": {
+          "langIds": [
+            "typescript",
+            "typescriptreact",
+            "javascript",
+            "javascriptreact"
+          ]
+        },
+        "body": [
+          "try {", 
+          "\t$body", 
+          "} catch (err) {", 
+          "\t$exceptBody", 
+          "}"
         ]
-    }
+      }
+    ]
+  }
 }
 ```
 

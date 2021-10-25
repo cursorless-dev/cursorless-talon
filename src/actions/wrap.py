@@ -7,16 +7,16 @@ from ..csv_overrides import init_csv_and_watch_changes
 mod = Module()
 
 mod.tag(
-    "cursorless_experimental_wrapper_snippets",
-    desc="tag for enabling experimental wrapper snippet support",
+    "cursorless_experimental_snippets",
+    desc="tag for enabling experimental snippet support",
 )
 
 mod.list("cursorless_wrap_action", desc="Cursorless wrap action")
 mod.list("cursorless_wrapper_snippet", desc="Cursorless wrapper snippet")
 
-experimental_wrapper_snippets_ctx = Context()
-experimental_wrapper_snippets_ctx.matches = r"""
-tag: user.cursorless_experimental_wrapper_snippets
+experimental_snippets_ctx = Context()
+experimental_snippets_ctx.matches = r"""
+tag: user.cursorless_experimental_snippets
 """
 
 
@@ -66,7 +66,7 @@ def on_ready():
         },
         allow_unknown_values=True,
         default_list_name="wrapper_snippet",
-        ctx=experimental_wrapper_snippets_ctx,
+        ctx=experimental_snippets_ctx,
     )
 
 
