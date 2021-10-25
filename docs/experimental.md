@@ -59,7 +59,7 @@ To define your own wrapper snippets, proceed as follows:
 
 #### 2. Add snippet to spoken forms csv
 
-For each snippet that you'd like to be able to use as a wrapper snippet, add a line to the `cursorless-settings/experimental/wrapper_snippets.csv` csv overrides file. The first column is the desired spoken form, and the second column is of the form `<name>.<placeholder>`, where `name` is the name of the snippet (ie the key in your snippet json file), and `placeholder` is one of the placeholder variables in your snippet.
+For each snippet that you'd like to be able to use as a wrapper snippet, add a line to the `cursorless-settings/experimental/wrapper_snippets.csv` csv overrides file. The first column is the desired spoken form, and the second column is of the form `<name>.<variable>`, where `name` is the name of the snippet (ie the key in your snippet json file), and `variable` is one of the placeholder variables in your snippet where the target should go.
 
 ### Customizing built-in snippets
 
