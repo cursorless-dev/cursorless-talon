@@ -91,7 +91,7 @@ def on_ready():
             "insertion_snippet_no_phrase": insertion_snippets_no_phrase,
         },
         allow_unknown_values=True,
-        default_list_name="insertion_snippet",
+        default_list_name="insertion_snippet_no_phrase",
         ctx=experimental_snippets_ctx,
     )
     init_csv_and_watch_changes(
