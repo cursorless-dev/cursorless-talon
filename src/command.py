@@ -1,5 +1,6 @@
 from talon import actions, Module, speech_system
 from typing import Any
+from .primitive_target import IMPLICIT_TARGET
 
 mod = Module()
 
@@ -45,18 +46,19 @@ class Actions:
             action, [target], arg1, arg2, arg3
         )
 
-    def cursorless_single_target_command_with_arg_list(
-        action: str, target: str, args: list[Any]
+    def cursorless_this_command(
+        action: str,
+        arg1: Any = NotSet,
+        arg2: Any = NotSet,
+        arg3: Any = NotSet,
     ):
-        """Execute single-target cursorless command with argument list"""
-        actions.user.cursorless_single_target_command(
-            action,
-            target,
-            *args,
+        """Execute cursorless command, passing `this` as single target"""
+        actions.user.cursorless_multiple_target_command(
+            action, [STRICT_HERE], arg1, arg2, arg3
         )
 
     def cursorless_single_target_command_with_arg_list(
-        action: str, target: str, args: list[Any]
+        action: str, target: dict, args: list[Any]
     ):
         """Execute single-target cursorless command with argument list"""
         actions.user.cursorless_single_target_command(
