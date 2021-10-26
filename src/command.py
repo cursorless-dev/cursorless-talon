@@ -54,7 +54,7 @@ class Actions:
     ):
         """Execute cursorless command, passing `this` as single target"""
         actions.user.cursorless_multiple_target_command(
-            action, [STRICT_HERE], arg1, arg2, arg3
+            action, [IMPLICIT_TARGET], arg1, arg2, arg3
         )
 
     def cursorless_single_target_command_with_arg_list(
