@@ -1,6 +1,6 @@
 from talon import Module, app, actions
 from ..csv_overrides import init_csv_and_watch_changes
-from .actions_simple import simple_action_defaults
+from .actions_simple import simple_action_defaults, positional_action_defaults
 from .actions_callback import callback_action_defaults, callback_action_map
 from .actions_makeshift import (
     makeshift_action_defaults,
@@ -81,6 +81,7 @@ def vscode_command_no_wait(command_id: str, target: dict, command_options: dict 
 
 default_values = {
     "simple_action": simple_action_defaults,
+    "positional_action": positional_action_defaults,
     "callback_action": callback_action_defaults,
     "makeshift_action": makeshift_action_defaults,
     "custom_action": custom_action_defaults,
