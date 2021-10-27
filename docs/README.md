@@ -195,12 +195,12 @@ For example, the command `take every key [blue] air` will select every key in th
 If you need to refer to the individual words within a `camelCase`/`kebab-case`/`snake_case` token, you can use the `"word"` modifier. For example,
 
 - `"second word air"`
-- `"second through fourth word air"`
+- `"second past fourth word air"`
 - `"last word air"`
 
 For example, the following command:
 
-    "take second through fourth word blue air"
+    "take second past fourth word blue air"
 
 Selects the second, third and fourth word in the token containing letter 'a' with a blue hat.
 
@@ -209,7 +209,7 @@ Selects the second, third and fourth word in the token containing letter 'a' wit
 You can also refer to individual characters within a token:
 
 - `"second char air"`
-- `"second through fourth char air"`
+- `"second past fourth char air"`
 - `"last char air"`
 
 ##### `"line"`
