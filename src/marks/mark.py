@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from pathlib import Path
 from ..conventions import get_cursorless_list_name
-from talon import Module, actions, app, Context, fs, cron
+from talon import Module, actions, app, Context, fs, cron, speech_system
 from ..csv_overrides import init_csv_and_watch_changes
 
 mod = Module()
@@ -50,6 +50,7 @@ def cursorless_decorated_symbol(m) -> str:
             "type": "decoratedSymbol",
             "symbolColor": hat_style_name,
             "character": m.any_alphanumeric_key,
+            "useSnapshot": True,
         }
     }
 
@@ -188,3 +189,12 @@ def on_ready():
 
 
 app.register("ready", on_ready)
+
+
+def pre_phrase(_):
+    subdir: Path = actions.user.communication_dir_named_subdir("cursorless")
+    print(subdir)
+    (subdir / "hatMapSnapshotSignal").touch()
+
+
+speech_system.register("pre:phrase", pre_phrase)
