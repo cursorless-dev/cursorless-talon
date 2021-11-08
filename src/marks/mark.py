@@ -189,12 +189,3 @@ def on_ready():
 
 
 app.register("ready", on_ready)
-
-
-def pre_phrase(_):
-    subdir: Path = actions.user.communication_dir_named_subdir("cursorless")
-    print(subdir)
-    (subdir / "hatMapSnapshotSignal").touch()
-
-
-speech_system.register("pre:phrase", pre_phrase)
