@@ -50,7 +50,7 @@ def cursorless_decorated_symbol(m) -> str:
             "type": "decoratedSymbol",
             "symbolColor": hat_style_name,
             "character": m.any_alphanumeric_key,
-            "useSnapshot": True,
+            "usePrePhraseSnapshot": True,
         }
     }
 
