@@ -54,6 +54,28 @@ callbacks = [
 callbacks_map = {callback.identifier: callback.callback for callback in callbacks}
 
 
+@dataclass
+class ComplexAction:
+    defaultSpokenForm: str
+    identifier: str
+    action: str
+    args: list[any]
+
+
+# NOTE: Please do not change these dicts.  Use the CSVs for customization.
+# See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
+complex_actions = [
+    ComplexAction(
+        "-quick list",
+        "experimentalListCodeActions",
+        "executeCodeAction",
+        [{"onlyDisplayInfo": True}],
+    ),
+]
+
+complex_action_map = {action.identifier: action for action in complex_actions}
+
+
 mod.list("cursorless_simple_action", desc="Supported actions for cursorless navigation")
 
 
@@ -90,6 +112,10 @@ simple_actions = {
     "unfold": "unfoldRegion",
     **{action.term: action.identifier for action in makeshift_actions},
     **{callback.term: callback.identifier for callback in callbacks},
+    **{
+        complex_action.defaultSpokenForm: complex_action.identifier
+        for complex_action in complex_actions
+    },
 }
 
 
@@ -101,6 +127,11 @@ class Actions:
             return callbacks_map[action](targets)
         elif action in makeshift_action_map:
             return run_makeshift_action(action, targets)
+        elif action in complex_action_map:
+            action_info = complex_action_map[action]
+            return actions.user.cursorless_single_target_command(
+                action_info.action, targets, *action_info.args
+            )
         else:
             return actions.user.cursorless_single_target_command(action, targets)
 
@@ -112,6 +143,19 @@ def run_makeshift_action(action: str, targets: dict):
     actions.sleep(makeshift_action.pre_command_sleep)
     actions.user.vscode(makeshift_action.vscode_command_id)
     actions.sleep(makeshift_action.post_command_sleep)
+
+
+@mod.capture(
+    rule=(
+        "{user.cursorless_simple_action} | "
+        "{user.cursorless_experimental_quick_code_action}"
+    )
+)
+def cursorless_simple_action(m) -> str:
+    try:
+        return m.cursorless_simple_action
+    except AttributeError:
+        return m.cursorless_experimental_quick_code_action
 
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.

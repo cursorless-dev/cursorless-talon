@@ -1,7 +1,7 @@
 app: vscode
 -
 
-{user.cursorless_simple_action} <user.cursorless_target>:
+<user.cursorless_simple_action> <user.cursorless_target>:
     user.cursorless_simple_action(cursorless_simple_action, cursorless_target)
 
 {user.cursorless_swap_action} <user.cursorless_swap_targets>:
