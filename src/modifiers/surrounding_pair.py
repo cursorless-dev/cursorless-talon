@@ -32,7 +32,7 @@ def cursorless_surrounding_pair(m) -> str:
     """Surrounding pair modifier"""
     paired_delimiter = getattr(m, "cursorless_paired_delimiter", None)
     if paired_delimiter is None:
-        paired_delimiter_identifier = None
+        paired_delimiter_identifier = "any"
     else:
         paired_delimiter_identifier = paired_delimiters_map[
             paired_delimiter
