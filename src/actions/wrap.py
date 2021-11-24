@@ -32,12 +32,14 @@ wrapper_snippets = {
 
 @mod.capture(
     rule=(
-        "({user.cursorless_paired_delimiter} | {user.cursorless_wrapper_snippet}) {user.cursorless_wrap_action}"
+        "(<user.cursorless_wrappable_paired_delimiter> | {user.cursorless_wrapper_snippet}) {user.cursorless_wrap_action}"
     )
 )
 def cursorless_wrapper(m) -> Union[list[str], str]:
     try:
-        paired_delimiter_info = paired_delimiters_map[m.cursorless_paired_delimiter]
+        paired_delimiter_info = paired_delimiters_map[
+            m.cursorless_wrappable_paired_delimiter
+        ]
         return {
             "action": "wrapWithPairedDelimiter",
             "extra_args": [paired_delimiter_info.left, paired_delimiter_info.right],
