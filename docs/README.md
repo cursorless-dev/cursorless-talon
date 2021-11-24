@@ -28,6 +28,7 @@ Note: If you'd like to customize any of the spoken forms, please see the [docume
         - [`"char"`](#char)
       - [`"line"`](#line)
       - [`"file"`](#file)
+      - [Surrounding pair](#surrounding-pair)
   - [Compound targets](#compound-targets)
     - [Range targets](#range-targets)
     - [List targets](#list-targets)
@@ -46,6 +47,7 @@ Note: If you'd like to customize any of the spoken forms, please see the [docume
   - [Show definition/reference/quick fix](#show-definitionreferencequick-fix)
   - [Fold/unfold](#foldunfold)
   - [Extract](#extract)
+- [Paired delimiters](#paired-delimiters)
 
 ## Overview
 
@@ -230,6 +232,20 @@ The word file can be used to expand the target to refer to the entire file.
 
 For example, `"take file [blue] air"` selects the file including the token containing letter 'a' with a blue hat.
 
+##### Surrounding pair
+
+Cursorless has support for expanding the selection to the nearest containing paired delimiter, eg the surrounding parentheses.
+
+- `"take round"` expands selection to include containing parentheses `(` and `)`
+- `"take inside round"` does the same, but excludes the parentheses themselves
+- `"take pair round"` selects only the parentheses
+- `"take outside"` expands to include the nearest containing pair of any kind
+- `"take pair"` selects the nearest containing paired delimiters themselves
+- `"take inside"` selects until the nearest containing paired delimiters, but doesn't include the delimiters themselves
+- `"take square air"` selects the square brackets containing the token with a hat over the `a`.
+
+See [paired delimiters](#paired-delimiters) for a list of possible surrounding pairs.
+
 ### Compound targets
 
 Individual targets can be combined into compound targets to make bigger targets or refer to multiple selections at the same time.
@@ -366,22 +382,14 @@ Replaces the token containing letter 'b' with a green hat using the token contai
 
 The wrap commands can be used to wrap a given target with a pair of symbols
 
-| Term                                        | Symbol inserted before target | Symbol inserted after target |
-| ------------------------------------------- | ----------------------------- | ---------------------------- |
-| `"square wrap"`                             | `[`                           | `]`                          |
-| `"round wrap"`                              | `(`                           | `)`                          |
-| `"curly wrap"`                              | `{`                           | `}`                          |
-| `"(diamond \| angle) wrap"`                 | `<`                           | `>`                          |
-| `"quad wrap"`                               | `"`                           | `"`                          |
-| `"twin wrap"`                               | `'`                           | `'`                          |
-| `"escaped quad wrap"`                       | `\"`                          | `\"`                         |
-| `"escaped twin wrap"`                       | `\'`                          | `\'`                         |
-| `"line wrap"`                               | `\n`                          | `\n`                         |
-| `"wrap <TARGET> with funk <FUNCTION_NAME>"` | `<FUNCTION_NAME>(`            | `)`                          |
+- `"round wrap <TARGET>"`: wraps the target with parentheses
+- `"square wrap <TARGET>"`: wraps the target with square brackets
 
 eg:  
 `square wrap blue air`  
 Wraps the token containing letter 'a' with a blue hat in square brackets.
+
+See [paired delimiters](#paired-delimiters) for a list of possible wrappers.
 
 #### \[experimental\] Wrap with snippet
 
@@ -420,3 +428,20 @@ eg:
 `extract call air`
 
 Extracts the function call containing the decorated 'a' into its own variable.
+
+## Paired delimiters
+
+| Default spoken form | Delimiter name        | Symbol inserted before target | Symbol inserted after target | Is wrapper? | Is selectable? |
+| ------------------- | --------------------- | ----------------------------- | ---------------------------- | ----------- | -------------- |
+| "curly"             | curly brackets        | `{`                           | `}`                          | ✅          | ✅             |
+| "diamond"           | angle brackets        | `<`                           | `>`                          | ✅          | ✅             |
+| "escaped quad"      | escaped double quotes | `\\"`                         | `\\"`                        | ✅          | ✅             |
+| "escaped round"     | escaped parentheses   | `\\(`                         | `\\)`                        | ✅          | ✅             |
+| "escaped twin"      | escaped single quotes | `\\'`                         | `\\'`                        | ✅          | ✅             |
+| "outside"           | any                   | N/A                           | N/A                          | ❌          | ✅             |
+| "quad"              | double quotes         | `"`                           | `"`                          | ✅          | ✅             |
+| "round"             | parentheses           | `(`                           | `)`                          | ✅          | ✅             |
+| "skis"              | backtick quotes       | `` ` ``                       | `` ` ``                      | ✅          | ✅             |
+| "square"            | square brackets       | `[`                           | `]`                          | ✅          | ✅             |
+| "twin"              | single quotes         | `'`                           | `'`                          | ✅          | ✅             |
+| "void"              | space                 | ` `                           | ` `                          | ✅          | ❌             |
