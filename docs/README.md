@@ -433,15 +433,15 @@ Extracts the function call containing the decorated 'a' into its own variable.
 
 | Default spoken form | Delimiter name        | Symbol inserted before target | Symbol inserted after target | Is wrapper? | Is selectable? |
 | ------------------- | --------------------- | ----------------------------- | ---------------------------- | ----------- | -------------- |
-| "curly"             | curly brackets        | `{`                           | `}`                          | ✅          | ✅             |
-| "diamond"           | angle brackets        | `<`                           | `>`                          | ✅          | ✅             |
-| "escaped quad"      | escaped double quotes | `\\"`                         | `\\"`                        | ✅          | ✅             |
-| "escaped round"     | escaped parentheses   | `\\(`                         | `\\)`                        | ✅          | ✅             |
-| "escaped twin"      | escaped single quotes | `\\'`                         | `\\'`                        | ✅          | ✅             |
-| "outside"           | any                   | N/A                           | N/A                          | ❌          | ✅             |
-| "quad"              | double quotes         | `"`                           | `"`                          | ✅          | ✅             |
-| "round"             | parentheses           | `(`                           | `)`                          | ✅          | ✅             |
-| "skis"              | backtick quotes       | `` ` ``                       | `` ` ``                      | ✅          | ✅             |
-| "square"            | square brackets       | `[`                           | `]`                          | ✅          | ✅             |
-| "twin"              | single quotes         | `'`                           | `'`                          | ✅          | ✅             |
-| "void"              | space                 | ` `                           | ` `                          | ✅          | ❌             |
+| `"curly"`           | curly brackets        | `{`                           | `}`                          | ✅          | ✅             |
+| `"diamond"`         | angle brackets        | `<`                           | `>`                          | ✅          | ✅             |
+| `"escaped quad"`    | escaped double quotes | `\\"`                         | `\\"`                        | ✅          | ✅             |
+| `"escaped round"`   | escaped parentheses   | `\\(`                         | `\\)`                        | ✅          | ✅             |
+| `"escaped twin"`    | escaped single quotes | `\\'`                         | `\\'`                        | ✅          | ✅             |
+| `"outside"`         | any                   | N/A                           | N/A                          | ❌          | ✅             |
+| `"quad"`            | double quotes         | `"`                           | `"`                          | ✅          | ✅             |
+| `"round"`           | parentheses           | `(`                           | `)`                          | ✅          | ✅             |
+| `"skis"`            | backtick quotes       | `` ` ``                       | `` ` ``                      | ✅          | ✅             |
+| `"square"`          | square brackets       | `[`                           | `]`                          | ✅          | ✅             |
+| `"twin"`            | single quotes         | `'`                           | `'`                          | ✅          | ✅             |
+| `"void"`            | space                 | ` `                           | ` `                          | ✅          | ❌             |
