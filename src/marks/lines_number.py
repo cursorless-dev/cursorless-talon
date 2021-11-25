@@ -6,9 +6,11 @@ ctx = Context()
 mod.list("cursorless_line_direction", desc="Supported directions for line modifier")
 
 directions = {
-    "row": {"isRelative": False, "transformation": lambda number: number - 1},
-    "up": {"isRelative": True, "transformation": lambda number: -number},
-    "down": {"isRelative": True, "transformation": lambda number: number},
+    # The simplified version uses a module based row number
+    # "row": {"type": "absolute", "transformation": lambda number: number - 1},
+    "row": {"type": "modulo", "transformation": lambda number: number - 1},
+    "up": {"type": "relative", "transformation": lambda number: -number},
+    "down": {"type": "relative", "transformation": lambda number: number},
 }
 
 ctx.lists["self.cursorless_line_direction"] = directions.keys()
@@ -19,7 +21,7 @@ def parse_line(line: dict):
     line_number = line["lineNumber"]
     return {
         "lineNumber": direction["transformation"](line_number),
-        "isRelative": direction["isRelative"],
+        "type": direction["type"],
     }
 
 
@@ -61,7 +63,7 @@ def cursorless_line_number(m) -> str:
 
 
 # This is the simplified version that we are using for now that only implements a subset of the features
-@mod.capture(rule="(up | down) <number_small>")
+@mod.capture(rule="(up | down | row) <number_small>")
 def cursorless_line_number_simple(m) -> str:
     position = {"direction": m[0], "lineNumber": m.number_small}
     return {
