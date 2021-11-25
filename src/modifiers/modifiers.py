@@ -5,7 +5,7 @@ from ..csv_overrides import init_csv_and_watch_changes
 # See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
 delimiter_inclusions = {
     "inside": "interiorOnly",
-    "pair": "excludeInterior",
+    "bound": "excludeInterior",
 }
 
 

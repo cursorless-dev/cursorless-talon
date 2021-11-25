@@ -49,7 +49,7 @@ paired_delimiters = [
     PairedDelimiter("void", "whitespace", " ", " ", is_selectable=False),
     PairedDelimiter("square", "squareBrackets", "[", "]"),
     PairedDelimiter("twin", "singleQuotes", "'", "'"),
-    PairedDelimiter("outside", "any", "", "", is_wrapper=False),
+    PairedDelimiter("pair", "any", "", "", is_wrapper=False),
 ]
 
 paired_delimiters_map = {term.cursorlessIdentifier: term for term in paired_delimiters}
