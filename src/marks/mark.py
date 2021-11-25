@@ -3,6 +3,7 @@ from pathlib import Path
 from ..conventions import get_cursorless_list_name
 from talon import Module, actions, app, Context, fs, cron
 from ..csv_overrides import init_csv_and_watch_changes
+from .lines_number import DEFAULT_DIRECTIONS
 
 mod = Module()
 ctx = Context()
@@ -84,9 +85,7 @@ mod.list("cursorless_special_mark", desc="Cursorless special marks")
     rule=(
         "<user.cursorless_decorated_symbol> | "
         "{user.cursorless_special_mark} |"
-        # Because of problems with performance we have to have a simple version for now
-        # "<user.cursorless_line_number>" # row, up, down
-        "<user.cursorless_line_number_simple>"  # up, down
+        "<user.cursorless_line_number>"  # row, up, down
     )
 )
 def cursorless_mark(m) -> str:
@@ -98,7 +97,7 @@ def cursorless_mark(m) -> str:
         return special_marks_map[m.cursorless_special_mark].value
     except AttributeError:
         pass
-    return m.cursorless_line_number_simple
+    return m.cursorless_line_number
 
 
 DEFAULT_COLOR_ENABLEMENT = {
@@ -170,6 +169,7 @@ def on_ready():
         "special_marks",
         {
             "special_mark": special_marks_defaults,
+            "line_direction": DEFAULT_DIRECTIONS,
         },
     )
 
