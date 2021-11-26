@@ -29,6 +29,7 @@ Note: If you'd like to customize any of the spoken forms, please see the [docume
       - [`"line"`](#line)
       - [`"file"`](#file)
       - [Surrounding pair](#surrounding-pair)
+        - [Ambiguous delimiters (`"`, `'`, `` ` ``, etc)](#ambiguous-delimiters----etc)
   - [Compound targets](#compound-targets)
     - [Range targets](#range-targets)
     - [List targets](#list-targets)
@@ -245,6 +246,26 @@ Cursorless has support for expanding the selection to the nearest containing pai
 - `"take square air"` selects the square brackets containing the token with a hat over the `a`.
 
 See [paired delimiters](#paired-delimiters) for a list of possible surrounding pairs.
+
+###### Ambiguous delimiters (`"`, `'`, `` ` ``, etc)
+
+For some delimiter pairs, the left and right delimiters are the same character, eg `"`, `'`, `` ` ``, etc. In situations where we have access to a parse tree, eg in typescript, python, etc, we can reliably determine whether it is a left or right delimiter based on its position in the parse tree. However when we are in a language where we don't have a parse tree such is in a text file, or within a string or comment within a parsed language, it is not possible to reliably determine whether we are looking at left or right delimiter.
+
+In this case, we resort to a simple heuristic to determine whether it is opening or closing delimiter. We consider the first instance of the given delimiter type on a line to be an opening delimiter, and every subsequent delimiter alternates between being treated as an opening and closing delimiter. For example:
+
+```
+       opening   closing opening         closing
+          ↓         ↓       ↓               ↓
+This is a "line with" a few "quotation marks" on it
+```
+
+This heuristic tends to work fairly well in most cases, but in case it gets tripped up, you can override its behavior. If you position your cursor directly next to a delimiter (or use the delimiter as a mark), you can then prefix the name of the delimiter pair with "left" or "right" to force cursorless to expand the selection to the left or right, respectively.
+
+For example:
+
+- `"take left quad"` (with your cursor adjacent to a quote)
+- `"take left pair double"`
+- `"take inside right quad"`
 
 ### Compound targets
 
