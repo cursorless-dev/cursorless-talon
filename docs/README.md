@@ -249,24 +249,24 @@ See [paired delimiters](#paired-delimiters) for a list of possible surrounding p
 
 ###### Ambiguous delimiters (`"`, `'`, `` ` ``, etc)
 
-For some delimiter pairs, the left and right delimiters are the same character, eg `"`, `'`, and `` ` ``. When we have access to a parse tree, such as in typescript or python, we can reliably determine whether a quotation mark is an opening or closing delimiter based on its position in the parse tree.
+For some delimiter pairs, the left and right delimiters are the same character, eg `"`, `'`, and `` ` ``. In this case, cursorless somehow needs to determine whether a given instance of the character is an opening or closing delimiter. When we have access to a parse tree, such as in typescript or python, this is not a problem, because we can reliably determine whether a quotation mark is an opening or closing delimiter based on its position in the parse tree.
 
-However, when we are in a language where we don't have a parse tree, such is in a text or markdown file, or within a string or comment within a parsed language, it is not possible to reliably determine whether we are looking at a left or right delimiter.
+However, when we are in a language where we don't have access to a parse tree, such is in a plaintext or markdown file, or within a comment or string within a parsed language, it is not possible to reliably determine whether we are looking at a left or right delimiter.
 
-In this case, we resort to a simple heuristic to determine whether a character is an opening or closing delimiter. We consider the first instance of the given delimiter type on a line to be an opening delimiter, and every subsequent delimiter alternates between being treated as an opening and closing delimiter. For example:
+In this case, we resort to a simple heuristic to determine whether a character is an opening or closing delimiter: we consider the first instance of the given delimiter on a line to be an opening delimiter, and every subsequent delimiter alternates between being treated as an opening and closing delimiter. For example:
 
 ```
-       opening   closing opening         closing
-          ↓         ↓       ↓               ↓
 This is a "line with" a few "quotation marks" on it
+          ↑         ↑       ↑               ↑
+       opening   closing opening         closing
 ```
 
-This heuristic tends to work fairly well in most cases, but in case it gets tripped up, you can override its behavior. If you position your cursor directly next to a delimiter (or use the delimiter as a mark), you can then prefix the name of the delimiter pair with "left" or "right" to force cursorless to expand the selection to the left or right, respectively.
+This heuristic works well in most cases, but when it does get tripped up, you can override its behavior. Position your cursor directly next to the delimiter (or just use the delimiter as a mark), and then prefix the name of the delimiter pair with "left" or "right" to force cursorless to expand the selection to the left or right, respectively.
 
 For example:
 
 - `"take left quad"` (with your cursor adjacent to a quote)
-- `"take left pair double"`
+- `"take left pair green double"` (with your cursor anywhere)
 - `"take inside right quad"`
 
 ### Compound targets
