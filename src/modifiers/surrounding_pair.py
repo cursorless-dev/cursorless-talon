@@ -10,6 +10,15 @@ mod.list(
     desc="Whether to include delimiters in surrounding range",
 )
 
+mod.list(
+    "cursorless_delimiter_force_direction",
+    desc="Can be used to force an ambiguous delimiter to extend in one direction",
+)
+ctx.lists["user.cursorless_delimiter_force_direction"] = [
+    "left",
+    "right",
+]
+
 # NB: This is a hack until we support having inside and outside on arbitrary
 # scope types
 mod.list(
@@ -20,8 +29,8 @@ mod.list(
 
 @mod.capture(
     rule=(
-        "[{user.cursorless_delimiter_inclusion}] <user.cursorless_surrounding_pair_scope_type> | "
-        "{user.cursorless_delimiter_inclusion}"
+        "[{user.cursorless_delimiter_inclusion}] [{user.cursorless_delimiter_force_direction}] <user.cursorless_surrounding_pair_scope_type> | "
+        "{user.cursorless_delimiter_inclusion} [{user.cursorless_delimiter_force_direction}]"
     )
 )
 def cursorless_surrounding_pair(m) -> str:
@@ -35,8 +44,14 @@ def cursorless_surrounding_pair(m) -> str:
         "type": "surroundingPair",
         "delimiter": surrounding_pair_scope_type,
     }
+
     try:
         modifier["delimiterInclusion"] = m.cursorless_delimiter_inclusion
+    except AttributeError:
+        pass
+
+    try:
+        modifier["forceDirection"] = m.cursorless_delimiter_force_direction
     except AttributeError:
         pass
 
