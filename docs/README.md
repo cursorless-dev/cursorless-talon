@@ -249,9 +249,11 @@ See [paired delimiters](#paired-delimiters) for a list of possible surrounding p
 
 ###### Ambiguous delimiters (`"`, `'`, `` ` ``, etc)
 
-For some delimiter pairs, the left and right delimiters are the same character, eg `"`, `'`, `` ` ``, etc. In situations where we have access to a parse tree, eg in typescript, python, etc, we can reliably determine whether it is a left or right delimiter based on its position in the parse tree. However when we are in a language where we don't have a parse tree such is in a text file, or within a string or comment within a parsed language, it is not possible to reliably determine whether we are looking at left or right delimiter.
+For some delimiter pairs, the left and right delimiters are the same character, eg `"`, `'`, and `` ` ``. When we have access to a parse tree, such as in typescript or python, we can reliably determine whether a quotation mark is an opening or closing delimiter based on its position in the parse tree.
 
-In this case, we resort to a simple heuristic to determine whether it is opening or closing delimiter. We consider the first instance of the given delimiter type on a line to be an opening delimiter, and every subsequent delimiter alternates between being treated as an opening and closing delimiter. For example:
+However, when we are in a language where we don't have a parse tree, such is in a text or markdown file, or within a string or comment within a parsed language, it is not possible to reliably determine whether we are looking at a left or right delimiter.
+
+In this case, we resort to a simple heuristic to determine whether a character is an opening or closing delimiter. We consider the first instance of the given delimiter type on a line to be an opening delimiter, and every subsequent delimiter alternates between being treated as an opening and closing delimiter. For example:
 
 ```
        opening   closing opening         closing
