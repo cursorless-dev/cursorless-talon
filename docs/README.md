@@ -28,6 +28,8 @@ Note: If you'd like to customize any of the spoken forms, please see the [docume
         - [`"char"`](#char)
       - [`"line"`](#line)
       - [`"file"`](#file)
+      - [Surrounding pair](#surrounding-pair)
+        - [Ambiguous delimiters (`"`, `'`, `` ` ``, etc)](#ambiguous-delimiters----etc)
   - [Compound targets](#compound-targets)
     - [Range targets](#range-targets)
     - [List targets](#list-targets)
@@ -46,6 +48,7 @@ Note: If you'd like to customize any of the spoken forms, please see the [docume
   - [Show definition/reference/quick fix](#show-definitionreferencequick-fix)
   - [Fold/unfold](#foldunfold)
   - [Extract](#extract)
+- [Paired delimiters](#paired-delimiters)
 
 ## Overview
 
@@ -230,6 +233,44 @@ The word file can be used to expand the target to refer to the entire file.
 
 For example, `"take file [blue] air"` selects the file including the token containing letter 'a' with a blue hat.
 
+##### Surrounding pair
+
+Cursorless has support for expanding the selection to the nearest containing paired delimiter, eg the surrounding parentheses.
+
+- `"take round"` expands selection to include containing parentheses `(` and `)`
+- `"take inside round"` does the same, but excludes the parentheses themselves
+- `"take bound round"` selects only the parentheses
+- `"take pair"` expands to include the nearest containing pair of any kind
+- `"take bound"` selects the nearest containing paired delimiters themselves of any kind
+- `"take inside"` selects until the nearest containing paired delimiters of any kind, but doesn't include the delimiters themselves
+- `"take square air"` selects the square brackets containing the token with a hat over the `a`.
+
+See [paired delimiters](#paired-delimiters) for a list of possible surrounding pairs.
+
+###### Ambiguous delimiters (`"`, `'`, `` ` ``, etc)
+
+For some delimiter pairs, the opening and closing delimiters are the same character, eg `"`, `'`, and `` ` ``. In this case, cursorless somehow needs to determine whether a given instance of the character is an opening or closing delimiter. When we have access to a parse tree, such as in typescript or python, this is not a problem, because we can reliably determine whether a quotation mark is an opening or closing delimiter based on its position in the parse tree.
+
+However, when we are in a language where we don't have access to a parse tree, such is in a plaintext or markdown file, or within a comment or string within a parsed language, it is not possible to reliably determine whether we are looking at an opening or closing delimiter.
+
+In this case, we resort to a simple heuristic to determine whether a character is an opening or closing delimiter: we consider the first instance of the given delimiter on a line to be an opening delimiter, and every subsequent delimiter alternates between being treated as an opening and closing delimiter. For example:
+
+```
+This is a "line with" a few "quotation marks" on it
+          ↑         ↑       ↑               ↑
+       opening   closing opening         closing
+```
+
+This heuristic works well in most cases, but when it does get tripped up, you can override its behavior. Position your cursor directly next to the delimiter (or just use the delimiter as a mark), and then prefix the name of the delimiter pair with "left" or "right" to force cursorless to expand the selection to the left or right, respectively.
+
+For example:
+
+- `"take left quad"` (with your cursor adjacent to a quote)
+- `"take left pair green double"` (with your cursor anywhere)
+- `"take inside right quad"`
+
+If your cursor / mark is between two delimiters (not adjacent to one), then saying either "left" or "right" will cause cursorless to just expand to the nearest delimiters on either side, without trying to determine whether they are opening or closing delimiters.
+
 ### Compound targets
 
 Individual targets can be combined into compound targets to make bigger targets or refer to multiple selections at the same time.
@@ -366,22 +407,14 @@ Replaces the token containing letter 'b' with a green hat using the token contai
 
 The wrap commands can be used to wrap a given target with a pair of symbols
 
-| Term                                        | Symbol inserted before target | Symbol inserted after target |
-| ------------------------------------------- | ----------------------------- | ---------------------------- |
-| `"square wrap"`                             | `[`                           | `]`                          |
-| `"round wrap"`                              | `(`                           | `)`                          |
-| `"curly wrap"`                              | `{`                           | `}`                          |
-| `"(diamond \| angle) wrap"`                 | `<`                           | `>`                          |
-| `"quad wrap"`                               | `"`                           | `"`                          |
-| `"twin wrap"`                               | `'`                           | `'`                          |
-| `"escaped quad wrap"`                       | `\"`                          | `\"`                         |
-| `"escaped twin wrap"`                       | `\'`                          | `\'`                         |
-| `"line wrap"`                               | `\n`                          | `\n`                         |
-| `"wrap <TARGET> with funk <FUNCTION_NAME>"` | `<FUNCTION_NAME>(`            | `)`                          |
+- `"round wrap <TARGET>"`: wraps the target with parentheses
+- `"square wrap <TARGET>"`: wraps the target with square brackets
 
 eg:  
 `square wrap blue air`  
 Wraps the token containing letter 'a' with a blue hat in square brackets.
+
+See [paired delimiters](#paired-delimiters) for a list of possible wrappers.
 
 #### \[experimental\] Wrap with snippet
 
@@ -420,3 +453,20 @@ eg:
 `extract call air`
 
 Extracts the function call containing the decorated 'a' into its own variable.
+
+## Paired delimiters
+
+| Default spoken form | Delimiter name        | Symbol inserted before target | Symbol inserted after target | Is wrapper? | Is selectable? |
+| ------------------- | --------------------- | ----------------------------- | ---------------------------- | ----------- | -------------- |
+| `"curly"`           | curly brackets        | `{`                           | `}`                          | ✅          | ✅             |
+| `"diamond"`         | angle brackets        | `<`                           | `>`                          | ✅          | ✅             |
+| `"escaped quad"`    | escaped double quotes | `\\"`                         | `\\"`                        | ✅          | ✅             |
+| `"escaped round"`   | escaped parentheses   | `\\(`                         | `\\)`                        | ✅          | ✅             |
+| `"escaped twin"`    | escaped single quotes | `\\'`                         | `\\'`                        | ✅          | ✅             |
+| `"pair"`            | any                   | N/A                           | N/A                          | ❌          | ✅             |
+| `"quad"`            | double quotes         | `"`                           | `"`                          | ✅          | ✅             |
+| `"round"`           | parentheses           | `(`                           | `)`                          | ✅          | ✅             |
+| `"skis"`            | backtick quotes       | `` ` ``                       | `` ` ``                      | ✅          | ✅             |
+| `"square"`          | square brackets       | `[`                           | `]`                          | ✅          | ✅             |
+| `"twin"`            | single quotes         | `'`                           | `'`                          | ✅          | ✅             |
+| `"void"`            | space                 | ` `                           | ` `                          | ✅          | ❌             |
