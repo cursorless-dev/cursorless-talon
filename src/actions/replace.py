@@ -6,5 +6,5 @@ mod = Module()
 @mod.action_class
 class Actions:
     def cursorless_replace(target: dict, texts: list[str] or dict):
-        """Replaced targets with texts"""
+        """Replace targets with texts"""
         actions.user.cursorless_single_target_command("replace", target, texts)
