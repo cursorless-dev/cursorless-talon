@@ -85,7 +85,7 @@ mod.list("cursorless_special_mark", desc="Cursorless special marks")
     rule=(
         "<user.cursorless_decorated_symbol> | "
         "{user.cursorless_special_mark} |"
-        "<user.cursorless_line_number>"  # row, up, down
+        "<user.cursorless_line_number>"  # row (ie absolute mod 100), up, down
     )
 )
 def cursorless_mark(m) -> str:
