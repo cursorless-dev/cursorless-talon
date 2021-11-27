@@ -239,10 +239,10 @@ Cursorless has support for expanding the selection to the nearest containing pai
 
 - `"take round"` expands selection to include containing parentheses `(` and `)`
 - `"take inside round"` does the same, but excludes the parentheses themselves
-- `"take pair round"` selects only the parentheses
-- `"take outside"` expands to include the nearest containing pair of any kind
-- `"take pair"` selects the nearest containing paired delimiters themselves
-- `"take inside"` selects until the nearest containing paired delimiters, but doesn't include the delimiters themselves
+- `"take bound round"` selects only the parentheses
+- `"take pair"` expands to include the nearest containing pair of any kind
+- `"take bound"` selects the nearest containing paired delimiters themselves of any kind
+- `"take inside"` selects until the nearest containing paired delimiters of any kind, but doesn't include the delimiters themselves
 - `"take square air"` selects the square brackets containing the token with a hat over the `a`.
 
 See [paired delimiters](#paired-delimiters) for a list of possible surrounding pairs.
@@ -463,7 +463,7 @@ Extracts the function call containing the decorated 'a' into its own variable.
 | `"escaped quad"`    | escaped double quotes | `\\"`                         | `\\"`                        | ✅          | ✅             |
 | `"escaped round"`   | escaped parentheses   | `\\(`                         | `\\)`                        | ✅          | ✅             |
 | `"escaped twin"`    | escaped single quotes | `\\'`                         | `\\'`                        | ✅          | ✅             |
-| `"outside"`         | any                   | N/A                           | N/A                          | ❌          | ✅             |
+| `"pair"`            | any                   | N/A                           | N/A                          | ❌          | ✅             |
 | `"quad"`            | double quotes         | `"`                           | `"`                          | ✅          | ✅             |
 | `"round"`           | parentheses           | `(`                           | `)`                          | ✅          | ✅             |
 | `"skis"`            | backtick quotes       | `` ` ``                       | `` ` ``                      | ✅          | ✅             |
