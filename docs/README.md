@@ -269,6 +269,8 @@ For example:
 - `"take left pair green double"` (with your cursor anywhere)
 - `"take inside right quad"`
 
+If your cursor / mark is between two delimiters (not adjacent to one), then saying either "left" or "right" will cause cursorless to just expand to the nearest delimiters on either side, without trying to determine whether they are opening or closing delimiters.
+
 ### Compound targets
 
 Individual targets can be combined into compound targets to make bigger targets or refer to multiple selections at the same time.
