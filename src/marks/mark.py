@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from pathlib import Path
 from ..conventions import get_cursorless_list_name
-from talon import Module, actions, app, Context, fs, cron, speech_system
+from talon import Module, actions, app, Context, fs, cron
 from ..csv_overrides import init_csv_and_watch_changes
 
 mod = Module()
@@ -45,7 +45,6 @@ def cursorless_decorated_symbol(m) -> str:
         hat_style_name = f"{hat_color}-{m.cursorless_hat_shape}"
     except AttributeError:
         hat_style_name = hat_color
-
     return {
         "mark": {
             "type": "decoratedSymbol",
