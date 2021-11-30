@@ -46,17 +46,11 @@ def cursorless_decorated_symbol(m) -> str:
     except AttributeError:
         hat_style_name = hat_color
 
-    try:
-        use_pre_phrase_snapshot = actions.user.did_emit_pre_phrase_signal()
-    except AttributeError:
-        use_pre_phrase_snapshot = False
-
     return {
         "mark": {
             "type": "decoratedSymbol",
             "symbolColor": hat_style_name,
             "character": m.any_alphanumeric_key,
-            "usePrePhraseSnapshot": use_pre_phrase_snapshot,
         }
     }
 
