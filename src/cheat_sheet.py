@@ -129,7 +129,10 @@ class CheatSheet:
             },
         )
         all_actions = {
-            **simple_actions,
+            **{
+                f"{identifier} T": spoken_form
+                for identifier, spoken_form in simple_actions.items()
+            },
             f"{complex_actions['replaceWithTarget']} T1 {source_destination_connective} T2": "Replace T2 with T1",
             f"{complex_actions['replaceWithTarget']} T": "Replace S with T",
             f"{complex_actions['moveToTarget']} T1 {source_destination_connective} T2": "Move T1 to T2",
