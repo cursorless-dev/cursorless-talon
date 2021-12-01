@@ -77,6 +77,7 @@ simple_actions = {
     "extract": "extractVariable",
     "float": "insertEmptyLineAfter",
     "fold": "foldRegion",
+    "give": "deselect",
     "indent": "indentLine",
     "paste to": "pasteFromClipboard",
     "post": "setSelectionAfter",
