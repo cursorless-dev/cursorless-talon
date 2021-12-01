@@ -138,7 +138,7 @@ class CheatSheet:
             f"{complex_actions['moveToTarget']} T1 {source_destination_connective} T2": "Move T1 to T2",
             f"{complex_actions['moveToTarget']} T": "Move T to S",
             f"{complex_actions['swapTargets']} T1 {swap_connective} T2": "Swap T1 with T2",
-            f"{complex_actions['swapTargets']} T": "Swap S with T",
+            f"{complex_actions['swapTargets']} {swap_connective} T": "Swap S with T",
             f"{complex_actions['applyFormatter']} * at T": "Reformat T as *",
         }
 
