@@ -8,12 +8,20 @@ delimiter_inclusions = {
     "bound": "excludeInterior",
 }
 
+head_tail = {
+    "head": "head",
+    "tail": "tail",
+}
+identity = {"just": "identity"}
+
 
 def on_ready():
     init_csv_and_watch_changes(
         "modifiers",
         {
             "delimiter_inclusion": delimiter_inclusions,
+            "head_tail": head_tail,
+            "identity": identity,
         },
     )
 

@@ -1,13 +1,11 @@
-from talon import Context, Module
+from talon import Module
 
 mod = Module()
-ctx = Context()
 
 
 mod.list("cursorless_head_tail", desc="Cursorless modifier for head or tail of line")
-ctx.lists["self.cursorless_head_tail"] = {"head", "tail"}
 
 
 @mod.capture(rule="{user.cursorless_head_tail}")
-def cursorless_head_tail(m) -> str:
+def cursorless_head_tail(m) -> dict:
     return {"modifier": {"type": m.cursorless_head_tail}}
