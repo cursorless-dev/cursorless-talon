@@ -5,7 +5,7 @@ mod = Module()
 
 mod.list(
     "cursorless_identity",
-    desc="Cursorless modifier for identity. Use to break inference.",
+    desc="Cursorless modifier for identity. Use to break inference chain.",
 )
 
 
