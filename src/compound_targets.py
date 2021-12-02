@@ -9,6 +9,10 @@ mod.list(
     desc="A range joiner that indicates whether to include or exclude anchor and active",
 )
 mod.list(
+    "cursorless_range_column",
+    desc="A range joiner that indicates that the range is a column",
+)
+mod.list(
     "cursorless_list_connective",
     desc="A list joiner",
 )
@@ -16,8 +20,9 @@ mod.list(
 
 @mod.capture(
     rule=(
-        "[{user.cursorless_range_connective}] <user.cursorless_primitive_target> | "
-        "<user.cursorless_primitive_target> {user.cursorless_range_connective} <user.cursorless_primitive_target>"
+        "<user.cursorless_primitive_target> | "
+        "[{user.cursorless_range_column}] {user.cursorless_range_connective} <user.cursorless_primitive_target> | "
+        "<user.cursorless_primitive_target> [{user.cursorless_range_column}] {user.cursorless_range_connective} <user.cursorless_primitive_target>"
     )
 )
 def cursorless_range(m) -> str:
@@ -32,12 +37,18 @@ def cursorless_range(m) -> str:
     else:
         start = primitive_targets[0]
 
+    try:
+        is_column = m.cursorless_range_column is not None
+    except AttributeError:
+        is_column = False
+
     return {
         "type": "range",
         "start": start,
         "end": primitive_targets[-1],
         "excludeStart": not is_anchor_included(range_connective),
         "excludeEnd": not is_active_included(range_connective),
+        "isColumn": is_column,
     }
 
 
