@@ -7,7 +7,7 @@ BASE_TARGET = {"type": "primitive"}
 STRICT_HERE = {
     "type": "primitive",
     "mark": {"type": "cursor"},
-    "selectionType": "token",
+    "selectionType": "strictHere",
     "position": "contents",
     "modifier": {"type": "identity"},
     "insideOutsideType": "inside",
