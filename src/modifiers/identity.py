@@ -10,5 +10,5 @@ mod.list(
 
 
 @mod.capture(rule="{user.cursorless_identity}")
-def cursorless_head_tail(m) -> dict:
+def cursorless_identity(m) -> dict:
     return {"modifier": {"type": "identity"}}
