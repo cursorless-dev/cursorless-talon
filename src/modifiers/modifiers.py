@@ -9,8 +9,8 @@ delimiter_inclusions = {
 }
 
 head_tail = {
-    "head": "head",
-    "tail": "tail",
+    "head": "extendThroughStartOf",
+    "tail": "extendThroughEndOf",
 }
 identity = {"just": "identity"}
 
