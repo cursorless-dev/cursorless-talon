@@ -32,19 +32,20 @@ def cursorless_range(m) -> str:
     else:
         start = primitive_targets[0]
 
-    try:
-        range_type = m.cursorless_range_type
-    except AttributeError:
-        range_type = None
-
-    return {
+    range = {
         "type": "range",
         "start": start,
         "end": primitive_targets[-1],
         "excludeStart": not is_anchor_included(range_connective),
         "excludeEnd": not is_active_included(range_connective),
-        "rangeType": range_type,
     }
+
+    try:
+        range["rangeType"] = m.cursorless_range_type
+    except AttributeError:
+        pass
+
+    return range
 
 
 def is_anchor_included(range_connective: str):
