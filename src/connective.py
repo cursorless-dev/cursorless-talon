@@ -16,7 +16,6 @@ def on_ready():
         "target_connectives",
         {
             "range_connective": range_connectives,
-            "range_column": {"vertical": "rangeColumn"},
             "list_connective": {"and": "listConnective"},
             "swap_connective": {"with": "swapConnective"},
             "source_destination_connective": {"to": "sourceDestinationConnective"},

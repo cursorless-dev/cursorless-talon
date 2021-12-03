@@ -3,14 +3,9 @@ from talon import Module
 
 mod = Module()
 
-
 mod.list(
     "cursorless_range_connective",
     desc="A range joiner that indicates whether to include or exclude anchor and active",
-)
-mod.list(
-    "cursorless_range_column",
-    desc="A range joiner that indicates that the range is a column",
 )
 mod.list(
     "cursorless_list_connective",
@@ -21,8 +16,8 @@ mod.list(
 @mod.capture(
     rule=(
         "<user.cursorless_primitive_target> | "
-        "[{user.cursorless_range_column}] {user.cursorless_range_connective} <user.cursorless_primitive_target> | "
-        "<user.cursorless_primitive_target> [{user.cursorless_range_column}] {user.cursorless_range_connective} <user.cursorless_primitive_target>"
+        "[<user.cursorless_range_type>] {user.cursorless_range_connective} <user.cursorless_primitive_target> | "
+        "<user.cursorless_primitive_target> [<user.cursorless_range_type>] {user.cursorless_range_connective} <user.cursorless_primitive_target>"
     )
 )
 def cursorless_range(m) -> str:
@@ -38,9 +33,9 @@ def cursorless_range(m) -> str:
         start = primitive_targets[0]
 
     try:
-        is_column = m.cursorless_range_column is not None
+        range_type = m.cursorless_range_type
     except AttributeError:
-        is_column = False
+        range_type = None
 
     return {
         "type": "range",
@@ -48,7 +43,7 @@ def cursorless_range(m) -> str:
         "end": primitive_targets[-1],
         "excludeStart": not is_anchor_included(range_connective),
         "excludeEnd": not is_active_included(range_connective),
-        "isColumn": is_column,
+        "rangeType": range_type,
     }
 
 

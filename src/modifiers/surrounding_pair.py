@@ -1,4 +1,4 @@
-from talon import Module, app, Context
+from talon import Module, Context
 from ..paired_delimiter import paired_delimiters_map
 
 mod = Module()
