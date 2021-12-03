@@ -20,7 +20,7 @@ class RangeType:
 # See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
 
 range_type_list = [
-    RangeType("vertical", "verticalRange", "vertical"),
+    RangeType("column", "verticalRange", "vertical"),
 ]
 
 range_type_map = {t.cursorlessIdentifier: t.type for t in range_type_list}
