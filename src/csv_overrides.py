@@ -136,8 +136,6 @@ def update_dicts(
                     "value": value,
                     "list": default_list_name,
                 }
-            else:
-                raise
 
     # Convert result map back to result list
     results = {key: {} for key in default_values}
@@ -145,7 +143,8 @@ def update_dicts(
         value = obj["value"]
         key = obj["key"]
         if not is_removed(key):
-            results[obj["list"]][key] = value
+            for k in key.split("|"):
+                results[obj["list"]][k.strip()] = value
 
     # Assign result to talon context list
     for list_name, dict in results.items():
@@ -274,8 +273,7 @@ def read_file(
             csv_error(path, i, "Duplicate identifier", value)
             continue
 
-        for k in key.split("|"):
-            result[k.strip()] = value
+        result[key] = value
         used_identifiers.append(value)
 
     if has_errors:
