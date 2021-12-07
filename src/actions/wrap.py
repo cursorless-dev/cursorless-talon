@@ -49,6 +49,7 @@ def cursorless_wrapper(m) -> Union[list[str], str]:
         }
 
 
+# Maps from (action_type, wrapper_type) to action name
 action_map = {
     ("wrapWithPairedDelimiter", "pairedDelimiter"): "wrapWithPairedDelimiter",
     # This is awkward because we used an action name which was to verbose previously
