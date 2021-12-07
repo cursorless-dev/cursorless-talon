@@ -274,7 +274,8 @@ def read_file(
             csv_error(path, i, "Duplicate identifier", value)
             continue
 
-        result[key] = value
+        for k in key.split("|"):
+            result[k.strip()] = value
         used_identifiers.append(value)
 
     if has_errors:
