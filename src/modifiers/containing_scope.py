@@ -58,7 +58,6 @@ selection_types = {
     "file": "document",
     "line": "line",
     "token": "token",
-    "column": "column",
 }
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
