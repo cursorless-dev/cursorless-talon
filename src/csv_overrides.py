@@ -124,7 +124,6 @@ def update_dicts(
             results_map[value] = {"key": key, "value": value, "list": list_name}
 
     # Update result with current values
-    has_errors = True
     for key, value in current_values.items():
         try:
             results_map[value]["key"] = key
@@ -138,11 +137,7 @@ def update_dicts(
                     "list": default_list_name,
                 }
             else:
-                print(f"ERROR: Unknown identifier '{value}'")
-                has_errors = True
-
-    if has_errors:
-        app.notify("Cursorless settings error; see log")
+                raise
 
     # Convert result map back to result list
     results = {key: {} for key in default_values}
