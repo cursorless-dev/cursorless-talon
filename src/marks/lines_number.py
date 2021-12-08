@@ -18,9 +18,13 @@ class CustomizableTerm:
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
 # See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
 directions = [
-    CustomizableTerm("row", "lineNumberModulo100", "modulo100", lambda number: number - 1),
+    CustomizableTerm(
+        "row", "lineNumberModulo100", "modulo100", lambda number: number - 1
+    ),
     CustomizableTerm("up", "lineNumberRelativeUp", "relative", lambda number: -number),
-    CustomizableTerm("down", "lineNumberRelativeDown", "relative", lambda number: number),
+    CustomizableTerm(
+        "down", "lineNumberRelativeDown", "relative", lambda number: number
+    ),
 ]
 
 directions_map = {d.cursorlessIdentifier: d for d in directions}
