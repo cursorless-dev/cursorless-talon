@@ -124,6 +124,7 @@ def update_dicts(
             results_map[value] = {"key": key, "value": value, "list": list_name}
 
     # Update result with current values
+    has_errors = True
     for key, value in current_values.items():
         try:
             results_map[value]["key"] = key
@@ -136,6 +137,12 @@ def update_dicts(
                     "value": value,
                     "list": default_list_name,
                 }
+            else:
+                print(f"ERROR: Unknown identifier '{value}'")
+                has_errors = True
+
+    if has_errors:
+        app.notify("Cursorless settings error; see log")
 
     # Convert result map back to result list
     results = {key: {} for key in default_values}
@@ -215,7 +222,6 @@ def csv_error(path: Path, index: int, message: str, value: str):
     Note that we try to continue reading in this case so cursorless doesn't get bricked
 
     Args:
-        condition (bool): The condition that should be true.
         path (Path): The path of the CSV (for error reporting)
         index (int): The index into the file (for error reporting)
         text (str): The text of the error message to report if condition is false
