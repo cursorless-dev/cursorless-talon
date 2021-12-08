@@ -34,13 +34,13 @@ def dispose(json_str):
             continue
 
         if a_step_from_comment:  # We have just met a '/'
-            if char != '/' and char != '*':
+            if char != "/" and char != "*":
                 a_step_from_comment = False
                 normal = True
                 continue
 
         if a_step_from_comment_away:  # We have just met a '*'
-            if char != '/':
+            if char != "/":
                 a_step_from_comment_away = False
 
         if char == '"':
@@ -53,12 +53,12 @@ def dispose(json_str):
                 quoted = False
                 normal = True
 
-        elif char == '\\':
+        elif char == "\\":
             # '\' should not take effect in comment
             if normal or quoted:
                 escaped = True
 
-        elif char == '/':
+        elif char == "/":
             if a_step_from_comment:
                 # Now we are in single line comment
                 a_step_from_comment = False
@@ -78,7 +78,7 @@ def dispose(json_str):
                 a_step_from_comment = True
                 normal = False
 
-        elif char == '*':
+        elif char == "*":
             if a_step_from_comment:
                 # We are now in multi-line comment
                 a_step_from_comment = False
@@ -87,13 +87,13 @@ def dispose(json_str):
                 former_index = index - 1
             elif ml_comment:
                 a_step_from_comment_away = True
-        elif char == '\n':
+        elif char == "\n":
             if sl_comment:
                 sl_comment = False
                 normal = True
                 for i in range(former_index, index + 1):
                     result_str[i] = ""
-        elif char == ']' or char == '}':
+        elif char == "]" or char == "}":
             if normal:
                 _remove_last_comma(result_str, index)
 
@@ -115,11 +115,12 @@ def _remove_last_comma(str_list, before_index):
         i -= 1
 
     # This is the first none space char before before_index
-    if str_list[i] == ',':
-        str_list[i] = ''
+    if str_list[i] == ",":
+        str_list[i] = ""
 
 
 # Below are just some wrapper function around the standard json module.
+
 
 def loads(text, **kwargs):
     return json.loads(dispose(text), **kwargs)
