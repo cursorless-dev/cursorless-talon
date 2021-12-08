@@ -17,9 +17,9 @@ mod.list("cursorless_hat_shape", desc="Supported hat shapes for cursorless")
 hat_colors = {
     "blue": "blue",
     "green": "green",
-    "rose": "red",
-    "plum": "pink",
-    "squash": "yellow",
+    "red": "red",
+    "pink": "pink",
+    "yellow": "yellow",
 }
 
 hat_shapes = {

@@ -47,7 +47,7 @@ paired_delimiters = [
     PairedDelimiter("round", "parentheses", "(", ")"),
     PairedDelimiter("skis", "backtickQuotes", "`", "`"),
     PairedDelimiter("void", "whitespace", " ", " ", is_selectable=False),
-    PairedDelimiter("square", "squareBrackets", "[", "]"),
+    PairedDelimiter("box", "squareBrackets", "[", "]"),
     PairedDelimiter("twin", "singleQuotes", "'", "'"),
     PairedDelimiter("pair", "any", "", "", is_wrapper=False),
 ]
