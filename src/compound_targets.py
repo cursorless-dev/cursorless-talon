@@ -17,7 +17,7 @@ mod.list(
     rule=(
         "<user.cursorless_primitive_target> | "
         "[<user.cursorless_range_type>] {user.cursorless_range_connective} <user.cursorless_primitive_target> | "
-        "[<user.cursorless_range_type>] <user.cursorless_primitive_target> {user.cursorless_range_connective} <user.cursorless_primitive_target>"
+        " <user.cursorless_primitive_target> [<user.cursorless_range_type>] {user.cursorless_range_connective} <user.cursorless_primitive_target>"
     )
 )
 def cursorless_range(m) -> str:
