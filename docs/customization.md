@@ -18,8 +18,8 @@ The directory location can be customized using the `user.cursorless_settings_dir
 
 Note that these csv's:
 
-- have no header column,
 - support empty lines,
+- supports multiple spoken forms for a single action
 - support comment lines beginning with `#`, and
 - ignore any leading / trailing whitespace on spoken forms and cursorless
   identifiers
@@ -32,6 +32,9 @@ reload, as cursorless uses these lines to track disabled spoken forms.
 
 Simply modify the spoken form in the first column of any of the csvs in the
 directory above to change the spoken you'd like to use. The new spoken form will be usable immediately.
+
+Multiple spoken forms can be used for the same action using the pipe operator    
+`remove|delete`
 
 ### New features
 

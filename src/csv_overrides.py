@@ -145,7 +145,8 @@ def update_dicts(
         value = obj["value"]
         key = obj["key"]
         if not is_removed(key):
-            results[obj["list"]][key] = value
+            for k in key.split("|"):
+                results[obj["list"]][k.strip()] = value
 
     # Assign result to talon context list
     for list_name, dict in results.items():
@@ -216,7 +217,6 @@ def csv_error(path: Path, index: int, message: str, value: str):
     Note that we try to continue reading in this case so cursorless doesn't get bricked
 
     Args:
-        condition (bool): The condition that should be true.
         path (Path): The path of the CSV (for error reporting)
         index (int): The index into the file (for error reporting)
         text (str): The text of the error message to report if condition is false
