@@ -140,13 +140,17 @@ def update_dicts(
                 raise
 
     # Convert result map back to result list
-    results = {key: {} for key in default_values}
+    results = {
+        **{key: {} for key in default_values},
+        **{res["list"]: {} for res in results_map.values()}
+    }
     for obj in results_map.values():
         value = obj["value"]
         key = obj["key"]
         if not is_removed(key):
             for k in key.split("|"):
                 results[obj["list"]][k.strip()] = value
+    print(results)
 
     # Assign result to talon context list
     for list_name, dict in results.items():
