@@ -77,6 +77,7 @@ simple_actions = {
     "extract": "extractVariable",
     "float": "insertEmptyLineAfter",
     "fold": "foldRegion",
+    "give": "deselect",
     "indent": "indentLine",
     "paste to": "pasteFromClipboard",
     "post": "setSelectionAfter",
@@ -120,7 +121,7 @@ default_values = {
     "simple_action": simple_actions,
     "swap_action": {"swap": "swapTargets"},
     "move_bring_action": {"bring": "replaceWithTarget", "move": "moveToTarget"},
-    "wrap_action": {"wrap": "wrapWithPairedDelimiter"},
+    "wrap_action": {"wrap": "wrapWithPairedDelimiter", "repack": "rewrap"},
     "reformat_action": {"format": "applyFormatter"},
 }
 

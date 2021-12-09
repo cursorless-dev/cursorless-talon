@@ -13,8 +13,8 @@ app: vscode
 <user.formatters> {user.cursorless_reformat_action} <user.cursorless_target>:
     user.cursorless_reformat(cursorless_target, formatters)
 
-<user.cursorless_wrapper> <user.cursorless_target>:
-    user.cursorless_wrap(cursorless_wrapper, cursorless_target)
+<user.cursorless_wrapper> {user.cursorless_wrap_action} <user.cursorless_target>:
+    user.cursorless_wrap(cursorless_wrap_action, cursorless_target, cursorless_wrapper)
 
 cursorless help:           user.cursorless_cheat_sheet_toggle()
 cursorless instructions:   user.cursorless_open_instructions()
