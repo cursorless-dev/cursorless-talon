@@ -65,7 +65,7 @@ simple_actions = {
     "carve": "cutToClipboard",
     "center": "scrollToCenter",
     "chuck": "remove",
-    "clear": "clearAndSetSelection",
+    "change": "clearAndSetSelection",
     "clone up": "insertCopyBefore",
     "clone": "insertCopyAfter",
     "comment": "toggleLineComment",
