@@ -142,7 +142,7 @@ def update_dicts(
     # Convert result map back to result list
     results = {
         **{key: {} for key in default_values},
-        **{res["list"]: {} for res in results_map.values()}
+        **{res["list"]: {} for res in results_map.values()},
     }
     for obj in results_map.values():
         value = obj["value"]
