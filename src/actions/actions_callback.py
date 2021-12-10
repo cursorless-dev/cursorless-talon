@@ -30,8 +30,3 @@ mod.list(
     "cursorless_callback_action",
     desc="Supported callback actions for cursorless navigation",
 )
-
-
-@mod.capture(rule="{user.cursorless_callback_action}")
-def cursorless_callback_action(m) -> callable:
-    return callback_action_map[m.cursorless_callback_action]

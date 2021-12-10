@@ -1,4 +1,4 @@
-from talon import Module, actions
+from talon import Module
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
 # See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
@@ -39,10 +39,3 @@ mod.list(
     "cursorless_simple_action",
     desc="Supported simple actions for cursorless navigation",
 )
-
-
-@mod.capture(rule="{user.cursorless_simple_action}")
-def cursorless_simple_action(m) -> callable:
-    return lambda targets: actions.user.cursorless_single_target_command(
-        m.cursorless_simple_action, targets
-    )

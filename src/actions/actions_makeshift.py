@@ -30,7 +30,6 @@ makeshift_actions = [
 makeshift_action_defaults = {
     action.term: action.identifier for action in makeshift_actions
 }
-
 makeshift_action_map = {action.identifier: action for action in makeshift_actions}
 
 
@@ -41,15 +40,10 @@ mod.list(
 )
 
 
-@mod.capture(rule="{user.cursorless_makeshift_action}")
-def cursorless_makeshift_action(m) -> callable:
-    return lambda targets: run_makeshift_action(m.cursorless_makeshift_action, targets)
-
-
-def run_makeshift_action(action: str, targets: dict):
+def run_makeshift_action(action_id: str, target: dict):
     """Execute makeshift action"""
-    makeshift_action = makeshift_action_map[action]
-    actions.user.cursorless_single_target_command("setSelection", targets)
+    makeshift_action = makeshift_action_map[action_id]
+    actions.user.cursorless_single_target_command("setSelection", target)
     actions.sleep(makeshift_action.pre_command_sleep)
     actions.user.vscode(makeshift_action.vscode_command_id)
     actions.sleep(makeshift_action.post_command_sleep)

@@ -1,4 +1,4 @@
-from talon import Module, app, actions
+from talon import Module, app
 from ..csv_overrides import init_csv_and_watch_changes
 
 custom_action_defaults = {}
@@ -11,16 +11,9 @@ mod.list(
 )
 
 
-@mod.capture(rule="{user.cursorless_custom_action}")
-def cursorless_custom_action(m) -> callable:
-    return lambda targets: actions.user.cursorless_single_target_command(
-        "runCommandOnSelection", targets, m.cursorless_custom_action
-    )
-
-
 def on_ready():
     init_csv_and_watch_changes(
-        "actions_custom",
+        "experimental/actions_custom",
         custom_action_defaults,
         allow_unknown_values=True,
         default_list_name="custom_action",

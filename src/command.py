@@ -1,5 +1,5 @@
 from talon import actions, Module, speech_system
-from typing import Any, List
+from typing import Any
 
 mod = Module()
 
