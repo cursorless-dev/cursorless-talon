@@ -1,9 +1,10 @@
 from dataclasses import dataclass
 from pathlib import Path
-from ..conventions import get_cursorless_list_name
+from typing import Any
 from talon import Module, actions, app, Context, fs, cron
 from ..csv_overrides import init_csv_and_watch_changes
 from .lines_number import DEFAULT_DIRECTIONS
+from .vscode_settings import vscode_get_setting_with_fallback
 
 mod = Module()
 ctx = Context()
@@ -121,6 +122,23 @@ DEFAULT_SHAPE_ENABLEMENT = {
     "crosshairs": False,
 }
 
+# Fall back to full enablement in case of error reading settings file
+# NB: This won't actually enable all the shapes and colors extension-side.
+# It'll just make it so that the user can say them whether or not they are enabled
+FALLBACK_SHAPE_ENABLEMENT = {
+    "ex": True,
+    "fox": True,
+    "wing": True,
+    "hole": True,
+    "frame": True,
+    "curve": True,
+    "eye": True,
+    "play": True,
+    "bolt": True,
+    "crosshairs": True,
+}
+FALLBACK_COLOR_ENABLEMENT = DEFAULT_COLOR_ENABLEMENT
+
 unsubscribe_hat_styles = None
 
 
@@ -129,11 +147,21 @@ def setup_hat_styles_csv():
 
     color_enablement = {
         **DEFAULT_COLOR_ENABLEMENT,
-        **actions.user.vscode_get_setting("cursorless.hatEnablement.colors", {}),
+        **vscode_get_setting_with_fallback(
+            "cursorless.hatEnablement.colors",
+            default_value={},
+            fallback_value=FALLBACK_COLOR_ENABLEMENT,
+            fallback_message="Error finding color enablement; falling back to full enablement",
+        ),
     }
     shape_enablement = {
         **DEFAULT_SHAPE_ENABLEMENT,
-        **actions.user.vscode_get_setting("cursorless.hatEnablement.shapes", {}),
+        **vscode_get_setting_with_fallback(
+            "cursorless.hatEnablement.shapes",
+            default_value={},
+            fallback_value=FALLBACK_SHAPE_ENABLEMENT,
+            fallback_message="Error finding shape enablement; falling back to full enablement",
+        ),
     }
 
     active_hat_colors = {
