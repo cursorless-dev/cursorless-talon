@@ -151,8 +151,12 @@ class CheatSheet:
         self.draw_items(canvas, actions_2)
         self.next_column(canvas)
 
-        all_scopes = get_list("scope_type", {"argumentOrParameter": "Argument"})
-        scopes_limit = len(all_scopes) - 3
+        all_scopes = {
+            **get_list("scope_type", {"argumentOrParameter": "Argument"}),
+            **get_list("selection_type"),
+            **get_list("subtoken_scope_type"),
+        }
+        scopes_limit = 24
         scopes_1 = slice_dict(all_scopes, 0, scopes_limit)
         scopes_2 = slice_dict(all_scopes, scopes_limit)
 
@@ -163,14 +167,6 @@ class CheatSheet:
 
         self.draw_header(canvas, "More scopes")
         self.draw_items(canvas, scopes_2)
-
-        self.next_row()
-        self.draw_header(canvas, "Selection types")
-        self.draw_items(canvas, get_list("selection_type"))
-
-        self.next_row()
-        self.draw_header(canvas, "Subtokens")
-        self.draw_items(canvas, get_list("subtoken_scope_type"))
 
         self.next_row()
         self.draw_header(canvas, "Positions")
