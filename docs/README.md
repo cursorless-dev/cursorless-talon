@@ -156,28 +156,33 @@ Note that if the mark is `"this"`, and you have multiple cursors, the modifiers 
 
 ##### Syntactic scopes
 
-| Term           | Syntactic element                            |
-| -------------- | -------------------------------------------- |
-| `"arg"`        | function parameter or function call argument |
-| `"arrow"`      | anonymous lambda function                    |
-| `"call"`       | function call, eg `foo(1, 2)`                |
-| `"class"`      | class definition                             |
-| `"class name"` | the name in a class declaration              |
-| `"comment"`    | comment                                      |
-| `"element"`    | list element                                 |
-| `"funk"`       | function definition                          |
-| `"funk name"`  | the name in a function declaration           |
-| `"if"`         | if statement                                 |
-| `"key"`        | key in a map / object                        |
-| `"lambda"`     | equivalent to `"arrow"`                      |
-| `"list"`       | list                                         |
-| `"map"`        | map / object                                 |
-| `"name"`       | the name in a declaration (eg function name) |
-| `"pair"`       | an entry in a map / object                   |
-| `"state"`      | a statement, eg `let foo;`                   |
-| `"string"`     | string                                       |
-| `"type"`       | a type annotation or declaration             |
-| `"value"`      | a value in a map / object                    |
+| Term           | Syntactic element                                   |
+| -------------- | --------------------------------------------------- |
+| `"arg"`        | function parameter or function call argument        |
+| `"attribute"`  | attribute, eg on html element                       |
+| `"call"`       | function call, eg `foo(1, 2)`                       |
+| `"class name"` | the name in a class declaration                     |
+| `"class"`      | class definition                                    |
+| `"comment"`    | comment                                             |
+| `"condition"`  | condition, eg in an if statement, while loop etc    |
+| `"element"`    | xml element                                         |
+| `"end tag"`    | xml end tag                                         |
+| `"funk name"`  | the name in a function declaration                  |
+| `"funk"`       | name function declaration                           |
+| `"if state"`   | if statement                                        |
+| `"item"`       | an entry in a map / object / list                   |
+| `"key"`        | key in a map / object                               |
+| `"lambda"`     | anonymous lambda function                           |
+| `"list"`       | list / array                                        |
+| `"map"`        | map / object                                        |
+| `"name"`       | the name in a declaration (eg function name)        |
+| `"regex"`      | regular expression                                  |
+| `"start tag"`  | xml start tag                                       |
+| `"state"`      | a statement, eg `let foo;`                          |
+| `"string"`     | string                                              |
+| `"tags"`       | xml both tags                                       |
+| `"type"`       | a type annotation or declaration                    |
+| `"value"`      | a value eg in a map / object, return statement, etc |
 
 For example, `"take funk blue air"` selects the function containing the token with a blue hat over the letter `'a'`.
 
