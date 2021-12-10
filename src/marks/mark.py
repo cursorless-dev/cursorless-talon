@@ -1,9 +1,11 @@
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 from ..conventions import get_cursorless_list_name
 from talon import Module, actions, app, Context, fs, cron
 from ..csv_overrides import init_csv_and_watch_changes
 from .lines_number import DEFAULT_DIRECTIONS
+import traceback
 
 mod = Module()
 ctx = Context()
@@ -121,6 +123,23 @@ DEFAULT_SHAPE_ENABLEMENT = {
     "crosshairs": False,
 }
 
+# Fall back to full enablement in case of error reading settings file
+# NB: This won't actually enable all the shapes and colors extension-side.
+# It'll just make it so that the user can say them whether or not they are enabled
+FALLBACK_SHAPE_ENABLEMENT = {
+    "ex": True,
+    "fox": True,
+    "wing": True,
+    "hole": True,
+    "frame": True,
+    "curve": True,
+    "eye": True,
+    "play": True,
+    "bolt": True,
+    "crosshairs": True,
+}
+FALLBACK_COLOR_ENABLEMENT = DEFAULT_COLOR_ENABLEMENT
+
 unsubscribe_hat_styles = None
 
 
@@ -129,11 +148,21 @@ def setup_hat_styles_csv():
 
     color_enablement = {
         **DEFAULT_COLOR_ENABLEMENT,
-        **actions.user.vscode_get_setting("cursorless.hatEnablement.colors", {}),
+        **vscode_get_setting_with_fallback(
+            "cursorless.hatEnablement.colors",
+            default_value={},
+            fallback_value=FALLBACK_COLOR_ENABLEMENT,
+            fallback_message="Error finding color enablement; falling back to full enablement",
+        ),
     }
     shape_enablement = {
         **DEFAULT_SHAPE_ENABLEMENT,
-        **actions.user.vscode_get_setting("cursorless.hatEnablement.shapes", {}),
+        **vscode_get_setting_with_fallback(
+            "cursorless.hatEnablement.shapes",
+            default_value={},
+            fallback_value=FALLBACK_SHAPE_ENABLEMENT,
+            fallback_message="Error finding shape enablement; falling back to full enablement",
+        ),
     }
 
     active_hat_colors = {
@@ -158,6 +187,31 @@ def setup_hat_styles_csv():
         },
         [*hat_colors.values(), *hat_shapes.values()],
     )
+
+
+def vscode_get_setting_with_fallback(
+    key: str,
+    default_value: Any,
+    fallback_value: Any,
+    fallback_message: str,
+):
+    """Returns a vscode setting with a fallback in case there's an error
+
+    Args:
+        key (str): The key of the setting to look up
+        default_value (Any): The default value to return if the setting is not defined
+        fallback_value (Any): The value to return if there is an error looking up the setting
+        fallback_message (str): The message to show to the user if we end up having to use the fallback
+
+    Returns:
+        Any: The value of the setting or the default or fall back
+    """
+    try:
+        return actions.user.vscode_get_setting(key, default_value)
+    except Exception as e:
+        print(fallback_message)
+        traceback.print_exc()
+        return fallback_value
 
 
 fast_reload_job = None

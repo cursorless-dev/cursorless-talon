@@ -1,4 +1,5 @@
 import os
+from typing import Any
 from talon import Context, Module, actions
 from pathlib import Path
 from ..vendor.jstyleson import loads
@@ -26,7 +27,7 @@ class Actions:
         """Get path of vscode settings json file"""
         pass
 
-    def vscode_get_setting(key: str, default_value: any = None):
+    def vscode_get_setting(key: str, default_value: Any = None):
         """Get the value of vscode setting at the given key"""
         path: Path = actions.user.vscode_settings_path()
         settings: dict = loads(path.read_text())
