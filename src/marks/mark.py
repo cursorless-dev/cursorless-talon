@@ -1,11 +1,10 @@
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
-from ..conventions import get_cursorless_list_name
 from talon import Module, actions, app, Context, fs, cron
 from ..csv_overrides import init_csv_and_watch_changes
 from .lines_number import DEFAULT_DIRECTIONS
-import traceback
+from .vscode_settings import vscode_get_setting_with_fallback
 
 mod = Module()
 ctx = Context()
@@ -187,31 +186,6 @@ def setup_hat_styles_csv():
         },
         [*hat_colors.values(), *hat_shapes.values()],
     )
-
-
-def vscode_get_setting_with_fallback(
-    key: str,
-    default_value: Any,
-    fallback_value: Any,
-    fallback_message: str,
-):
-    """Returns a vscode setting with a fallback in case there's an error
-
-    Args:
-        key (str): The key of the setting to look up
-        default_value (Any): The default value to return if the setting is not defined
-        fallback_value (Any): The value to return if there is an error looking up the setting
-        fallback_message (str): The message to show to the user if we end up having to use the fallback
-
-    Returns:
-        Any: The value of the setting or the default or fall back
-    """
-    try:
-        return actions.user.vscode_get_setting(key, default_value)
-    except Exception as e:
-        print(fallback_message)
-        traceback.print_exc()
-        return fallback_value
 
 
 fast_reload_job = None
