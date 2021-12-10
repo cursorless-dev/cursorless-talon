@@ -1,5 +1,9 @@
 from talon import Module, app
-from ..csv_overrides import init_csv_and_watch_changes
+from ..csv_overrides import (
+    init_csv_and_watch_changes,
+    SPOKEN_FORM_HEADER,
+    VSCODE_COMMAND_HEADER,
+)
 
 custom_action_defaults = {}
 
@@ -15,6 +19,7 @@ def on_ready():
     init_csv_and_watch_changes(
         "experimental/actions_custom",
         custom_action_defaults,
+        headers=[SPOKEN_FORM_HEADER, VSCODE_COMMAND_HEADER],
         allow_unknown_values=True,
         default_list_name="custom_action",
     )
