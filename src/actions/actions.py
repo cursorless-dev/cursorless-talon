@@ -5,7 +5,6 @@ from .actions_callback import callback_action_defaults, callback_action_map
 from .actions_makeshift import (
     makeshift_action_defaults,
     makeshift_action_map,
-    run_makeshift_action,
 )
 from .actions_custom import custom_action_defaults
 
@@ -40,17 +39,14 @@ class Actions:
         if action_id in callback_action_map:
             return callback_action_map[action_id](target)
         elif action_id in makeshift_action_map:
-            return run_makeshift_action(action_id, target)
+            command, arguments = makeshift_action_map[action_id]
+            return vscode_command(command, target, arguments)
         else:
             return actions.user.cursorless_single_target_command(action_id, target)
 
     def cursorless_vscode_command(command: str, target: dict):
         """Perform vscode command on cursorless target"""
-        actions.user.cursorless_single_target_command(
-            "executeCommand",
-            target,
-            command,
-        )
+        return vscode_command(command, target)
 
     def cursorless_action_or_vscode_command(instruction: dict, target: dict):
         """Perform cursorless action or vscode command on target (internal use only)"""
@@ -60,6 +56,12 @@ class Actions:
             return actions.user.cursorless_action_command(value, target)
         elif type == "vscode_command":
             return actions.user.cursorless_vscode_command(value, target)
+
+
+def vscode_command(command: str, target: dict, arguments: dict = {}):
+    return actions.user.cursorless_single_target_command(
+        "executeCommand", target, command, arguments
+    )
 
 
 default_values = {

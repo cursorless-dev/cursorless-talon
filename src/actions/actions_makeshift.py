@@ -1,4 +1,4 @@
-from talon import Module, actions
+from talon import Module
 from dataclasses import dataclass
 
 
@@ -7,8 +7,9 @@ class MakeshiftAction:
     term: str
     identifier: str
     vscode_command_id: str
-    pre_command_sleep: float = 0
-    post_command_sleep: float = 0
+    restore_selection: bool = False
+    pre_command_sleep: int = None
+    post_command_sleep: int = None
 
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
@@ -21,17 +22,17 @@ makeshift_actions = [
     MakeshiftAction("hover", "showHover", "editor.action.showHover"),
     MakeshiftAction("inspect", "showDebugHover", "editor.debug.action.showDebugHover"),
     MakeshiftAction(
-        "quick fix", "showQuickFix", "editor.action.quickFix", pre_command_sleep=0.3
+        "quick fix", "showQuickFix", "editor.action.quickFix", restore_selection=True
     ),
-    MakeshiftAction("reference", "showReferences", "references-view.find"),
-    MakeshiftAction("rename", "rename", "editor.action.rename", post_command_sleep=0.1),
+    MakeshiftAction(
+        "reference", "showReferences", "references-view.find", restore_selection=True
+    ),
+    MakeshiftAction("rename", "rename", "editor.action.rename", restore_selection=True),
 ]
 
 makeshift_action_defaults = {
     action.term: action.identifier for action in makeshift_actions
 }
-makeshift_action_map = {action.identifier: action for action in makeshift_actions}
-
 
 mod = Module()
 mod.list(
@@ -40,10 +41,18 @@ mod.list(
 )
 
 
-def run_makeshift_action(action_id: str, target: dict):
-    """Execute makeshift action"""
-    makeshift_action = makeshift_action_map[action_id]
-    actions.user.cursorless_single_target_command("setSelection", target)
-    actions.sleep(makeshift_action.pre_command_sleep)
-    actions.user.vscode(makeshift_action.vscode_command_id)
-    actions.sleep(makeshift_action.post_command_sleep)
+def get_parameters(action: MakeshiftAction):
+    command = action.vscode_command_id
+    arguments = {
+        "restoreSelection": action.restore_selection,
+    }
+    if action.pre_command_sleep:
+        arguments["action"] = action.pre_command_sleep
+    if action.post_command_sleep:
+        arguments["postCommandSleep"] = action.post_command_sleep
+    return command, arguments
+
+
+makeshift_action_map = {
+    action.identifier: get_parameters(action) for action in makeshift_actions
+}
