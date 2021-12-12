@@ -21,6 +21,15 @@ hat_colors = {
     "red": "red",
     "pink": "pink",
     "yellow": "yellow",
+    "-userColor1": "userColor1",
+    "-userColor2": "userColor2",
+    "-userColor3": "userColor3",
+    "-userColor4": "userColor4",
+    "-userColor5": "userColor5",
+    "-userColor6": "userColor6",
+    "-userColor7": "userColor7",
+    "-userColor8": "userColor8",
+    "-userColor9": "userColor9",
 }
 
 hat_shapes = {
@@ -107,6 +116,15 @@ DEFAULT_COLOR_ENABLEMENT = {
     "red": True,
     "pink": True,
     "yellow": True,
+    "userColor1": False,
+    "userColor2": False,
+    "userColor3": False,
+    "userColor4": False,
+    "userColor5": False,
+    "userColor6": False,
+    "userColor7": False,
+    "userColor8": False,
+    "userColor9": False,
 }
 
 DEFAULT_SHAPE_ENABLEMENT = {
