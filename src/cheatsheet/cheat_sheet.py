@@ -1,10 +1,13 @@
-from ..conventions import get_cursorless_list_name
-from talon import Module, ui, registry, skia, actions, cron
+from talon import Module, ui, skia, actions, cron
 from talon.canvas import Canvas
-import re
 import webbrowser
 import math
-from ..actions.actions import ACTION_LIST_NAMES
+
+from .sections.actions import get_actions
+from .sections.scopes import get_scopes
+from .sections.compound_targets import get_compound_targets
+
+from .get_list import get_list, get_lists
 
 mod = Module()
 mod.mode("cursorless_cheat_sheet", "Mode for showing cursorless cheat sheet gui")
@@ -147,7 +150,7 @@ class CheatSheet:
 
     def draw_section(self, canvas, header_text, items):
         if not self.is_first_row_in_column:
-            self.next_row()
+            self.y += line_height / 2
 
         self.is_first_row_in_column = False
 
@@ -210,9 +213,6 @@ class CheatSheet:
         self.y = get_y(canvas)
         self.w = 0
         self.is_first_row_in_column = True
-
-    def next_row(self):
-        self.y += line_height
 
     def draw_header(self, canvas, text):
         canvas.paint.typeface = text_font
@@ -303,51 +303,12 @@ class Actions:
         webbrowser.open(instructions_url)
 
 
-def get_list(name, descriptions=None):
-    if descriptions is None:
-        descriptions = {}
-
-    items = get_raw_list(name)
-    if isinstance(items, dict):
-        make_dict_readable(items, descriptions)
-    return items
-
-
-def get_lists(names: list[str], descriptions=None):
-    items = sorted(
-        item for name in names for item in get_list(name, descriptions).items()
-    )
-    return {key: value for key, value in items}
-
-
-def get_raw_list(name):
-    cursorless_list_name = get_cursorless_list_name(name)
-    return registry.lists[cursorless_list_name][0].copy()
-
-
 def get_y(canvas):
     return canvas.y + outer_padding
 
 
 def draw_text(canvas, text, x, y):
     canvas.draw_text(text, x, y + text_size + padding / 2)
-
-
-def make_dict_readable(dict, descriptions=None):
-    if descriptions is None:
-        descriptions = {}
-
-    for k in dict:
-        desc = dict[k]
-        if desc in descriptions:
-            desc = descriptions[desc]
-        else:
-            desc = make_readable(desc)
-        dict[k] = desc
-
-
-def make_readable(text):
-    return re.sub(r"(?<=[a-z])(?=[A-Z])", " ", text).lower().capitalize()
 
 
 def get_close_rect(canvas):
@@ -377,80 +338,3 @@ def is_in_rect(canvas, mouse_pos, rect):
 def slice_dict(dict: dict, start: int, end: int = None):
     keys = sorted(dict)[start:end]
     return {key: dict[key] for key in keys}
-
-
-def get_actions():
-    all_actions = {}
-    for name in ACTION_LIST_NAMES:
-        all_actions.update(get_raw_list(name))
-
-    multiple_target_action_names = [
-        "replaceWithTarget",
-        "moveToTarget",
-        "swapTargets",
-        "applyFormatter",
-        "wrapWithPairedDelimiter",
-    ]
-    simple_actions = {
-        key: value
-        for key, value in all_actions.items()
-        if value not in multiple_target_action_names
-    }
-    complex_actions = {
-        value: key
-        for key, value in all_actions.items()
-        if value in multiple_target_action_names
-    }
-
-    swap_connective = list(get_raw_list("swap_connective").keys())[0]
-    source_destination_connective = list(
-        get_raw_list("source_destination_connective").keys()
-    )[0]
-
-    make_dict_readable(
-        simple_actions,
-        {
-            "callAsFunction": "Call T on S",
-        },
-    )
-    return {
-        **simple_actions,
-        f"{complex_actions['replaceWithTarget']} <T1> {source_destination_connective} <T2>": "Replace T2 with T1",
-        f"{complex_actions['replaceWithTarget']} <T>": "Replace S with T",
-        f"{complex_actions['moveToTarget']} <T1> {source_destination_connective} <T2>": "Move T1 to T2",
-        f"{complex_actions['moveToTarget']} <T>": "Move T to S",
-        f"{complex_actions['swapTargets']} <T1> {swap_connective} <T2>": "Swap T1 with T2",
-        f"{complex_actions['swapTargets']} <T>": "Swap S with T",
-        f"{complex_actions['applyFormatter']} <F> at <T>": "Reformat T as F",
-        f"<P> {complex_actions['wrapWithPairedDelimiter']} <T>": "Wrap T with P",
-    }
-
-
-def get_scopes():
-    return {
-        **get_lists(
-            ["scope_type", "selection_type", "subtoken_scope_type"],
-            {"argumentOrParameter": "Argument"},
-        ),
-        "<P>": "Paired delimiter",
-    }
-
-
-def get_compound_targets():
-    include_both_term = next(
-        spoken_form
-        for spoken_form, value in get_raw_list("range_connective").items()
-        if value == "rangeInclusive"
-    )
-    list_connective_term = next(
-        spoken_form
-        for spoken_form, value in get_raw_list("list_connective").items()
-        if value == "listConnective"
-    )
-    compound_targets = {
-        f"<T1> {list_connective_term} <T2>": "T1 and T2",
-        f"<T1> {include_both_term} <T2>": "T1 through T2",
-        f"{include_both_term} <T>": "S through T",
-    }
-
-    return compound_targets
