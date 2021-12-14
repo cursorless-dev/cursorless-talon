@@ -58,9 +58,9 @@ class Actions:
             return actions.user.cursorless_vscode_command(value, target)
 
 
-def vscode_command(command: str, target: dict, arguments: dict = {}):
+def vscode_command(command_id: str, target: dict, arguments: dict = {}):
     return actions.user.cursorless_single_target_command(
-        "executeCommand", target, command, arguments
+        "executeCommand", target, command_id, arguments
     )
 
 
