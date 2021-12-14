@@ -33,7 +33,7 @@ reload, as cursorless uses these lines to track disabled spoken forms.
 Simply modify the spoken form in the first column of any of the csvs in the
 directory above to change the spoken you'd like to use. The new spoken form will be usable immediately.
 
-Multiple spoken forms can be used for the same action using the pipe operator    
+Multiple spoken forms can be used for the same action using the pipe operator  
 `remove|delete`
 
 ### New features
@@ -46,3 +46,14 @@ If you'd like to remove an action, scope type, etc, you can simply set the
 spoken form in the first column to any thing starting with `-`. Please don't
 delete any lines, as that will trigger cursorless to automatically add the
 spoken form back on talon restart.
+
+## Cursorless custom VSCode actions
+
+You can use Cursorless to run any built-in VSCode command on a specific target.
+
+Just add your custom commands to: `experimental/actions_custom.csv`. For example, if you wanted to be able to say `"push down <T>"` to move the line(s) containing target `<T>` downwards, you could do the following:
+
+```csv
+Spoken form, VSCode command
+push down, editor.action.moveLinesDownAction
+```
