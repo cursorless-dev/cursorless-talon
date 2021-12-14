@@ -140,6 +140,9 @@ class CheatSheet:
         if hat_shapes:
             self.draw_section(canvas, "Shapes", hat_shapes)
 
+        # Needs to update this for the last column
+        self.max_y = max(self.max_y, self.y)
+
         # Resize to fit content
         # NB: We debounce because for some reason draw gets called multiple
         # times in quick succession.
