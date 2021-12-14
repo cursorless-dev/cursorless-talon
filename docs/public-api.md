@@ -16,8 +16,10 @@ Cursorless exposes a couple talon actions and captures that you can use to defin
 
 ## Example of combining capture and action
 ```talon
-select <user.cursorless_target>:
-    user.cursorless_command("setSelection", cursorless_target)
+add dock string <user.cursorless_target>:
+    user.cursorless_command("editNewLineAfter", cursorless_target)
+    "\"\"\"\"\"\""
+    key(left:3)
 
 comment <user.cursorless_target>:
     user.cursorless_vscode_command("editor.action.addCommentLine", cursorless_target)
