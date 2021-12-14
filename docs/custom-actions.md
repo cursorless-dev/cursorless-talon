@@ -8,5 +8,3 @@ Just add your custom commands to: `experimental/actions_custom.csv`.  For exampl
 Spoken form, VSCode command
 push down, editor.action.moveLinesDownAction
 ```
-
-You can now use the command: `custom blue air` to comment the line containing the token with the `blue a` hat. 
