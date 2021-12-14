@@ -13,6 +13,7 @@ def get_actions():
         "swapTargets",
         "applyFormatter",
         "wrapWithPairedDelimiter",
+        "rewrap",
     ]
     simple_actions = {
         key: value
@@ -46,4 +47,5 @@ def get_actions():
         f"{complex_actions['swapTargets']} <T>": "Swap S with T",
         f"{complex_actions['applyFormatter']} <F> at <T>": "Reformat T as F",
         f"<P> {complex_actions['wrapWithPairedDelimiter']} <T>": "Wrap T with P",
+        f"<P> {complex_actions['rewrap']} <T>": "Rewrap T with P",
     }
