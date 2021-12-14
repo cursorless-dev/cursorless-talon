@@ -47,7 +47,7 @@ spoken form in the first column to any thing starting with `-`. Please don't
 delete any lines, as that will trigger cursorless to automatically add the
 spoken form back on talon restart.
 
-## Cursorless custom VSCode actions
+## \[Experimental\] Cursorless custom VSCode actions
 
 You can use Cursorless to run any built-in VSCode command on a specific target.
 
