@@ -53,7 +53,7 @@ class Actions:
         type = instruction["type"]
         value = instruction["value"]
         if type == "cursorless_action":
-            return actions.user.cursorless_action_command(value, target)
+            return actions.user.cursorless_command(value, target)
         elif type == "vscode_command":
             return actions.user.cursorless_vscode_command(value, target)
 

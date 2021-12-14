@@ -47,7 +47,7 @@ def get_parameters(action: MakeshiftAction):
         "restoreSelection": action.restore_selection,
     }
     if action.pre_command_sleep:
-        arguments["action"] = action.pre_command_sleep
+        arguments["preCommandSleep"] = action.pre_command_sleep
     if action.post_command_sleep:
         arguments["postCommandSleep"] = action.post_command_sleep
     return command, arguments

@@ -6,7 +6,6 @@ from .conventions import get_cursorless_list_name
 
 SPOKEN_FORM_HEADER = "Spoken form"
 CURSORLESS_IDENTIFIER_HEADER = "Cursorless identifier"
-VSCODE_COMMAND_HEADER = "Vscode command"
 
 
 mod = Module()
