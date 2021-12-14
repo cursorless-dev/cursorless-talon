@@ -44,9 +44,9 @@ class Actions:
         else:
             return actions.user.cursorless_single_target_command(action_id, target)
 
-    def cursorless_vscode_command(command: str, target: dict):
+    def cursorless_vscode_command(command_id: str, target: dict):
         """Perform vscode command on cursorless target"""
-        return vscode_command(command, target)
+        return vscode_command(command_id, target)
 
     def cursorless_action_or_vscode_command(instruction: dict, target: dict):
         """Perform cursorless action or vscode command on target (internal use only)"""
