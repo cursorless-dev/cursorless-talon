@@ -7,6 +7,7 @@ class MakeshiftAction:
     term: str
     identifier: str
     vscode_command_id: str
+    vscode_command_args: list = None
     restore_selection: bool = False
     pre_command_sleep: int = None
     post_command_sleep: int = None
@@ -46,6 +47,8 @@ def get_parameters(action: MakeshiftAction):
     arguments = {
         "restoreSelection": action.restore_selection,
     }
+    if action.vscode_command_args:
+        arguments["commandArgs"] = action.vscode_command_args
     if action.pre_command_sleep:
         arguments["preCommandSleep"] = action.pre_command_sleep
     if action.post_command_sleep:
