@@ -1,8 +1,11 @@
+from talon import Context, Module, actions, fs, app
 from typing import Optional
-from .conventions import get_cursorless_list_name
-from talon import Context, Module, actions, fs, app, settings
 from datetime import datetime
 from pathlib import Path
+from .conventions import get_cursorless_list_name
+
+SPOKEN_FORM_HEADER = "Spoken form"
+CURSORLESS_IDENTIFIER_HEADER = "Cursorless identifier"
 
 
 mod = Module()
@@ -20,6 +23,7 @@ def init_csv_and_watch_changes(
     extra_ignored_values: list[str] = None,
     allow_unknown_values: bool = False,
     default_list_name: Optional[str] = None,
+    headers: list[str] = [SPOKEN_FORM_HEADER, CURSORLESS_IDENTIFIER_HEADER],
     ctx: Context = Context(),
 ):
     """
@@ -58,6 +62,7 @@ def init_csv_and_watch_changes(
         if file_path.match(path):
             current_values, has_errors = read_file(
                 file_path,
+                headers,
                 super_default_values.values(),
                 extra_ignored_values,
                 allow_unknown_values,
@@ -76,6 +81,7 @@ def init_csv_and_watch_changes(
     if file_path.is_file():
         current_values = update_file(
             file_path,
+            headers,
             super_default_values,
             extra_ignored_values,
             allow_unknown_values,
@@ -89,7 +95,7 @@ def init_csv_and_watch_changes(
             ctx,
         )
     else:
-        create_file(file_path, super_default_values)
+        create_file(file_path, headers, super_default_values)
         update_dicts(
             default_values,
             super_default_values,
@@ -140,7 +146,7 @@ def update_dicts(
                 raise
 
     # Convert result map back to result list
-    results = {key: {} for key in default_values}
+    results = {res["list"]: {} for res in results_map.values()}
     for obj in results_map.values():
         value = obj["value"]
         key = obj["key"]
@@ -155,12 +161,17 @@ def update_dicts(
 
 def update_file(
     path: Path,
+    headers: list[str],
     default_values: dict,
     extra_ignored_values: list[str],
     allow_unknown_values: bool,
 ):
     current_values, has_errors = read_file(
-        path, default_values.values(), extra_ignored_values, allow_unknown_values
+        path,
+        headers,
+        default_values.values(),
+        extra_ignored_values,
+        allow_unknown_values,
     )
     current_identifiers = current_values.values()
 
@@ -196,18 +207,14 @@ def update_file(
     return current_values
 
 
-def create_line(key: str, value: str):
-    return f"{key}, {value}"
+def create_line(*cells: str):
+    return ", ".join(cells)
 
 
-SPOKEN_FORM_HEADER = "Spoken form"
-CURSORLESS_IDENTIFIER_HEADER = "Cursorless identifier"
-header_row = create_line(SPOKEN_FORM_HEADER, CURSORLESS_IDENTIFIER_HEADER)
-
-
-def create_file(path: Path, default_values: dict):
+def create_file(path: Path, headers: list[str], default_values: dict):
     lines = [create_line(key, default_values[key]) for key in sorted(default_values)]
-    lines.insert(0, header_row)
+    lines.insert(0, create_line(*headers))
+    lines.append("")
     path.write_text("\n".join(lines))
 
 
@@ -226,6 +233,7 @@ def csv_error(path: Path, index: int, message: str, value: str):
 
 def read_file(
     path: Path,
+    headers: list[str],
     default_identifiers: list[str],
     extra_ignored_values: list[str],
     allow_unknown_values: bool,
@@ -236,29 +244,31 @@ def read_file(
     result = {}
     used_identifiers = []
     has_errors = False
-    seen_header = False
+    seen_headers = False
+    expected_headers = create_line(*headers)
+
     for i, raw_line in enumerate(lines):
         line = raw_line.strip()
-        if len(line) == 0 or line.startswith("#"):
+        if not line or line.startswith("#"):
+            continue
+
+        if not seen_headers:
+            seen_headers = True
+            if line != expected_headers:
+                has_errors = True
+                csv_error(path, i, "Malformed header", line)
+                print(f"Expected '{expected_headers}'")
             continue
 
         parts = line.split(",")
 
-        if len(parts) != 2:
+        if len(parts) != len(headers):
             has_errors = True
             csv_error(path, i, "Malformed csv entry", line)
             continue
 
         key = parts[0].strip()
         value = parts[1].strip()
-
-        if not seen_header:
-            if key != SPOKEN_FORM_HEADER or value != CURSORLESS_IDENTIFIER_HEADER:
-                has_errors = True
-                csv_error(path, i, "Malformed header", line)
-                print(f"Expected '{header_row}'")
-            seen_header = True
-            continue
 
         if (
             value not in default_identifiers
