@@ -34,8 +34,8 @@ def cursorless_action_or_vscode_command(m) -> dict:
 
 @mod.action_class
 class Actions:
-    def cursorless_action_command(action_id: str, target: dict):
-        """Perform cursorless action command on target"""
+    def cursorless_command(action_id: str, target: dict):
+        """Perform cursorless command on target"""
         if action_id in callback_action_map:
             return callback_action_map[action_id](target)
         elif action_id in makeshift_action_map:
