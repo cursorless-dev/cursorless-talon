@@ -21,6 +21,6 @@ add dock string <user.cursorless_target>:
     "\"\"\"\"\"\""
     key(left:3)
 
-comment <user.cursorless_target>:
-    user.cursorless_vscode_command("editor.action.addCommentLine", cursorless_target)
+push <user.cursorless_target> down:
+    user.cursorless_vscode_command("editor.action.moveLinesDownAction", cursorless_target)
 ```
