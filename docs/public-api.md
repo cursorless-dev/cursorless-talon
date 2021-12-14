@@ -1,5 +1,7 @@
 # Cursorless public API
 
+Cursorless exposes a couple talon actions and captures that you can use to define your own custom command grammar leveraging cursorless targets.
+
 ## Public Talon captures
 * `<user.cursorless_target>`    
     Represents a cursorless target. This target can be a single mark, multiple marks or a range.
