@@ -4,7 +4,7 @@ Cursorless exposes a couple talon actions and captures that you can use to defin
 
 ## Public Talon captures
 * `<user.cursorless_target>`    
-    Represents a cursorless target. This target can be a single mark, multiple marks or a range.
+    Represents a cursorless target, such as `"air"`, `"this"`, `"air past bat"`, `"air and bat"`, `"funk air past token bat and class cap"`, etc
 
 ## Public Talon actions
 * `user.cursorless_command(action_id: str, target: cursorless_target)`    
