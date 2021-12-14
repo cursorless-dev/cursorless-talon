@@ -57,3 +57,5 @@ Just add your custom commands to: `experimental/actions_custom.csv`. For example
 Spoken form, VSCode command
 push down, editor.action.moveLinesDownAction
 ```
+
+Now when you say eg "push down air and bat", cursorless will first select the two tokens with a gray hat over the `a` and `b`, then issue the VSCode command `editor.action.moveLinesDownAction`, and then restore your original selection.
