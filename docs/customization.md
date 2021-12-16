@@ -33,7 +33,7 @@ reload, as cursorless uses these lines to track disabled spoken forms.
 Simply modify the spoken form in the first column of any of the csvs in the
 directory above to change the spoken you'd like to use. The new spoken form will be usable immediately.
 
-Multiple spoken forms can be used for the same action using the pipe operator    
+Multiple spoken forms can be used for the same action using the pipe operator  
 `remove|delete`
 
 ### New features
@@ -46,3 +46,46 @@ If you'd like to remove an action, scope type, etc, you can simply set the
 spoken form in the first column to any thing starting with `-`. Please don't
 delete any lines, as that will trigger cursorless to automatically add the
 spoken form back on talon restart.
+
+## \[Experimental\] Cursorless custom VSCode actions
+
+You can use Cursorless to run any built-in VSCode command on a specific target.
+
+Just add your custom commands to: `experimental/actions_custom.csv`. For example, if you wanted to be able to say `"push down <T>"` to move the line(s) containing target `<T>` downwards, you could do the following:
+
+```csv
+Spoken form, VSCode command
+push down, editor.action.moveLinesDownAction
+```
+
+Now when you say eg "push down air and bat", cursorless will first select the two tokens with a gray hat over the `a` and `b`, then issue the VSCode command `editor.action.moveLinesDownAction`, and then restore your original selection.
+
+## Cursorless public API
+
+Cursorless exposes a couple talon actions and captures that you can use to define your own custom command grammar leveraging cursorless targets.
+
+### Public Talon captures
+
+- `<user.cursorless_target>`  
+   Represents a cursorless target, such as `"air"`, `"this"`, `"air past bat"`, `"air and bat"`, `"funk air past token bat and class cap"`, etc
+
+### Public Talon actions
+
+- `user.cursorless_command(action_id: str, target: cursorless_target)`  
+   Perform a Cursorless command on the given target  
+   eg: `user.cursorless_command("setSelection", cursorless_target)`
+- `user.cursorless_vscode_command(command_id: str, target: cursorless_target)`  
+   Performs a VSCode command on the given target  
+   eg: `user.cursorless_vscode_command("editor.action.addCommentLine", cursorless_target)`
+
+### Example of combining capture and action
+
+```talon
+add dock string <user.cursorless_target>:
+    user.cursorless_command("editNewLineAfter", cursorless_target)
+    "\"\"\"\"\"\""
+    key(left:3)
+
+push <user.cursorless_target> down:
+    user.cursorless_vscode_command("editor.action.moveLinesDownAction", cursorless_target)
+```
