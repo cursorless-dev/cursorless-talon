@@ -23,13 +23,6 @@ hat_colors = {
     "yellow": "yellow",
     "-userColor1": "userColor1",
     "-userColor2": "userColor2",
-    "-userColor3": "userColor3",
-    "-userColor4": "userColor4",
-    "-userColor5": "userColor5",
-    "-userColor6": "userColor6",
-    "-userColor7": "userColor7",
-    "-userColor8": "userColor8",
-    "-userColor9": "userColor9",
 }
 
 hat_shapes = {
