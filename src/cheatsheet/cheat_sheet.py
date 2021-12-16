@@ -314,32 +314,6 @@ def draw_text(canvas, text, x, y):
     canvas.draw_text(text, x, y + text_size + padding / 2)
 
 
-def make_dict_readable(dict, descriptions=None):
-    if descriptions is None:
-        descriptions = {}
-
-    for k in dict:
-        desc = dict[k]
-        if desc in descriptions:
-            desc = descriptions[desc]
-        else:
-            desc = make_readable(desc)
-        dict[k] = desc
-
-
-def make_readable(text):
-    return de_camel(text).lower().capitalize()
-
-
-def de_camel(text: str) -> str:
-    """Replacing camelCase boundaries with blank space"""
-    return re.sub(
-        r"(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|(?<=[a-zA-Z])(?=[0-9])|(?<=[0-9])(?=[a-zA-Z])",
-        " ",
-        text,
-    )
-
-
 def get_close_rect(canvas):
     wh = 1.5 * close_size
     cr = canvas.rect
