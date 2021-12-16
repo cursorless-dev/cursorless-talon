@@ -111,13 +111,6 @@ DEFAULT_COLOR_ENABLEMENT = {
     "yellow": True,
     "userColor1": False,
     "userColor2": False,
-    "userColor3": False,
-    "userColor4": False,
-    "userColor5": False,
-    "userColor6": False,
-    "userColor7": False,
-    "userColor8": False,
-    "userColor9": False,
 }
 
 DEFAULT_SHAPE_ENABLEMENT = {
