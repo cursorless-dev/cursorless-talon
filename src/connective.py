@@ -10,6 +10,8 @@ range_connectives = {
     "until": "rangeExcludingEnd",
 }
 
+default_range_connective = "rangeInclusive"
+
 
 def on_ready():
     init_csv_and_watch_changes(
