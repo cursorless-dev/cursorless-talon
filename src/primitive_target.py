@@ -4,13 +4,9 @@ from talon import Module
 mod = Module()
 
 BASE_TARGET = {"type": "primitive"}
-STRICT_HERE = {
+IMPLICIT_TARGET = {
     "type": "primitive",
-    "mark": {"type": "cursor"},
-    "selectionType": "strictHere",
-    "position": "contents",
-    "modifier": {"type": "identity"},
-    "insideOutsideType": "inside",
+    "isImplicit": True
 }
 
 
@@ -21,7 +17,7 @@ modifiers = [
     "<user.cursorless_containing_scope>",  # funk, state, class
     "<user.cursorless_subtoken_scope>",  # first past second word
     "<user.cursorless_surrounding_pair>",  # matching/pair [curly, round]
-    "<user.cursorless_identity>",  # just
+    "<user.cursorless_to_raw_selection>",  # just
     # "<user.cursorless_matching_paired_delimiter>",  # matching
 ]
 
