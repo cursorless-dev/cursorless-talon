@@ -4,7 +4,6 @@ from typing import Any
 from talon import Module, actions, app, Context, fs, cron
 from ..csv_overrides import init_csv_and_watch_changes
 from .lines_number import DEFAULT_DIRECTIONS
-from .vscode_settings import vscode_get_setting_with_fallback
 
 mod = Module()
 ctx = Context()
@@ -145,23 +144,33 @@ unsubscribe_hat_styles = None
 def setup_hat_styles_csv():
     global unsubscribe_hat_styles
 
+    (
+        color_enablement_settings,
+        is_color_error,
+    ) = actions.user.vscode_get_setting_with_fallback(
+        "cursorless.hatEnablement.colors",
+        default_value={},
+        fallback_value=FALLBACK_COLOR_ENABLEMENT,
+        fallback_message="Error finding color enablement; falling back to full enablement",
+    )
+
+    (
+        shape_enablement_settings,
+        is_shape_error,
+    ) = actions.user.vscode_get_setting_with_fallback(
+        "cursorless.hatEnablement.shapes",
+        default_value={},
+        fallback_value=FALLBACK_SHAPE_ENABLEMENT,
+        fallback_message="Error finding shape enablement; falling back to full enablement",
+    )
+
     color_enablement = {
         **DEFAULT_COLOR_ENABLEMENT,
-        **vscode_get_setting_with_fallback(
-            "cursorless.hatEnablement.colors",
-            default_value={},
-            fallback_value=FALLBACK_COLOR_ENABLEMENT,
-            fallback_message="Error finding color enablement; falling back to full enablement",
-        ),
+        **color_enablement_settings,
     }
     shape_enablement = {
         **DEFAULT_SHAPE_ENABLEMENT,
-        **vscode_get_setting_with_fallback(
-            "cursorless.hatEnablement.shapes",
-            default_value={},
-            fallback_value=FALLBACK_SHAPE_ENABLEMENT,
-            fallback_message="Error finding shape enablement; falling back to full enablement",
-        ),
+        **shape_enablement_settings,
     }
 
     active_hat_colors = {
@@ -185,7 +194,11 @@ def setup_hat_styles_csv():
             "hat_shape": active_hat_shapes,
         },
         [*hat_colors.values(), *hat_shapes.values()],
+        no_update_file=is_shape_error or is_color_error,
     )
+
+    if is_shape_error or is_color_error:
+        app.notify("Error reading vscode settings. Please try restarting talon.")
 
 
 fast_reload_job = None
