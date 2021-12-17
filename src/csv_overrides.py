@@ -50,7 +50,7 @@ def init_csv_and_watch_changes(
         allow_unknown_values bool: If unknown values appear, just put them in the list
         default_list_name Optional[str]: If unknown values are allowed, put any
         unknown values in this list
-        no_modify_csv Optional[bool]: Set this to `TRUE` to indicate that we should
+        no_update_file Optional[bool]: Set this to `TRUE` to indicate that we should
         not update the csv. This is used generally in case there was an issue coming up with the default set of values so we don't want to persist those to disk
     """
     if extra_ignored_values is None:
