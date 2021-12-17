@@ -11,6 +11,7 @@ class MakeshiftAction:
     restore_selection: bool = False
     pre_command_sleep: int = None
     post_command_sleep: int = None
+    await_command: bool = True
 
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
@@ -28,7 +29,14 @@ makeshift_actions = [
     MakeshiftAction(
         "reference", "showReferences", "references-view.find", restore_selection=True
     ),
-    MakeshiftAction("rename", "rename", "editor.action.rename", restore_selection=True),
+    MakeshiftAction(
+        "rename",
+        "rename",
+        "editor.action.rename",
+        restore_selection=True,
+        await_command=False,
+        post_command_sleep=100
+    ),
 ]
 
 makeshift_action_defaults = {
@@ -46,6 +54,7 @@ def get_parameters(action: MakeshiftAction):
     command = action.vscode_command_id
     arguments = {
         "restoreSelection": action.restore_selection,
+        "awaitCommand": action.await_command,
     }
     if action.vscode_command_args:
         arguments["commandArgs"] = action.vscode_command_args
