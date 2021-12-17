@@ -198,7 +198,7 @@ def setup_hat_styles_csv():
     )
 
     if is_shape_error or is_color_error:
-        app.notify("Error reading vscode settings. Please try restarting talon.")
+        app.notify("Error reading vscode settings. Restart talon; see log")
 
 
 fast_reload_job = None
