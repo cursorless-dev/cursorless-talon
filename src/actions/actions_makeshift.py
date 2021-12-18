@@ -38,7 +38,7 @@ makeshift_actions = [
         "editor.action.rename",
         restore_selection=True,
         await_command=False,
-        post_command_sleep_ms=100,
+        post_command_sleep_ms=150,
     ),
 ]
 
