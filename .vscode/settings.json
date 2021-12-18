@@ -1,4 +1,0 @@
-{
-    "python.analysis.stubPath": "/Applications/Talon.app/Contents/Resources/python/lib/python3.9/site-packages",
-    "python.formatting.provider": "black"
-}
