@@ -9,8 +9,7 @@ class MakeshiftAction:
     vscode_command_id: str
     vscode_command_args: list = None
     restore_selection: bool = False
-    pre_command_sleep: int = None
-    post_command_sleep: int = None
+    post_command_sleep_ms: int = None
     await_command: bool = True
 
 
@@ -35,7 +34,7 @@ makeshift_actions = [
         "editor.action.rename",
         restore_selection=True,
         await_command=False,
-        post_command_sleep=100,
+        post_command_sleep_ms=100,
     ),
 ]
 
@@ -50,19 +49,26 @@ mod.list(
 )
 
 
+@dataclass
+class TalonOptions:
+    post_command_sleep_ms: int = None
+    await_command: bool = True
+
+
 def get_parameters(action: MakeshiftAction):
     command = action.vscode_command_id
-    arguments = {
+    command_options = {
         "restoreSelection": action.restore_selection,
-        "awaitCommand": action.await_command,
     }
     if action.vscode_command_args:
-        arguments["commandArgs"] = action.vscode_command_args
-    if action.pre_command_sleep:
-        arguments["preCommandSleep"] = action.pre_command_sleep
-    if action.post_command_sleep:
-        arguments["postCommandSleep"] = action.post_command_sleep
-    return command, arguments
+        command_options["commandArgs"] = action.vscode_command_args
+
+    talon_options = TalonOptions(
+        post_command_sleep_ms=action.post_command_sleep_ms,
+        await_command=action.await_command,
+    )
+
+    return command, command_options, talon_options
 
 
 makeshift_action_map = {
