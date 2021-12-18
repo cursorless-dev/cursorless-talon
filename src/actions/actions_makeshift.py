@@ -23,7 +23,11 @@ makeshift_actions = [
     MakeshiftAction("hover", "showHover", "editor.action.showHover"),
     MakeshiftAction("inspect", "showDebugHover", "editor.debug.action.showDebugHover"),
     MakeshiftAction(
-        "quick fix", "showQuickFix", "editor.action.quickFix", restore_selection=True
+        "quick fix",
+        "showQuickFix",
+        "editor.action.quickFix",
+        restore_selection=True,
+        post_command_sleep_ms=100,
     ),
     MakeshiftAction(
         "reference", "showReferences", "references-view.find", restore_selection=True
