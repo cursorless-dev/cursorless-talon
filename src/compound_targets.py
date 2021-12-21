@@ -3,7 +3,6 @@ from talon import Module
 
 mod = Module()
 
-
 mod.list(
     "cursorless_range_connective",
     desc="A range joiner that indicates whether to include or exclude anchor and active",
@@ -16,8 +15,9 @@ mod.list(
 
 @mod.capture(
     rule=(
-        "[{user.cursorless_range_connective}] <user.cursorless_primitive_target> | "
-        "<user.cursorless_primitive_target> {user.cursorless_range_connective} <user.cursorless_primitive_target>"
+        "<user.cursorless_primitive_target> | "
+        "[<user.cursorless_range_type>] {user.cursorless_range_connective} <user.cursorless_primitive_target> | "
+        " <user.cursorless_primitive_target> [<user.cursorless_range_type>] {user.cursorless_range_connective} <user.cursorless_primitive_target>"
     )
 )
 def cursorless_range(m) -> str:
@@ -32,13 +32,20 @@ def cursorless_range(m) -> str:
     else:
         start = primitive_targets[0]
 
-    return {
+    range = {
         "type": "range",
         "start": start,
         "end": primitive_targets[-1],
         "excludeStart": not is_anchor_included(range_connective),
         "excludeEnd": not is_active_included(range_connective),
     }
+
+    try:
+        range["rangeType"] = m.cursorless_range_type
+    except AttributeError:
+        pass
+
+    return range
 
 
 def is_anchor_included(range_connective: str):

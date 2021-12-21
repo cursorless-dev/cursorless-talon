@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 from pathlib import Path
-from ..conventions import get_cursorless_list_name
+from typing import Any
 from talon import Module, actions, app, Context, fs, cron
 from ..csv_overrides import init_csv_and_watch_changes
+from .lines_number import DEFAULT_DIRECTIONS
 
 mod = Module()
 ctx = Context()
@@ -16,9 +17,9 @@ mod.list("cursorless_hat_shape", desc="Supported hat shapes for cursorless")
 hat_colors = {
     "blue": "blue",
     "green": "green",
-    "rose": "red",
-    "plum": "pink",
-    "squash": "yellow",
+    "red": "red",
+    "pink": "pink",
+    "yellow": "yellow",
 }
 
 hat_shapes = {
@@ -84,9 +85,7 @@ mod.list("cursorless_special_mark", desc="Cursorless special marks")
     rule=(
         "<user.cursorless_decorated_symbol> | "
         "{user.cursorless_special_mark} |"
-        # Because of problems with performance we have to have a simple version for now
-        # "<user.cursorless_line_number>" # row, up, down
-        "<user.cursorless_line_number_simple>"  # up, down
+        "<user.cursorless_line_number>"  # row (ie absolute mod 100), up, down
     )
 )
 def cursorless_mark(m) -> str:
@@ -98,7 +97,7 @@ def cursorless_mark(m) -> str:
         return special_marks_map[m.cursorless_special_mark].value
     except AttributeError:
         pass
-    return m.cursorless_line_number_simple
+    return m.cursorless_line_number
 
 
 DEFAULT_COLOR_ENABLEMENT = {
@@ -122,19 +121,56 @@ DEFAULT_SHAPE_ENABLEMENT = {
     "crosshairs": False,
 }
 
+# Fall back to full enablement in case of error reading settings file
+# NB: This won't actually enable all the shapes and colors extension-side.
+# It'll just make it so that the user can say them whether or not they are enabled
+FALLBACK_SHAPE_ENABLEMENT = {
+    "ex": True,
+    "fox": True,
+    "wing": True,
+    "hole": True,
+    "frame": True,
+    "curve": True,
+    "eye": True,
+    "play": True,
+    "bolt": True,
+    "crosshairs": True,
+}
+FALLBACK_COLOR_ENABLEMENT = DEFAULT_COLOR_ENABLEMENT
+
 unsubscribe_hat_styles = None
 
 
 def setup_hat_styles_csv():
     global unsubscribe_hat_styles
 
+    (
+        color_enablement_settings,
+        is_color_error,
+    ) = actions.user.vscode_get_setting_with_fallback(
+        "cursorless.hatEnablement.colors",
+        default_value={},
+        fallback_value=FALLBACK_COLOR_ENABLEMENT,
+        fallback_message="Error finding color enablement; falling back to full enablement",
+    )
+
+    (
+        shape_enablement_settings,
+        is_shape_error,
+    ) = actions.user.vscode_get_setting_with_fallback(
+        "cursorless.hatEnablement.shapes",
+        default_value={},
+        fallback_value=FALLBACK_SHAPE_ENABLEMENT,
+        fallback_message="Error finding shape enablement; falling back to full enablement",
+    )
+
     color_enablement = {
         **DEFAULT_COLOR_ENABLEMENT,
-        **actions.user.vscode_get_setting("cursorless.hatEnablement.colors", {}),
+        **color_enablement_settings,
     }
     shape_enablement = {
         **DEFAULT_SHAPE_ENABLEMENT,
-        **actions.user.vscode_get_setting("cursorless.hatEnablement.shapes", {}),
+        **shape_enablement_settings,
     }
 
     active_hat_colors = {
@@ -158,7 +194,11 @@ def setup_hat_styles_csv():
             "hat_shape": active_hat_shapes,
         },
         [*hat_colors.values(), *hat_shapes.values()],
+        no_update_file=is_shape_error or is_color_error,
     )
+
+    if is_shape_error or is_color_error:
+        app.notify("Error reading vscode settings. Restart talon; see log")
 
 
 fast_reload_job = None
@@ -170,6 +210,7 @@ def on_ready():
         "special_marks",
         {
             "special_mark": special_marks_defaults,
+            "line_direction": DEFAULT_DIRECTIONS,
         },
     )
 

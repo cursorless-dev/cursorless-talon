@@ -1,5 +1,5 @@
 from talon import actions, Module, speech_system
-from typing import Any, List
+from typing import Any
 
 mod = Module()
 
@@ -33,6 +33,18 @@ class Actions:
             action, [target], arg1, arg2, arg3
         )
 
+    def cursorless_single_target_command_no_wait(
+        action: str,
+        target: dict,
+        arg1: Any = NotSet,
+        arg2: Any = NotSet,
+        arg3: Any = NotSet,
+    ):
+        """Execute single-target cursorless command"""
+        actions.user.cursorless_multiple_target_command_no_wait(
+            action, [target], arg1, arg2, arg3
+        )
+
     def cursorless_single_target_command_with_arg_list(
         action: str, target: str, args: list[Any]
     ):
@@ -61,13 +73,13 @@ class Actions:
         arg3: Any = NotSet,
     ):
         """Execute single-target cursorless command and return result"""
-        args = list(filter(lambda x: x is not NotSet, [arg1, arg2, arg3]))
         return actions.user.vscode_get(
             "cursorless.command",
-            get_spoken_form(),
-            action,
-            [target],
-            *args,
+            construct_cursorless_command_argument(
+                action=action,
+                targets=[target],
+                args=[x for x in [arg1, arg2, arg3] if x is not NotSet],
+            ),
         )
 
     def cursorless_multiple_target_command(
@@ -78,14 +90,49 @@ class Actions:
         arg3: any = NotSet,
     ):
         """Execute multi-target cursorless command"""
-        args = list(filter(lambda x: x is not NotSet, [arg1, arg2, arg3]))
         actions.user.vscode_with_plugin_and_wait(
             "cursorless.command",
-            get_spoken_form(),
-            action,
-            targets,
-            *args,
+            construct_cursorless_command_argument(
+                action=action,
+                targets=targets,
+                args=[x for x in [arg1, arg2, arg3] if x is not NotSet],
+            ),
         )
+
+    def cursorless_multiple_target_command_no_wait(
+        action: str,
+        targets: list[dict],
+        arg1: any = NotSet,
+        arg2: any = NotSet,
+        arg3: any = NotSet,
+    ):
+        """Execute multi-target cursorless command"""
+        actions.user.vscode_with_plugin(
+            "cursorless.command",
+            construct_cursorless_command_argument(
+                action=action,
+                targets=targets,
+                args=[x for x in [arg1, arg2, arg3] if x is not NotSet],
+            ),
+        )
+
+
+def construct_cursorless_command_argument(
+    action: str, targets: list[dict], args: list[any]
+):
+    try:
+        use_pre_phrase_snapshot = actions.user.did_emit_pre_phrase_signal()
+    except KeyError:
+        use_pre_phrase_snapshot = False
+
+    return {
+        "version": 1,
+        "spokenForm": get_spoken_form(),
+        "action": action,
+        "targets": targets,
+        "extraArgs": args,
+        "usePrePhraseSnapshot": use_pre_phrase_snapshot,
+    }
 
 
 def get_spoken_form():

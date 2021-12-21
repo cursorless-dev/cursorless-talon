@@ -1,5 +1,5 @@
 from talon import Module
-from ..primitive_target import STRICT_HERE
+from ..primitive_target import IMPLICIT_TARGET
 
 mod = Module()
 mod.list(
@@ -20,6 +20,6 @@ def cursorless_move_bring_targets(m) -> list[dict]:
     target_list = m.cursorless_target_list
 
     if len(target_list) == 1:
-        target_list = target_list + [STRICT_HERE]
+        target_list = target_list + [IMPLICIT_TARGET]
 
     return target_list

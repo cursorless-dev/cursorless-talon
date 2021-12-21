@@ -29,6 +29,7 @@ scope_types = {
     "string": "string",
     "type": "type",
     "value": "value",
+    "condition": "condition",
     #  XML, JSX
     "element": "xmlElement",
     "tags": "xmlBothTags",
@@ -66,10 +67,19 @@ subtoken_scope_types = {
     "char": "character",
 }
 
+# NOTE: Please do not change these dicts.  Use the CSVs for customization.
+# See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
+# NB: This is a hack until we support having inside and outside on arbitrary
+# scope types
+surrounding_pair_scope_types = {
+    "string": "string",
+}
+
 default_values = {
     "scope_type": scope_types,
     "selection_type": selection_types,
     "subtoken_scope_type": subtoken_scope_types,
+    "surrounding_pair_scope_type": surrounding_pair_scope_types,
 }
 
 

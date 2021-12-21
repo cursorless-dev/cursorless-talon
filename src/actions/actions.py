@@ -1,128 +1,95 @@
-from talon import Module, actions, app
-from dataclasses import dataclass
+from talon import Module, app, actions
 from ..csv_overrides import init_csv_and_watch_changes
-from .homophones import run_homophones_action
-from .find import run_find_action
-from .call import run_call_action
+from .actions_simple import simple_action_defaults
+from .actions_callback import callback_action_defaults, callback_action_map
+from .actions_makeshift import (
+    makeshift_action_defaults,
+    makeshift_action_map,
+)
+from .actions_custom import custom_action_defaults
 
 mod = Module()
 
 
-@dataclass
-class MakeshiftAction:
-    term: str
-    identifier: str
-    vscode_command_id: str
-    pre_command_sleep: float = 0
-    post_command_sleep: float = 0
-
-
-# NOTE: Please do not change these dicts.  Use the CSVs for customization.
-# See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
-makeshift_actions = [
-    MakeshiftAction("define", "revealDefinition", "editor.action.revealDefinition"),
-    MakeshiftAction(
-        "type deaf", "revealTypeDefinition", "editor.action.goToTypeDefinition"
-    ),
-    MakeshiftAction("hover", "showHover", "editor.action.showHover"),
-    MakeshiftAction("inspect", "showDebugHover", "editor.debug.action.showDebugHover"),
-    MakeshiftAction(
-        "quick fix", "showQuickFix", "editor.action.quickFix", pre_command_sleep=0.3
-    ),
-    MakeshiftAction("reference", "showReferences", "references-view.find"),
-    MakeshiftAction("rename", "rename", "editor.action.rename", post_command_sleep=0.1),
-]
-
-makeshift_action_map = {action.identifier: action for action in makeshift_actions}
-
-
-@dataclass
-class CallbackAction:
-    term: str
-    identifier: str
-    callback: callable
-
-
-# NOTE: Please do not change these dicts.  Use the CSVs for customization.
-# See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
-callbacks = [
-    CallbackAction("call", "callAsFunction", run_call_action),
-    CallbackAction("scout", "findInDocument", run_find_action),
-    CallbackAction("phones", "nextHomophone", run_homophones_action),
-]
-
-callbacks_map = {callback.identifier: callback.callback for callback in callbacks}
-
-
-mod.list("cursorless_simple_action", desc="Supported actions for cursorless navigation")
-
-
-# NOTE: Please do not change these dicts.  Use the CSVs for customization.
-# See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
-simple_actions = {
-    "bottom": "scrollToBottom",
-    "breakpoint": "toggleLineBreakpoint",
-    "carve": "cutToClipboard",
-    "center": "scrollToCenter",
-    "chuck": "remove",
-    "clear": "clearAndSetSelection",
-    "clone up": "insertCopyBefore",
-    "clone": "insertCopyAfter",
-    "comment": "toggleLineComment",
-    "copy": "copyToClipboard",
-    "crown": "scrollToTop",
-    "dedent": "outdentLine",
-    "drink": "editNewLineBefore",
-    "drop": "insertEmptyLineBefore",
-    "extract": "extractVariable",
-    "float": "insertEmptyLineAfter",
-    "fold": "foldRegion",
-    "indent": "indentLine",
-    "paste to": "pasteFromClipboard",
-    "post": "setSelectionAfter",
-    "pour": "editNewLineAfter",
-    "pre": "setSelectionBefore",
-    "puff": "insertEmptyLinesAround",
-    "reverse": "reverseTargets",
-    "scout all": "findInWorkspace",
-    "sort": "sortTargets",
-    "take": "setSelection",
-    "unfold": "unfoldRegion",
-    **{action.term: action.identifier for action in makeshift_actions},
-    **{callback.term: callback.identifier for callback in callbacks},
-}
+@mod.capture(
+    rule=(
+        "{user.cursorless_simple_action} |"
+        "{user.cursorless_makeshift_action} |"
+        "{user.cursorless_callback_action} |"
+        "{user.cursorless_custom_action}"
+    )
+)
+def cursorless_action_or_vscode_command(m) -> dict:
+    try:
+        value = m.cursorless_custom_action
+        type = "vscode_command"
+    except AttributeError:
+        value = m[0]
+        type = "cursorless_action"
+    return {
+        "value": value,
+        "type": type,
+    }
 
 
 @mod.action_class
 class Actions:
-    def cursorless_simple_action(action: str, targets: dict):
-        """Perform cursorless simple action"""
-        if action in callbacks_map:
-            return callbacks_map[action](targets)
-        elif action in makeshift_action_map:
-            return run_makeshift_action(action, targets)
+    def cursorless_command(action_id: str, target: dict):
+        """Perform cursorless command on target"""
+        if action_id in callback_action_map:
+            return callback_action_map[action_id](target)
+        elif action_id in makeshift_action_map:
+            command, command_options, talon_options = makeshift_action_map[action_id]
+            return_value = (
+                vscode_command(command, target, command_options)
+                if talon_options.await_command
+                else vscode_command_no_wait(command, target, command_options)
+            )
+
+            if talon_options.post_command_sleep_ms:
+                actions.sleep(f"{talon_options.post_command_sleep_ms}ms")
+
+            return return_value
         else:
-            return actions.user.cursorless_single_target_command(action, targets)
+            return actions.user.cursorless_single_target_command(action_id, target)
+
+    def cursorless_vscode_command(command_id: str, target: dict):
+        """Perform vscode command on cursorless target"""
+        return vscode_command(command_id, target)
+
+    def cursorless_action_or_vscode_command(instruction: dict, target: dict):
+        """Perform cursorless action or vscode command on target (internal use only)"""
+        type = instruction["type"]
+        value = instruction["value"]
+        if type == "cursorless_action":
+            return actions.user.cursorless_command(value, target)
+        elif type == "vscode_command":
+            return actions.user.cursorless_vscode_command(value, target)
 
 
-def run_makeshift_action(action: str, targets: dict):
-    """Execute makeshift action"""
-    makeshift_action = makeshift_action_map[action]
-    actions.user.cursorless_single_target_command("setSelection", targets)
-    actions.sleep(makeshift_action.pre_command_sleep)
-    actions.user.vscode(makeshift_action.vscode_command_id)
-    actions.sleep(makeshift_action.post_command_sleep)
+def vscode_command(command_id: str, target: dict, command_options: dict = {}):
+    return actions.user.cursorless_single_target_command(
+        "executeCommand", target, command_id, command_options
+    )
 
 
-# NOTE: Please do not change these dicts.  Use the CSVs for customization.
-# See https://github.com/pokey/cursorless-talon/blob/main/docs/customization.md
+def vscode_command_no_wait(command_id: str, target: dict, command_options: dict = {}):
+    return actions.user.cursorless_single_target_command_no_wait(
+        "executeCommand", target, command_id, command_options
+    )
+
+
 default_values = {
-    "simple_action": simple_actions,
+    "simple_action": simple_action_defaults,
+    "callback_action": callback_action_defaults,
+    "makeshift_action": makeshift_action_defaults,
+    "custom_action": custom_action_defaults,
     "swap_action": {"swap": "swapTargets"},
     "move_bring_action": {"bring": "replaceWithTarget", "move": "moveToTarget"},
-    "wrap_action": {"wrap": "wrapWithPairedDelimiter"},
+    "wrap_action": {"wrap": "wrapWithPairedDelimiter", "repack": "rewrap"},
     "reformat_action": {"format": "applyFormatter"},
 }
+
 
 ACTION_LIST_NAMES = default_values.keys()
 
