@@ -38,6 +38,30 @@ class Actions:
         else:
             return settings[key]
 
+    def vscode_get_setting_with_fallback(
+        key: str,
+        default_value: Any,
+        fallback_value: Any,
+        fallback_message: str,
+    ) -> tuple[Any, bool]:
+        """Returns a vscode setting with a fallback in case there's an error
+
+        Args:
+            key (str): The key of the setting to look up
+            default_value (Any): The default value to return if the setting is not defined
+            fallback_value (Any): The value to return if there is an error looking up the setting
+            fallback_message (str): The message to show to the user if we end up having to use the fallback
+
+        Returns:
+            tuple[Any, bool]: The value of the setting or the default or fall back, along with boolean which is true if there was an error
+        """
+        try:
+            return actions.user.vscode_get_setting(key, default_value), False
+        except Exception as e:
+            print(fallback_message)
+            traceback.print_exc()
+            return fallback_value, True
+
 
 def pick_path(paths: list[Path]):
     existing_paths = [path for path in paths if path.exists()]
@@ -79,28 +103,3 @@ class WindowsUserActions:
                 Path(f"{os.environ['APPDATA']}/VSCodium/User/settings.json"),
             ]
         )
-
-
-def vscode_get_setting_with_fallback(
-    key: str,
-    default_value: Any,
-    fallback_value: Any,
-    fallback_message: str,
-):
-    """Returns a vscode setting with a fallback in case there's an error
-
-    Args:
-        key (str): The key of the setting to look up
-        default_value (Any): The default value to return if the setting is not defined
-        fallback_value (Any): The value to return if there is an error looking up the setting
-        fallback_message (str): The message to show to the user if we end up having to use the fallback
-
-    Returns:
-        Any: The value of the setting or the default or fall back
-    """
-    try:
-        return actions.user.vscode_get_setting(key, default_value)
-    except Exception as e:
-        print(fallback_message)
-        traceback.print_exc()
-        return fallback_value

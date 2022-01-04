@@ -25,6 +25,7 @@ def init_csv_and_watch_changes(
     default_list_name: Optional[str] = None,
     headers: list[str] = [SPOKEN_FORM_HEADER, CURSORLESS_IDENTIFIER_HEADER],
     ctx: Context = Context(),
+    no_update_file: bool = False,
 ):
     """
     Initialize a cursorless settings csv, creating it if necessary, and watch
@@ -49,6 +50,8 @@ def init_csv_and_watch_changes(
         allow_unknown_values bool: If unknown values appear, just put them in the list
         default_list_name Optional[str]: If unknown values are allowed, put any
         unknown values in this list
+        no_update_file Optional[bool]: Set this to `TRUE` to indicate that we should
+        not update the csv. This is used generally in case there was an issue coming up with the default set of values so we don't want to persist those to disk
     """
     if extra_ignored_values is None:
         extra_ignored_values = []
@@ -85,6 +88,7 @@ def init_csv_and_watch_changes(
             super_default_values,
             extra_ignored_values,
             allow_unknown_values,
+            no_update_file,
         )
         update_dicts(
             default_values,
@@ -95,7 +99,8 @@ def init_csv_and_watch_changes(
             ctx,
         )
     else:
-        create_file(file_path, headers, super_default_values)
+        if not no_update_file:
+            create_file(file_path, headers, super_default_values)
         update_dicts(
             default_values,
             super_default_values,
@@ -165,6 +170,7 @@ def update_file(
     default_values: dict,
     extra_ignored_values: list[str],
     allow_unknown_values: bool,
+    no_update_file: bool,
 ):
     current_values, has_errors = read_file(
         path,
@@ -181,7 +187,7 @@ def update_file(
             missing[key] = value
 
     if missing:
-        if has_errors:
+        if has_errors or no_update_file:
             print(
                 "NOTICE: New cursorless features detected, but refusing to update "
                 "csv due to errors.  Please fix csv errors above and restart talon"
