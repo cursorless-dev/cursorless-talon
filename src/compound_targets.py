@@ -29,15 +29,17 @@ def cursorless_range_connective_with_type(m) -> str:
 @mod.capture(
     rule=(
         "<user.cursorless_primitive_target> | "
-        "<user.cursorless_range_connective_type> <user.cursorless_primitive_target> | "
-        "<user.cursorless_primitive_target> <user.cursorless_range_connective_type> <user.cursorless_primitive_target>"
+        "<user.cursorless_range_connective_with_type> <user.cursorless_primitive_target> | "
+        "<user.cursorless_primitive_target> <user.cursorless_range_connective_with_type> <user.cursorless_primitive_target>"
     )
 )
 def cursorless_range(m) -> str:
     primitive_targets = m.cursorless_primitive_target_list
-    range_connective_with_type = getattr(m, "cursorless_range_connective_with_type", None)
+    range_connective_with_type = getattr(
+        m, "cursorless_range_connective_with_type", None
+    )
 
-    if range_connective_type is None:
+    if range_connective_with_type is None:
         return primitive_targets[0]
 
     if len(primitive_targets) == 1:
@@ -45,8 +47,8 @@ def cursorless_range(m) -> str:
     else:
         start = primitive_targets[0]
 
-    range_connective = range_connective_type["connective"]
-    range_type = range_connective_type["type"]
+    range_connective = range_connective_with_type["connective"]
+    range_type = range_connective_with_type["type"]
 
     range = {
         "type": "range",
