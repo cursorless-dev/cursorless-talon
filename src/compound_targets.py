@@ -35,7 +35,7 @@ def cursorless_range_connective_type(m) -> str:
 )
 def cursorless_range(m) -> str:
     primitive_targets = m.cursorless_primitive_target_list
-    range_connective_type = getattr(m, "cursorless_range_connective_type", None)
+    range_connective_with_type = getattr(m, "cursorless_range_connective_with_type", None)
 
     if range_connective_type is None:
         return primitive_targets[0]
