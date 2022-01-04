@@ -17,7 +17,7 @@ mod.list(
 @mod.capture(
     rule="[<user.cursorless_range_type>] {user.cursorless_range_connective} | <user.cursorless_range_type>"
 )
-def cursorless_range_connective_type(m) -> str:
+def cursorless_range_connective_with_type(m) -> str:
     return {
         "connective": getattr(
             m, "cursorless_range_connective", default_range_connective
