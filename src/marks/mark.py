@@ -20,6 +20,8 @@ hat_colors = {
     "red": "red",
     "pink": "pink",
     "yellow": "yellow",
+    "navy": "userColor1",
+    "apricot": "userColor2",
 }
 
 hat_shapes = {
@@ -106,6 +108,8 @@ DEFAULT_COLOR_ENABLEMENT = {
     "red": True,
     "pink": True,
     "yellow": True,
+    "userColor1": False,
+    "userColor2": False,
 }
 
 DEFAULT_SHAPE_ENABLEMENT = {

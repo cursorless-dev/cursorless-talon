@@ -39,4 +39,13 @@ def make_dict_readable(dict, descriptions=None):
 
 
 def make_readable(text):
-    return re.sub(r"(?<=[a-z])(?=[A-Z])", " ", text).lower().capitalize()
+    return de_camel(text).lower().capitalize()
+
+
+def de_camel(text: str) -> str:
+    """Replacing camelCase boundaries with blank space"""
+    return re.sub(
+        r"(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|(?<=[a-zA-Z])(?=[0-9])|(?<=[0-9])(?=[a-zA-Z])",
+        " ",
+        text,
+    )
