@@ -10,7 +10,7 @@ delimiter_inclusions = {
     "inside": "interiorOnly",
     "bound": "excludeInterior",
 }
-identity = {"just": "identity"}
+to_raw_selection = {"just": "toRawSelection"}
 
 
 def on_ready():
@@ -20,7 +20,7 @@ def on_ready():
             "delimiter_inclusion": delimiter_inclusions,
             "range_type": range_types,
             "head_tail": head_tail,
-            "identity": identity,
+            "to_raw_selection": to_raw_selection,
         },
     )
 

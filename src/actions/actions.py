@@ -39,8 +39,17 @@ class Actions:
         if action_id in callback_action_map:
             return callback_action_map[action_id](target)
         elif action_id in makeshift_action_map:
-            command, arguments = makeshift_action_map[action_id]
-            return vscode_command(command, target, arguments)
+            command, command_options, talon_options = makeshift_action_map[action_id]
+            return_value = (
+                vscode_command(command, target, command_options)
+                if talon_options.await_command
+                else vscode_command_no_wait(command, target, command_options)
+            )
+
+            if talon_options.post_command_sleep_ms:
+                actions.sleep(f"{talon_options.post_command_sleep_ms}ms")
+
+            return return_value
         else:
             return actions.user.cursorless_single_target_command(action_id, target)
 
@@ -58,9 +67,15 @@ class Actions:
             return actions.user.cursorless_vscode_command(value, target)
 
 
-def vscode_command(command_id: str, target: dict, arguments: dict = {}):
+def vscode_command(command_id: str, target: dict, command_options: dict = {}):
     return actions.user.cursorless_single_target_command(
-        "executeCommand", target, command_id, arguments
+        "executeCommand", target, command_id, command_options
+    )
+
+
+def vscode_command_no_wait(command_id: str, target: dict, command_options: dict = {}):
+    return actions.user.cursorless_single_target_command_no_wait(
+        "executeCommand", target, command_id, command_options
     )
 
 
