@@ -20,8 +20,8 @@ hat_colors = {
     "red": "red",
     "pink": "pink",
     "yellow": "yellow",
-    "userColor1": "userColor1",
-    "userColor2": "userColor2",
+    "navy": "userColor1",
+    "apricot": "userColor2",
 }
 
 hat_shapes = {
