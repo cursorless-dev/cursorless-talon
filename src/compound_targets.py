@@ -1,4 +1,5 @@
 from .primitive_target import BASE_TARGET
+from .connective import default_range_connective
 from talon import Module
 
 mod = Module()
@@ -14,23 +15,40 @@ mod.list(
 
 
 @mod.capture(
+    rule="[<user.cursorless_range_type>] {user.cursorless_range_connective} | <user.cursorless_range_type>"
+)
+def cursorless_range_connective_with_type(m) -> str:
+    return {
+        "connective": getattr(
+            m, "cursorless_range_connective", default_range_connective
+        ),
+        "type": getattr(m, "cursorless_range_type", None),
+    }
+
+
+@mod.capture(
     rule=(
         "<user.cursorless_primitive_target> | "
-        "[<user.cursorless_range_type>] {user.cursorless_range_connective} <user.cursorless_primitive_target> | "
-        " <user.cursorless_primitive_target> [<user.cursorless_range_type>] {user.cursorless_range_connective} <user.cursorless_primitive_target>"
+        "<user.cursorless_range_connective_with_type> <user.cursorless_primitive_target> | "
+        "<user.cursorless_primitive_target> <user.cursorless_range_connective_with_type> <user.cursorless_primitive_target>"
     )
 )
 def cursorless_range(m) -> str:
     primitive_targets = m.cursorless_primitive_target_list
-    range_connective = getattr(m, "cursorless_range_connective", None)
+    range_connective_with_type = getattr(
+        m, "cursorless_range_connective_with_type", None
+    )
 
-    if range_connective is None:
+    if range_connective_with_type is None:
         return primitive_targets[0]
 
     if len(primitive_targets) == 1:
         start = BASE_TARGET.copy()
     else:
         start = primitive_targets[0]
+
+    range_connective = range_connective_with_type["connective"]
+    range_type = range_connective_with_type["type"]
 
     range = {
         "type": "range",
@@ -40,10 +58,8 @@ def cursorless_range(m) -> str:
         "excludeEnd": not is_active_included(range_connective),
     }
 
-    try:
-        range["rangeType"] = m.cursorless_range_type
-    except AttributeError:
-        pass
+    if range_type:
+        range["rangeType"] = range_type
 
     return range
 
