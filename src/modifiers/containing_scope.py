@@ -57,6 +57,7 @@ selection_types = {
     "cell": "notebookCell",
     "file": "document",
     "line": "line",
+    "paint": "nonWhitespaceSequence",
     "token": "token",
 }
 
