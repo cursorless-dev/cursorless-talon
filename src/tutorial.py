@@ -24,11 +24,17 @@ def get_basic_coding_walkthrough():
         "/Users/pokey/src/cursorless-vscode/src/test/suite/fixtures/recorded/tutorial/unit-2-basic-coding/script.json"
     ) as f:
         script = json.load(f)
-    
-    return [actions.user.hud_create_walkthrough_step(**process_tutorial_step(step)) for step in script]
+
+    return [
+        actions.user.hud_create_walkthrough_step(**process_tutorial_step(step))
+        for step in script
+    ]
+
 
 def on_ready():
-    actions.user.hud_add_lazy_walkthrough("Cursorless basic coding", get_basic_coding_walkthrough)
+    actions.user.hud_add_lazy_walkthrough(
+        "Cursorless basic coding", get_basic_coding_walkthrough
+    )
 
 
 app.register("ready", on_ready)
