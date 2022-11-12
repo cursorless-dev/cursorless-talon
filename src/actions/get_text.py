@@ -1,7 +1,6 @@
 from typing import Optional
 
-from talon import actions
-
+from ..command import Actions  as command_actions
 
 def get_text(
     target: dict,
@@ -9,7 +8,7 @@ def get_text(
     ensure_single_target: Optional[bool] = None,
 ):
     """Get target texts"""
-    return actions.user.cursorless_single_target_command_get(
+    return command_actions.cursorless_single_target_command_get(
         "getText",
         target,
         {

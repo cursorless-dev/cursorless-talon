@@ -1,8 +1,8 @@
 import math
 from typing import Optional
 
-from talon import Module, actions, cron, skia, ui
-from talon.canvas import Canvas
+# from talon import Module, actions, cron, skia, ui
+# from talon.canvas import Canvas
 
 from .get_list import get_list, get_lists
 from .sections.actions import get_actions

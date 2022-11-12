@@ -1,30 +1,32 @@
-from talon import Context, Module, actions, app
+# from talon import Context, Module, actions, app
 
 from .csv_overrides import init_csv_and_watch_changes
 
-mod = Module()
-mod.list("cursorless_insert_snippet_action", desc="Cursorless insert snippet action")
+from .command import Actions as command_actions
 
-mod.tag(
-    "cursorless_experimental_snippets",
-    desc="tag for enabling experimental snippet support",
-)
+# mod = Module()
+# mod.list("cursorless_insert_snippet_action", desc="Cursorless insert snippet action")
 
-mod.list("cursorless_wrapper_snippet", desc="Cursorless wrapper snippet")
-mod.list(
-    "cursorless_insertion_snippet_no_phrase",
-    desc="Cursorless insertion snippets that don't accept a phrase",
-)
-mod.list(
-    "cursorless_insertion_snippet_single_phrase",
-    desc="Cursorless insertion snippet that can accept a single phrase",
-)
-mod.list("cursorless_phrase_terminator", "Contains term used to terminate a phrase")
+# mod.tag(
+#     "cursorless_experimental_snippets",
+#     desc="tag for enabling experimental snippet support",
+# )
+
+# mod.list("cursorless_wrapper_snippet", desc="Cursorless wrapper snippet")
+# mod.list(
+#     "cursorless_insertion_snippet_no_phrase",
+#     desc="Cursorless insertion snippets that don't accept a phrase",
+# )
+# mod.list(
+#     "cursorless_insertion_snippet_single_phrase",
+#     desc="Cursorless insertion snippet that can accept a single phrase",
+# )
+# mod.list("cursorless_phrase_terminator", "Contains term used to terminate a phrase")
 
 
-@mod.capture(
-    rule="{user.cursorless_insertion_snippet_no_phrase} | {user.cursorless_insertion_snippet_single_phrase}"
-)
+# @mod.capture(
+#     rule="{user.cursorless_insertion_snippet_no_phrase} | {user.cursorless_insertion_snippet_single_phrase}"
+# )
 def cursorless_insertion_snippet(m) -> str:
     try:
         return m.cursorless_insertion_snippet_no_phrase
@@ -34,10 +36,10 @@ def cursorless_insertion_snippet(m) -> str:
     return m.cursorless_insertion_snippet_single_phrase.split(".")[0]
 
 
-experimental_snippets_ctx = Context()
-experimental_snippets_ctx.matches = r"""
-tag: user.cursorless_experimental_snippets
-"""
+# experimental_snippets_ctx = Context()
+# experimental_snippets_ctx.matches = r"""
+# tag: user.cursorless_experimental_snippets
+# """
 
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
@@ -66,15 +68,16 @@ insertion_snippets_single_phrase = {
     "link": "link.text",
 }
 
+phrase_terminators = {"over": "phraseTerminator"}
 
-@mod.action_class
+# @mod.action_class
 class Actions:
     def cursorless_insert_snippet_with_phrase(
         action: str, snippet_description: str, text: str
     ):
         """Perform cursorless wrap action"""
         snippet_name, snippet_variable = snippet_description.split(".")
-        actions.user.cursorless_implicit_target_command(
+        command_actions.cursorless_implicit_target_command(
             action, snippet_name, {snippet_variable: text}
         )
 
@@ -87,7 +90,7 @@ def on_ready():
         },
         allow_unknown_values=True,
         default_list_name="wrapper_snippet",
-        ctx=experimental_snippets_ctx,
+        # ctx=experimental_snippets_ctx,
     )
     init_csv_and_watch_changes(
         "experimental/insertion_snippets",
@@ -96,7 +99,7 @@ def on_ready():
         },
         allow_unknown_values=True,
         default_list_name="insertion_snippet_no_phrase",
-        ctx=experimental_snippets_ctx,
+        # ctx=experimental_snippets_ctx,
     )
     init_csv_and_watch_changes(
         "experimental/insertion_snippets_single_phrase",
@@ -105,15 +108,15 @@ def on_ready():
         },
         allow_unknown_values=True,
         default_list_name="insertion_snippet_single_phrase",
-        ctx=experimental_snippets_ctx,
+        # ctx=experimental_snippets_ctx,
     )
     init_csv_and_watch_changes(
         "experimental/miscellaneous",
         {
-            "phrase_terminator": {"over": "phraseTerminator"},
+            "phrase_terminator": phrase_terminators,
         },
-        ctx=experimental_snippets_ctx,
+        # ctx=experimental_snippets_ctx,
     )
 
-
-app.register("ready", on_ready)
+on_ready()
+# app.register("ready", on_ready)

@@ -1,16 +1,9 @@
 from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
-
-from talon import Context, Module
+from contextlib import suppress
 
 from ..compound_targets import is_active_included, is_anchor_included
-
-mod = Module()
-ctx = Context()
-
-mod.list("cursorless_line_direction", desc="Supported directions for line modifier")
-
 
 @dataclass
 class CustomizableTerm:
@@ -36,20 +29,21 @@ directions_map = {d.cursorlessIdentifier: d for d in directions}
 DEFAULT_DIRECTIONS = {d.defaultSpokenForm: d.cursorlessIdentifier for d in directions}
 
 
-@mod.capture(
-    rule="{user.cursorless_line_direction} <number_small> [{user.cursorless_range_connective} <number_small>]"
-)
 def cursorless_line_number(m) -> dict[str, Any]:
-    direction = directions_map[m.cursorless_line_direction]
+    direction = directions_map[m["line_direction"]]
+    numbers = [m["n100_1"]]
+    with suppress(KeyError):
+        numbers.append(m["n100_2"])
+        
     anchor = create_line_number_mark(
-        direction.type, direction.formatter(m.number_small_list[0])
+        direction.type, direction.formatter(numbers[0])
     )
-    if len(m.number_small_list) > 1:
+    if len(numbers) > 1:
         active = create_line_number_mark(
-            direction.type, direction.formatter(m.number_small_list[1])
+            direction.type, direction.formatter(numbers[1])
         )
-        include_anchor = is_anchor_included(m.cursorless_range_connective)
-        include_active = is_active_included(m.cursorless_range_connective)
+        include_anchor = is_anchor_included(m["range_connective"])
+        include_active = is_active_included(m["range_connective"])
         return {
             "type": "range",
             "anchor": anchor,

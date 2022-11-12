@@ -1,17 +1,6 @@
 from typing import Any
 
-from talon import Module, app
-
 from ..csv_overrides import SPOKEN_FORM_HEADER, init_csv_and_watch_changes
-
-mod = Module()
-
-
-mod.list("cursorless_scope_type", desc="Supported scope types")
-mod.list(
-    "cursorless_custom_regex_scope_type",
-    desc="Supported custom regular expression scope types",
-)
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
 # See https://www.cursorless.org/docs/user/customization/
@@ -73,23 +62,19 @@ scope_types = {
 }
 
 
-@mod.capture(
-    rule="{user.cursorless_scope_type} | {user.cursorless_custom_regex_scope_type}"
-)
 def cursorless_scope_type(m) -> dict[str, str]:
     """Simple cursorless scope type that only need to specify their type"""
     try:
-        return {"type": m.cursorless_scope_type}
-    except AttributeError:
-        return {"type": "customRegex", "regex": m.cursorless_custom_regex_scope_type}
+        return {"type": m["scope_type"]}
+    except KeyError:
+        return {"type": "customRegex", "regex": m["custom_regex_scope_type"]}
 
 
-@mod.capture(rule="[every] <user.cursorless_scope_type>")
 def cursorless_containing_scope(m) -> dict[str, Any]:
     """Expand to containing scope"""
     return {
-        "type": "everyScope" if m[0] == "every" else "containingScope",
-        "scopeType": m.cursorless_scope_type,
+        "type": "everyScope" if "every" in m["_node"].words() else "containingScope",
+        "scopeType": m["scope_type"],
     }
 
 
@@ -100,7 +85,6 @@ def cursorless_containing_scope(m) -> dict[str, Any]:
 surrounding_pair_scope_types = {
     "string": "string",
 }
-
 
 def on_ready():
     init_csv_and_watch_changes(
@@ -118,5 +102,4 @@ def on_ready():
         default_list_name="custom_regex_scope_type",
     )
 
-
-app.register("ready", on_ready)
+on_ready()

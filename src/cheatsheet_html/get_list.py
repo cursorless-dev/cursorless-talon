@@ -1,9 +1,6 @@
 import re
 
-from talon import registry
-
-from ..conventions import get_cursorless_list_name
-
+from .. import cursorless_lists 
 
 def get_list(name, type, descriptions=None):
     if descriptions is None:
@@ -16,13 +13,12 @@ def get_list(name, type, descriptions=None):
 
 
 def get_lists(names: list[str], type: str, descriptions=None):
-
+    
     return [item for name in names for item in get_list(name, type, descriptions)]
 
 
 def get_raw_list(name):
-    cursorless_list_name = get_cursorless_list_name(name)
-    return registry.lists[cursorless_list_name][0].copy()
+    return cursorless_lists.get_dict(name).copy()
 
 
 def make_dict_readable(type: str, dict, descriptions=None):

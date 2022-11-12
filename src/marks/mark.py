@@ -1,18 +1,11 @@
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
-
-from talon import Context, Module, actions, app, cron, fs
+from contextlib import suppress
 
 from ..csv_overrides import init_csv_and_watch_changes
 from .lines_number import DEFAULT_DIRECTIONS
-
-mod = Module()
-ctx = Context()
-
-
-mod.list("cursorless_hat_color", desc="Supported hat colors for cursorless")
-mod.list("cursorless_hat_shape", desc="Supported hat shapes for cursorless")
+from ..apps import vscode_settings
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
 # See https://www.cursorless.org/docs/user/customization/
@@ -39,40 +32,34 @@ hat_shapes = {
     "bolt": "bolt",
 }
 
-
-mod.list(
-    "cursorless_unknown_symbol",
-    "This list contains the term that is used to refer to any unknown symbol",
-)
 unknown_symbols_defaults = {"special": "unknownSymbol"}
 
-
-@mod.capture(rule="<user.any_alphanumeric_key> | {user.cursorless_unknown_symbol}")
 def cursorless_grapheme(m) -> str:
-    try:
-        return m.any_alphanumeric_key
-    except AttributeError:
-        # NB: This represents unknown char in Unicode.  It will be translated
-        # to "[unk]" by Cursorless extension.
-        return "\uFFFD"
-
-
-@mod.capture(
-    rule="[{user.cursorless_hat_color}] [{user.cursorless_hat_shape}] <user.cursorless_grapheme>"
-)
+    # NB: This represents unknown char in Unicode.  It will be translated
+    # to "[unk]" by Cursorless extension.
+    output = "\uFFFD" 
+    with suppress(KeyError):
+        output = m["any_alphanumeric_key"]
+        
+    with suppress(KeyError):
+        output = m["unknown_symbol"]
+        
+    return output
+    
 def cursorless_decorated_symbol(m) -> dict[str, Any]:
-    """A decorated symbol"""
-    hat_color = getattr(m, "cursorless_hat_color", "default")
+    hat_color = "default"
+    with suppress(KeyError):
+        hat_color = m["hat_color"]
+        
     try:
-        hat_style_name = f"{hat_color}-{m.cursorless_hat_shape}"
-    except AttributeError:
+        hat_style_name = f"{hat_color}-{m['hat_shape']}"
+    except KeyError:
         hat_style_name = hat_color
     return {
         "type": "decoratedSymbol",
         "symbolColor": hat_style_name,
-        "character": m.cursorless_grapheme,
+        "character": m["grapheme"],
     }
-
 
 @dataclass
 class CustomizableTerm:
@@ -97,28 +84,14 @@ special_marks_defaults = {
     term.defaultSpokenForm: term.cursorlessIdentifier for term in special_marks
 }
 
-
-mod.list("cursorless_special_mark", desc="Cursorless special marks")
-
-
-@mod.capture(
-    rule=(
-        "<user.cursorless_decorated_symbol> | "
-        "{user.cursorless_special_mark} |"
-        "<user.cursorless_line_number>"  # row (ie absolute mod 100), up, down
-    )
-)
 def cursorless_mark(m) -> dict[str, Any]:
-    try:
-        return m.cursorless_decorated_symbol
-    except AttributeError:
-        pass
-    try:
-        return special_marks_map[m.cursorless_special_mark].value
-    except AttributeError:
-        pass
-    return m.cursorless_line_number
-
+    with suppress(KeyError):
+        return m["decorated_symbol"]
+        
+    with suppress(KeyError):
+        return special_marks_map[m["special_mark"]].value
+        
+    return m["line_number"]
 
 DEFAULT_COLOR_ENABLEMENT = {
     "blue": True,
@@ -165,11 +138,12 @@ unsubscribe_hat_styles = None
 
 def setup_hat_styles_csv():
     global unsubscribe_hat_styles
-
+    global hat_colors
+    global hat_shapes
     (
         color_enablement_settings,
         is_color_error,
-    ) = actions.user.vscode_get_setting_with_fallback(
+    ) = vscode_settings.Actions.vscode_get_setting_with_fallback(
         "cursorless.hatEnablement.colors",
         default_value={},
         fallback_value=FALLBACK_COLOR_ENABLEMENT,
@@ -179,7 +153,7 @@ def setup_hat_styles_csv():
     (
         shape_enablement_settings,
         is_shape_error,
-    ) = actions.user.vscode_get_setting_with_fallback(
+    ) = vscode_settings.Actions.vscode_get_setting_with_fallback(
         "cursorless.hatEnablement.shapes",
         default_value={},
         fallback_value=FALLBACK_SHAPE_ENABLEMENT,
@@ -195,39 +169,48 @@ def setup_hat_styles_csv():
         **shape_enablement_settings,
     }
 
-    active_hat_colors = {
+    hat_colors = {
         spoken_form: value
         for spoken_form, value in hat_colors.items()
         if color_enablement[value]
     }
-    active_hat_shapes = {
+    hat_shapes = {
         spoken_form: value
         for spoken_form, value in hat_shapes.items()
         if shape_enablement[value]
     }
-
+    
     if unsubscribe_hat_styles is not None:
         unsubscribe_hat_styles()
 
-    unsubscribe_hat_styles = init_csv_and_watch_changes(
-        "hat_styles",
-        {
-            "hat_color": active_hat_colors,
-            "hat_shape": active_hat_shapes,
-        },
-        [*hat_colors.values(), *hat_shapes.values()],
-        no_update_file=is_shape_error or is_color_error,
-    )
-
+    if len(hat_shapes) == 0:
+        unsubscribe_hat_styles = init_csv_and_watch_changes(
+            "hat_styles",
+            {
+                "hat_color": hat_colors,
+            },
+            [*hat_colors.values()],
+            no_update_file=is_shape_error or is_color_error,
+        )
+    else:
+        unsubscribe_hat_styles = init_csv_and_watch_changes(
+            "hat_styles",
+            {
+                "hat_color": hat_colors,
+                "hat_shape": hat_shapes,
+            },
+            [*hat_colors.values(), *hat_shapes.values()],
+            no_update_file=is_shape_error or is_color_error,
+        )
+    
     if is_shape_error or is_color_error:
-        app.notify("Error reading vscode settings. Restart talon; see log")
-
-
+        print("Error reading vscode settings. Restart talon; see log")
+        
 fast_reload_job = None
 slow_reload_job = None
 
-
 def on_ready():
+    
     init_csv_and_watch_changes(
         "special_marks",
         {
@@ -239,16 +222,17 @@ def on_ready():
 
     setup_hat_styles_csv()
 
-    vscode_settings_path: Path = actions.user.vscode_settings_path().resolve()
+    # vscode_settings_path: Path = vscode_settings.WindowsUserActions.vscode_settings_path()
+    # vscode_settings_path: Path = actions.user.vscode_settings_path().resolve()
 
-    def on_watch(path, flags):
-        global fast_reload_job, slow_reload_job
-        cron.cancel(fast_reload_job)
-        cron.cancel(slow_reload_job)
-        fast_reload_job = cron.after("500ms", setup_hat_styles_csv)
-        slow_reload_job = cron.after("10s", setup_hat_styles_csv)
+    # def on_watch(path, flags):
+    #     global fast_reload_job, slow_reload_job
+    #     cron.cancel(fast_reload_job)
+    #     cron.cancel(slow_reload_job)
+    #     fast_reload_job = cron.after("500ms", setup_hat_styles_csv)
+    #     slow_reload_job = cron.after("10s", setup_hat_styles_csv)
 
-    fs.watch(str(vscode_settings_path), on_watch)
+    # fs.watch(str(vscode_settings_path), on_watch)
 
 
-app.register("ready", on_ready)
+on_ready()
