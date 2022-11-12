@@ -3,23 +3,15 @@ from collections.abc import Container
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
+from contextlib import suppress
 
-from talon import Context, Module, actions, app, fs
+from .cursorless_lists import append_list
 
-from .conventions import get_cursorless_list_name
+import os
 from .vendor.inflection import pluralize
 
 SPOKEN_FORM_HEADER = "Spoken form"
 CURSORLESS_IDENTIFIER_HEADER = "Cursorless identifier"
-
-
-mod = Module()
-cursorless_settings_directory = mod.setting(
-    "cursorless_settings_directory",
-    type=str,
-    default="cursorless-settings",
-    desc="The directory to use for cursorless settings csvs relative to talon user directory",
-)
 
 
 def init_csv_and_watch_changes(
@@ -29,9 +21,7 @@ def init_csv_and_watch_changes(
     allow_unknown_values: bool = False,
     default_list_name: Optional[str] = None,
     headers: list[str] = [SPOKEN_FORM_HEADER, CURSORLESS_IDENTIFIER_HEADER],
-    ctx: Context = Context(),
     no_update_file: bool = False,
-    pluralize_lists: Optional[list[str]] = [],
 ):
     """
     Initialize a cursorless settings csv, creating it if necessary, and watch
@@ -58,7 +48,6 @@ def init_csv_and_watch_changes(
         unknown values in this list
         no_update_file Optional[bool]: Set this to `TRUE` to indicate that we should
         not update the csv. This is used generally in case there was an issue coming up with the default set of values so we don't want to persist those to disk
-        pluralize_lists: Create plural version of given lists
     """
     if extra_ignored_values is None:
         extra_ignored_values = []
@@ -68,26 +57,25 @@ def init_csv_and_watch_changes(
 
     file_path.parent.mkdir(parents=True, exist_ok=True)
 
-    def on_watch(path, flags):
-        if file_path.match(path):
-            current_values, has_errors = read_file(
-                file_path,
-                headers,
-                super_default_values.values(),
-                extra_ignored_values,
-                allow_unknown_values,
-            )
-            update_dicts(
-                default_values,
-                current_values,
-                extra_ignored_values,
-                allow_unknown_values,
-                default_list_name,
-                pluralize_lists,
-                ctx,
-            )
+    # def on_watch(path, flags):
+    #     if file_path.match(path):
+    #         current_values, has_errors = read_file(
+    #             file_path,
+    #             headers,
+    #             super_default_values.values(),
+    #             extra_ignored_values,
+    #             allow_unknown_values,
+    #         )
+    #         update_dicts(
+    #             default_values,
+    #             current_values,
+    #             extra_ignored_values,
+    #             allow_unknown_values,
+    #             default_list_name,
+    #		  pluralize_lists,
+    #         )
 
-    fs.watch(str(file_path.parent), on_watch)
+    # fs.watch(str(file_path.parent), on_watch)
 
     if file_path.is_file():
         current_values = update_file(
@@ -104,7 +92,6 @@ def init_csv_and_watch_changes(
             extra_ignored_values,
             allow_unknown_values,
             default_list_name,
-            pluralize_lists,
             ctx,
         )
     else:
@@ -116,14 +103,13 @@ def init_csv_and_watch_changes(
             extra_ignored_values,
             allow_unknown_values,
             default_list_name,
-            pluralize_lists,
             ctx,
         )
 
-    def unsubscribe():
-        fs.unwatch(str(file_path.parent), on_watch)
+    # def unsubscribe():
+    #     fs.unwatch(str(file_path.parent), on_watch)
 
-    return unsubscribe
+    # return unsubscribe
 
 
 def is_removed(value: str):
@@ -136,7 +122,6 @@ def update_dicts(
     extra_ignored_values: list[str],
     allow_unknown_values: bool,
     default_list_name: Optional[str],
-    pluralize_lists: Optional[list[str]],
     ctx: Context,
 ):
     # Create map with all default values
@@ -168,24 +153,13 @@ def update_dicts(
         key = obj["key"]
         if not is_removed(key):
             for k in key.split("|"):
-                if value == "pasteFromClipboard" and k.endswith(" to"):
-                    # FIXME: This is a hack to work around the fact that the
-                    # spoken form of the `pasteFromClipboard` action used to be
-                    # "paste to", but now the spoken form is just "paste" and
-                    # the "to" is part of the positional target. Users who had
-                    # cursorless before this change would have "paste to" as
-                    # their spoken form and so would need to say "paste to to".
-                    k = k[:-3]
                 results[obj["list"]][k.strip()] = value
 
     # Assign result to talon context list
     for list_name, dict in results.items():
-        list_singular_name = get_cursorless_list_name(list_name)
-        ctx.lists[list_singular_name] = dict
-        if list_name in pluralize_lists:
-            list_plural_name = f"{list_singular_name}_plural"
-            ctx.lists[list_plural_name] = {pluralize(k): v for k, v in dict.items()}
-
+        # ctx.lists[get_cursorless_list_name(list_name)] = dict
+        append_list(list_name, dict)
+           
 
 def update_file(
     path: Path,
@@ -231,8 +205,7 @@ def update_file(
                 "See release notes for more info: "
                 "https://github.com/cursorless-dev/cursorless/blob/main/CHANGELOG.md"
             )
-            app.notify(f"🎉🎉 New cursorless features; see log")
-
+            
     return current_values
 
 
@@ -321,9 +294,6 @@ def read_file(
         result[key] = value
         used_identifiers.append(value)
 
-    if has_errors:
-        app.notify("Cursorless settings error; see log")
-
     return result, has_errors
 
 
@@ -331,12 +301,10 @@ def get_full_path(filename: str):
     if not filename.endswith(".csv"):
         filename = f"{filename}.csv"
 
-    user_dir: Path = actions.path.talon_user()
-    settings_directory = Path(cursorless_settings_directory.get())
-
-    if not settings_directory.is_absolute():
-        settings_directory = user_dir / settings_directory
-
+    # using cursorless/settings folder for settings
+    settings_directory = Path(os.path.join(os.path.dirname(__file__), "settings"))
+    # user_dir: Path = settings.SETTINGS["paths"]["BASE_PATH"]
+    
     return (settings_directory / filename).resolve()
 
 

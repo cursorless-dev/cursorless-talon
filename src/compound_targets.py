@@ -1,48 +1,32 @@
 from typing import Any
-
-from talon import Module
+from contextlib import suppress
 
 from .connective import default_range_connective
 from .primitive_target import BASE_TARGET
 
-mod = Module()
-
-mod.list(
-    "cursorless_range_connective",
-    desc="A range joiner that indicates whether to include or exclude anchor and active",
-)
-mod.list(
-    "cursorless_list_connective",
-    desc="A list joiner",
-)
-
-
-@mod.capture(
-    rule="[<user.cursorless_range_type>] {user.cursorless_range_connective} | <user.cursorless_range_type>"
-)
 def cursorless_range_connective_with_type(m) -> dict[str, Any]:
+    connective = default_range_connective
+    with suppress(KeyError):
+        connective = m["range_connective"]
+    
+    range_type = None
+    with suppress(KeyError):
+        range_type = m["range_type"]
+    
     return {
-        "connective": getattr(
-            m, "cursorless_range_connective", default_range_connective
-        ),
-        "type": getattr(m, "cursorless_range_type", None),
+        "connective": connective,
+        "type": range_type,
     }
 
-
-@mod.capture(
-    rule=(
-        "<user.cursorless_primitive_target> | "
-        "<user.cursorless_range_connective_with_type> <user.cursorless_primitive_target> | "
-        "<user.cursorless_primitive_target> <user.cursorless_range_connective_with_type> <user.cursorless_primitive_target>"
-    )
-)
 def cursorless_range(m) -> dict[str, Any]:
-    primitive_targets = m.cursorless_primitive_target_list
-    range_connective_with_type = getattr(
-        m, "cursorless_range_connective_with_type", None
-    )
-
-    if range_connective_with_type is None:
+    primitive_targets = [m["primitive_target1"]]
+    with suppress(KeyError):
+        primitive_targets.append(m["primitive_target2"])
+    
+    range_connective_with_type = {}
+    try:
+        range_connective_with_type = m["range_connective_with_type"]
+    except KeyError:
         return primitive_targets[0]
 
     if len(primitive_targets) == 1:
@@ -75,13 +59,31 @@ def is_active_included(range_connective: str):
     return range_connective not in ["rangeExclusive", "rangeExcludingEnd"]
 
 
-@mod.capture(
-    rule="<user.cursorless_range> ({user.cursorless_list_connective} <user.cursorless_range>)*"
-)
 def cursorless_target(m) -> dict:
-    if len(m.cursorless_range_list) == 1:
-        return m.cursorless_range
+    ranges = [m["range"]]
+    range_repeating = m["range_repetition"]
+    for connective_range in range_repeating:
+        range_dict = connective_range[1]
+        ranges.append(range_dict)
+    
+    if len(ranges) == 1:
+        return ranges[0]            
     return {
         "type": "list",
-        "elements": m.cursorless_range_list,
+        "elements": ranges,
     }
+    
+    # ranges = [m["range1"]]
+    # with suppress(KeyError):
+    #     ranges.append(m["range2"])
+    #     ranges.append(m["range3"])
+    #     ranges.append(m["range4"])
+    #     ranges.append(m["range5"])
+    
+    # if len(ranges) == 1:
+    #     return ranges[0]            
+    # return {
+    #     "type": "list",
+    #     "elements": ranges,
+    # }
+    

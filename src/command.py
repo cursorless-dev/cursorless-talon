@@ -1,6 +1,6 @@
 from typing import Any
 
-from talon import Module, actions, speech_system
+from .command_client.command_client import Actions as client_actions
 
 from .cursorless_command_server import (
     run_rpc_command_and_wait,
@@ -8,20 +8,6 @@ from .cursorless_command_server import (
     run_rpc_command_no_wait,
 )
 from .primitive_target import IMPLICIT_TARGET
-
-mod = Module()
-
-CURSORLESS_COMMAND_ID = "cursorless.command"
-last_phrase = None
-
-
-def on_phrase(d):
-    global last_phrase
-    last_phrase = d
-
-
-speech_system.register("pre:phrase", on_phrase)
-
 
 class NotSet:
     def __repr__(self):
@@ -38,7 +24,7 @@ class Actions:
         arg3: Any = NotSet,
     ):
         """Execute single-target cursorless command"""
-        actions.user.cursorless_multiple_target_command(
+        Actions.cursorless_multiple_target_command(
             action, [target], arg1, arg2, arg3
         )
 
@@ -50,7 +36,7 @@ class Actions:
         arg3: Any = NotSet,
     ):
         """Execute single-target cursorless command"""
-        actions.user.cursorless_multiple_target_command_no_wait(
+        Actions.cursorless_multiple_target_command_no_wait(
             action, [target], arg1, arg2, arg3
         )
 
@@ -58,7 +44,7 @@ class Actions:
         action: str, target: dict, args: list[Any]
     ):
         """Execute single-target cursorless command with argument list"""
-        actions.user.cursorless_single_target_command(
+        Actions.cursorless_single_target_command(
             action,
             target,
             *args,
@@ -73,7 +59,7 @@ class Actions:
     ):
         """Execute single-target cursorless command and return result"""
         return run_rpc_command_get(
-            CURSORLESS_COMMAND_ID,
+            "cursorless.command",
             construct_cursorless_command_argument(
                 action=action,
                 targets=[target],
@@ -88,7 +74,7 @@ class Actions:
         arg3: Any = NotSet,
     ):
         """Execute cursorless command with implicit target"""
-        actions.user.cursorless_single_target_command(
+        Actions.cursorless_single_target_command(
             action, IMPLICIT_TARGET, arg1, arg2, arg3
         )
 
@@ -101,7 +87,7 @@ class Actions:
     ):
         """Execute multi-target cursorless command"""
         run_rpc_command_and_wait(
-            CURSORLESS_COMMAND_ID,
+            "cursorless.command",
             construct_cursorless_command_argument(
                 action=action,
                 targets=targets,
@@ -118,7 +104,7 @@ class Actions:
     ):
         """Execute multi-target cursorless command"""
         run_rpc_command_no_wait(
-            CURSORLESS_COMMAND_ID,
+            "cursorless.command",
             construct_cursorless_command_argument(
                 action=action,
                 targets=targets,
@@ -131,7 +117,7 @@ def construct_cursorless_command_argument(
     action: str, targets: list[dict], args: list[Any]
 ):
     try:
-        use_pre_phrase_snapshot = actions.user.did_emit_pre_phrase_signal()
+        use_pre_phrase_snapshot = client_actions.did_emit_pre_phrase_signal()
     except KeyError:
         use_pre_phrase_snapshot = False
 
@@ -148,4 +134,6 @@ def construct_cursorless_command_argument(
 
 
 def get_spoken_form():
-    return " ".join(last_phrase["phrase"])
+    # too minor to do properly
+    return "spoken form"
+    #return " ".join(last_phrase["phrase"])

@@ -1,20 +1,4 @@
-from talon import Module, app
-
 from ..csv_overrides import SPOKEN_FORM_HEADER, init_csv_and_watch_changes
-
-mod = Module()
-
-
-mod.list("cursorless_scope_type", desc="Supported scope types")
-mod.list("cursorless_scope_type_plural", desc="Supported plural scope types")
-mod.list(
-    "cursorless_custom_regex_scope_type",
-    desc="Supported custom regular expression scope types",
-)
-mod.list(
-    "cursorless_custom_regex_scope_type_plural",
-    desc="Supported plural custom regular expression scope types",
-)
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
 # See https://www.cursorless.org/docs/user/customization/
@@ -78,28 +62,22 @@ scope_types = {
 }
 
 
-@mod.capture(
-    rule="{user.cursorless_scope_type} | {user.cursorless_custom_regex_scope_type}"
-)
 def cursorless_scope_type(m) -> dict[str, str]:
     """Cursorless scope type singular"""
     try:
-        return {"type": m.cursorless_scope_type}
-    except AttributeError:
-        return {"type": "customRegex", "regex": m.cursorless_custom_regex_scope_type}
+        return {"type": m["scope_type"]}
+    except KeyError:
+        return {"type": "customRegex", "regex": m["custom_regex_scope_type"]}
 
 
-@mod.capture(
-    rule="{user.cursorless_scope_type_plural} | {user.cursorless_custom_regex_scope_type_plural}"
-)
 def cursorless_scope_type_plural(m) -> dict[str, str]:
     """Cursorless scope type plural"""
     try:
-        return {"type": m.cursorless_scope_type_plural}
+        return {"type": m["scope_type_plural"]}
     except AttributeError:
         return {
             "type": "customRegex",
-            "regex": m.cursorless_custom_regex_scope_type_plural,
+            "regex": m.["custom_regex_scope_type_plural"],
         }
 
 
@@ -130,5 +108,4 @@ def on_ready():
         pluralize_lists=["custom_regex_scope_type"],
     )
 
-
-app.register("ready", on_ready)
+on_ready()

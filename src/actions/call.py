@@ -1,10 +1,7 @@
-from talon import Module, actions
-
 from ..primitive_target import IMPLICIT_TARGET
-
-mod = Module()
+from ..command import Actions as command_actions
 
 
 def run_call_action(target: dict):
     targets = [target, IMPLICIT_TARGET.copy()]
-    actions.user.cursorless_multiple_target_command("callAsFunction", targets)
+    command_actions.cursorless_multiple_target_command("callAsFunction", targets)

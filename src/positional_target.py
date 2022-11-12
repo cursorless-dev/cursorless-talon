@@ -1,24 +1,13 @@
 from typing import Any
 
-from talon import Module
-
 from .modifiers.position import construct_positional_modifier
 
-mod = Module()
-
-
-@mod.capture(
-    rule=(
-        "({user.cursorless_position} | {user.cursorless_source_destination_connective}) "
-        "<user.cursorless_target>"
-    )
-)
 def cursorless_positional_target(m) -> dict[str, Any]:
-    target: dict[str, Any] = m.cursorless_target
+    target: dict[str, Any] = m["target"]
     try:
-        modifier = construct_positional_modifier(m.cursorless_position)
+        modifier = construct_positional_modifier(m["position"])
         return update_first_primitive_target(target, modifier)
-    except AttributeError:
+    except KeyError:
         return target
 
 
