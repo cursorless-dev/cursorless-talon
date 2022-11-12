@@ -1,8 +1,4 @@
 <<<<<<< HEAD:src/modifiers/scopes.py
-=======
-from typing import Any
-
->>>>>>> 9162137b7b93ff1450ed8be4b41bc47737eb3283:src/modifiers/containing_scope.py
 from ..csv_overrides import SPOKEN_FORM_HEADER, init_csv_and_watch_changes
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
@@ -67,15 +63,6 @@ scope_types = {
 }
 
 
-def cursorless_scope_type(m) -> dict[str, str]:
-    """Cursorless scope type singular"""
-    try:
-        return {"type": m["scope_type"]}
-    except KeyError:
-        return {"type": "customRegex", "regex": m["custom_regex_scope_type"]}
-
-
-<<<<<<< HEAD:src/modifiers/scopes.py
 def cursorless_scope_type_plural(m) -> dict[str, str]:
     """Cursorless scope type plural"""
     try:
@@ -85,14 +72,13 @@ def cursorless_scope_type_plural(m) -> dict[str, str]:
             "type": "customRegex",
             "regex": m.["custom_regex_scope_type_plural"],
         }
-=======
+
 def cursorless_containing_scope(m) -> dict[str, Any]:
     """Expand to containing scope"""
     return {
         "type": "everyScope" if "every" in m["_node"].words() else "containingScope",
         "scopeType": m["scope_type"],
     }
->>>>>>> 9162137b7b93ff1450ed8be4b41bc47737eb3283:src/modifiers/containing_scope.py
 
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
@@ -121,8 +107,4 @@ def on_ready():
         pluralize_lists=["custom_regex_scope_type"],
     )
 
-<<<<<<< HEAD:src/modifiers/scopes.py
 on_ready()
-=======
-on_ready()
->>>>>>> 9162137b7b93ff1450ed8be4b41bc47737eb3283:src/modifiers/containing_scope.py

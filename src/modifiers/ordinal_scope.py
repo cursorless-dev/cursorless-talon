@@ -41,17 +41,10 @@ def cursorless_first_last(m) -> dict[str, Any]:
     """First/last `n` scopes; eg "first three funk"""
     if m["_node"].words()[0] == "first":
         return create_ordinal_scope_modifier(
-<<<<<<< HEAD
             m["scope_type_plural"], 0, m["number_small"]
         )
     return create_ordinal_scope_modifier(
         m["scope_type_plural"], -m["number_small"], m["number_small"]
-=======
-            m["scope_type"], 0, m["number_small"]
-        )
-    return create_ordinal_scope_modifier(
-        m["scope_type"], -m["number_small"], m["number_small"]
->>>>>>> 9162137b7b93ff1450ed8be4b41bc47737eb3283
     )
 
 def create_ordinal_scope_modifier(scope_type: Any, start: int, length: int = 1):

@@ -7,12 +7,8 @@ from typing import Optional
 from contextlib import suppress
 
 from .cursorless_lists import append_list
-<<<<<<< HEAD
-
 import os
 from .vendor.inflection import pluralize
-=======
->>>>>>> 9162137b7b93ff1450ed8be4b41bc47737eb3283
 
 import os
     
@@ -78,10 +74,7 @@ def init_csv_and_watch_changes(
     #             extra_ignored_values,
     #             allow_unknown_values,
     #             default_list_name,
-<<<<<<< HEAD
     #		  pluralize_lists,
-=======
->>>>>>> 9162137b7b93ff1450ed8be4b41bc47737eb3283
     #         )
 
     # fs.watch(str(file_path.parent), on_watch)
