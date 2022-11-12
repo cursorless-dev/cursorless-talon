@@ -3,8 +3,11 @@ from .head_tail import head_tail_modifiers
 from .interior import interior_modifiers
 from .ordinal_scope import first_modifiers, last_modifiers
 from .range_type import range_types
+<<<<<<< HEAD
 from .relative_scope import forward_backward_modifiers, previous_next_modifiers
 from .simple_scope_modifier import simple_scope_modifiers
+=======
+>>>>>>> 9162137b7b93ff1450ed8be4b41bc47737eb3283
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
 # See https://www.cursorless.org/docs/user/customization/

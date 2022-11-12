@@ -14,7 +14,6 @@ class NotSet:
         return "<argument not set>"
 
 
-@mod.action_class
 class Actions:
     def cursorless_single_target_command(
         action: str,

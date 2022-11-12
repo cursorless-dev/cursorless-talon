@@ -1,7 +1,12 @@
 import webbrowser
 from pathlib import Path
 
+<<<<<<< HEAD
 from talon import Context, Module, app
+=======
+# from talon import Module, actions, cron, skia, ui
+# from talon.canvas import Canvas
+>>>>>>> 9162137b7b93ff1450ed8be4b41bc47737eb3283
 
 from ..cursorless_command_server import run_rpc_command_and_wait
 from .get_list import get_list, get_lists

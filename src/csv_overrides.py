@@ -1,15 +1,21 @@
 import csv
 from collections.abc import Container
 from datetime import datetime
+from email.policy import default
 from pathlib import Path
 from typing import Optional
 from contextlib import suppress
 
 from .cursorless_lists import append_list
+<<<<<<< HEAD
 
 import os
 from .vendor.inflection import pluralize
+=======
+>>>>>>> 9162137b7b93ff1450ed8be4b41bc47737eb3283
 
+import os
+    
 SPOKEN_FORM_HEADER = "Spoken form"
 CURSORLESS_IDENTIFIER_HEADER = "Cursorless identifier"
 
@@ -72,7 +78,10 @@ def init_csv_and_watch_changes(
     #             extra_ignored_values,
     #             allow_unknown_values,
     #             default_list_name,
+<<<<<<< HEAD
     #		  pluralize_lists,
+=======
+>>>>>>> 9162137b7b93ff1450ed8be4b41bc47737eb3283
     #         )
 
     # fs.watch(str(file_path.parent), on_watch)
@@ -92,7 +101,6 @@ def init_csv_and_watch_changes(
             extra_ignored_values,
             allow_unknown_values,
             default_list_name,
-            ctx,
         )
     else:
         if not no_update_file:
@@ -103,7 +111,6 @@ def init_csv_and_watch_changes(
             extra_ignored_values,
             allow_unknown_values,
             default_list_name,
-            ctx,
         )
 
     # def unsubscribe():
@@ -122,7 +129,6 @@ def update_dicts(
     extra_ignored_values: list[str],
     allow_unknown_values: bool,
     default_list_name: Optional[str],
-    ctx: Context,
 ):
     # Create map with all default values
     results_map = {}
@@ -145,7 +151,7 @@ def update_dicts(
                 }
             else:
                 raise
-
+    
     # Convert result map back to result list
     results = {res["list"]: {} for res in results_map.values()}
     for obj in results_map.values():

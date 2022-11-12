@@ -7,12 +7,8 @@ from tempfile import gettempdir
 from typing import Any
 from uuid import uuid4
 
-<<<<<<< HEAD
 from dragonfly import Key
 from castervoice.lib.contexts import is_linux
-=======
-from talon import Context, Module, actions, speech_system
->>>>>>> 7bdd6d0... Squashed 'src/command_client/' content from commit cc93000
 
 # How old a request file needs to be before we declare it stale and are willing
 # to remove it
@@ -29,27 +25,6 @@ MINIMUM_SLEEP_TIME_SECONDS = 0.0005
 # current phrase
 did_emit_pre_phrase_signal = False
 
-<<<<<<< HEAD
-=======
-mod = Module()
-
-ctx = Context()
-mac_ctx = Context()
-linux_ctx = Context()
-
-ctx.matches = r"""
-tag: user.command_client
-"""
-mac_ctx.matches = r"""
-os: mac
-app: vscode
-"""
-linux_ctx.matches = r"""
-os: linux
-app: vscode
-"""
-
->>>>>>> 7bdd6d0... Squashed 'src/command_client/' content from commit cc93000
 
 class NotSet:
     def __repr__(self):
@@ -165,10 +140,6 @@ def run_command(
     # Generate uuid that will be mirrored back to us by command server for
     # sanity checking
     uuid = str(uuid4())
-<<<<<<< HEAD
-=======
-
->>>>>>> 7bdd6d0... Squashed 'src/command_client/' content from commit cc93000
     request = Request(
         command_id=command_id,
         args=args,
@@ -176,19 +147,11 @@ def run_command(
         return_command_output=return_command_output,
         uuid=uuid,
     )
-<<<<<<< HEAD
     
     # First, write the request to the request file, which makes us the sole
     # owner because all other processes will try to open it with 'x'
     write_request(request, request_path)
     
-=======
-
-    # First, write the request to the request file, which makes us the sole
-    # owner because all other processes will try to open it with 'x'
-    write_request(request, request_path)
-
->>>>>>> 7bdd6d0... Squashed 'src/command_client/' content from commit cc93000
     # We clear the response file if it does exist, though it shouldn't
     if response_path.exists():
         print("WARNING: Found old response file")
@@ -198,11 +161,7 @@ def run_command(
     # request file.  Because only the active application instance will accept
     # keypresses, we can be sure that the active application instance will be the
     # one to execute the command.
-<<<<<<< HEAD
     Actions.trigger_command_server_command_execution()
-=======
-    actions.user.trigger_command_server_command_execution()
->>>>>>> 7bdd6d0... Squashed 'src/command_client/' content from commit cc93000
 
     try:
         decoded_contents = read_json_with_timeout(response_path)
@@ -221,13 +180,8 @@ def run_command(
     if decoded_contents["error"] is not None:
         raise Exception(decoded_contents["error"])
 
-<<<<<<< HEAD
     time.sleep(0.025)
     
-=======
-    actions.sleep("25ms")
-
->>>>>>> 7bdd6d0... Squashed 'src/command_client/' content from commit cc93000
     return decoded_contents["returnValue"]
 
 
@@ -244,11 +198,7 @@ def get_communication_dir_path():
     if hasattr(os, "getuid"):
         suffix = f"-{os.getuid()}"
 
-<<<<<<< HEAD
     return Path(gettempdir()) / f"{Actions.command_server_directory()}{suffix}"
-=======
-    return Path(gettempdir()) / f"{actions.user.command_server_directory()}{suffix}"
->>>>>>> 7bdd6d0... Squashed 'src/command_client/' content from commit cc93000
 
 
 def robust_unlink(path: Path):
@@ -300,13 +250,8 @@ def read_json_with_timeout(path: str) -> Any:
             # If not found, keep waiting
             pass
 
-<<<<<<< HEAD
         time.sleep(sleep_time)
         
-=======
-        actions.sleep(sleep_time)
-
->>>>>>> 7bdd6d0... Squashed 'src/command_client/' content from commit cc93000
         time_left = timeout_time - time.perf_counter()
 
         if time_left < 0:
@@ -319,10 +264,6 @@ def read_json_with_timeout(path: str) -> Any:
     return json.loads(raw_text)
 
 
-<<<<<<< HEAD
-=======
-@mod.action_class
->>>>>>> 7bdd6d0... Squashed 'src/command_client/' content from commit cc93000
 class Actions:
     def run_rpc_command(
         command_id: str,
@@ -382,37 +323,26 @@ class Actions:
 
     def command_server_directory() -> str:
         """Return the directory of the command server"""
-<<<<<<< HEAD
         return "vscode-command-server"
-=======
->>>>>>> 7bdd6d0... Squashed 'src/command_client/' content from commit cc93000
 
     def trigger_command_server_command_execution():
         """Issue keystroke to trigger command server to execute command that
         was written to the file.  For internal use only"""
-<<<<<<< HEAD
         if is_linux():
             Key("csa-p").execute()
         else:
             Key("cs-f17").execute()
         
-=======
-        actions.key("ctrl-shift-f17")
-
->>>>>>> 7bdd6d0... Squashed 'src/command_client/' content from commit cc93000
     def emit_pre_phrase_signal() -> bool:
         """
         If in an application supporting the command client, returns True
         and touches a file to indicate that a phrase is beginning execution.
         Otherwise does nothing and returns False.
         """
-<<<<<<< HEAD
         # termx88: will always be False.
         # I'm not quite sure, but in Caster commands are 
         # only called after the phrase anyway?
         # relevant docs https://www.cursorless.org/docs/contributing/api/interfaces/core_commandrunner_command_types.commandv3/#useprephrasesnapshot
-=======
->>>>>>> 7bdd6d0... Squashed 'src/command_client/' content from commit cc93000
         return False
 
     def did_emit_pre_phrase_signal() -> bool:
@@ -421,30 +351,10 @@ class Actions:
         return did_emit_pre_phrase_signal
 
 
-<<<<<<< HEAD
 # class UserActions:
 #     def emit_pre_phrase_signal():
 #         get_signal_path("prePhrase").touch()
 #         return True
-=======
-@mac_ctx.action_class("user")
-class MacUserActions:
-    def trigger_command_server_command_execution():
-        actions.key("cmd-shift-f17")
-
-
-@linux_ctx.action_class("user")
-class LinuxUserActions:
-    def trigger_command_server_command_execution():
-        actions.key("ctrl-shift-alt-p")
-
-
-@ctx.action_class("user")
-class UserActions:
-    def emit_pre_phrase_signal():
-        get_signal_path("prePhrase").touch()
-        return True
->>>>>>> 7bdd6d0... Squashed 'src/command_client/' content from commit cc93000
 
 
 class MissingCommunicationDir(Exception):
@@ -472,7 +382,6 @@ def get_signal_path(name: str) -> Path:
     return signal_dir / name
 
 
-<<<<<<< HEAD
 # def pre_phrase(_: Any):
 #     try:
 #         global did_emit_pre_phrase_signal
@@ -489,21 +398,3 @@ def get_signal_path(name: str) -> Path:
 
 # speech_system.register("pre:phrase", pre_phrase)
 # speech_system.register("post:phrase", post_phrase)
-=======
-def pre_phrase(_: Any):
-    try:
-        global did_emit_pre_phrase_signal
-
-        did_emit_pre_phrase_signal = actions.user.emit_pre_phrase_signal()
-    except MissingCommunicationDir:
-        pass
-
-
-def post_phrase(_: Any):
-    global did_emit_pre_phrase_signal
-    did_emit_pre_phrase_signal = False
-
-
-speech_system.register("pre:phrase", pre_phrase)
-speech_system.register("post:phrase", post_phrase)
->>>>>>> 7bdd6d0... Squashed 'src/command_client/' content from commit cc93000
