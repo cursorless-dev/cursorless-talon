@@ -1,4 +1,3 @@
-<<<<<<< HEAD:src/modifiers/scopes.py
 from ..csv_overrides import SPOKEN_FORM_HEADER, init_csv_and_watch_changes
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
