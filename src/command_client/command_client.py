@@ -339,10 +339,7 @@ class Actions:
         and touches a file to indicate that a phrase is beginning execution.
         Otherwise does nothing and returns False.
         """
-        # termx88: will always be False.
-        # I'm not quite sure, but in Caster commands are 
-        # only called after the phrase anyway?
-        # relevant docs https://www.cursorless.org/docs/contributing/api/interfaces/core_commandrunner_command_types.commandv3/#useprephrasesnapshot
+        # termx88: not implemented, to be ever True
         return False
 
     def did_emit_pre_phrase_signal() -> bool:
