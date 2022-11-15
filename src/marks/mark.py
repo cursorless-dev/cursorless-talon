@@ -138,8 +138,7 @@ unsubscribe_hat_styles = None
 
 def setup_hat_styles_csv():
     global unsubscribe_hat_styles
-    global hat_colors
-    global hat_shapes
+    
     (
         color_enablement_settings,
         is_color_error,
@@ -169,12 +168,12 @@ def setup_hat_styles_csv():
         **shape_enablement_settings,
     }
 
-    hat_colors = {
+    active_hat_colors = {
         spoken_form: value
         for spoken_form, value in hat_colors.items()
         if color_enablement[value]
     }
-    hat_shapes = {
+    active_hat_shapes = {
         spoken_form: value
         for spoken_form, value in hat_shapes.items()
         if shape_enablement[value]
@@ -187,7 +186,7 @@ def setup_hat_styles_csv():
         unsubscribe_hat_styles = init_csv_and_watch_changes(
             "hat_styles",
             {
-                "hat_color": hat_colors,
+                "hat_color": active_hat_colors,
             },
             [*hat_colors.values()],
             no_update_file=is_shape_error or is_color_error,
@@ -196,8 +195,8 @@ def setup_hat_styles_csv():
         unsubscribe_hat_styles = init_csv_and_watch_changes(
             "hat_styles",
             {
-                "hat_color": hat_colors,
-                "hat_shape": hat_shapes,
+                "hat_color": active_hat_colors,
+                "hat_shape": active_hat_shapes,
             },
             [*hat_colors.values(), *hat_shapes.values()],
             no_update_file=is_shape_error or is_color_error,

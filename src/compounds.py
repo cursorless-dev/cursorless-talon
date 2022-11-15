@@ -13,8 +13,11 @@ from . import paired_delimiter
 
 ''' primitive_target '''
 
+# longest modifier list?
+# "its value tail" is it even usefull?
 primitive_target_compound = Compound(
-    spec="[<position>] <mark> | [<position>] <modifier1> [<modifier2> [<modifier3>] [<modifier4>]] [<mark>]",
+    # spec="[<position>] (<mark> | <modifier1> [<modifier2> [<modifier3>] [<modifier4>]] [<mark>])",
+    spec="[<position>] (<mark> | <modifier1> [<modifier2> [<modifier3>]] [<mark>])",
     name="primitive_target",
     extras=[
             modifier_compounds.position_compound,
@@ -22,7 +25,7 @@ primitive_target_compound = Compound(
             RuleRef(modifier_compounds.modifier_rule, "modifier1"),
             RuleRef(modifier_compounds.modifier_rule, "modifier2"),
             RuleRef(modifier_compounds.modifier_rule, "modifier3"),
-            RuleRef(modifier_compounds.modifier_rule, "modifier4"),
+            # RuleRef(modifier_compounds.modifier_rule, "modifier4"),
         ],
     value_func=lambda node, extras: primitive_target.cursorless_primitive_target(extras),
 )

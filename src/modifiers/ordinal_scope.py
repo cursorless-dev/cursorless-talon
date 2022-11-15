@@ -3,10 +3,16 @@ from contextlib import suppress
 
 from ..compound_targets import is_active_included, is_anchor_included
 
+first_modifiers = {"first": "first"}
+last_modifiers = {"last": "last"}
+
 def ordinal_or_last(m) -> int:
     """An ordinal or the word 'last'"""
-    if m["_node"].words()[0] == "last":
-        return -1
+    if m["_node"].words()[-1] == "last":
+        number = -1
+        with suppress(KeyError):
+            number = -m["ordinals_small"]
+        return number
     return m["ordinals_small"] - 1
 
 def cursorless_ordinal_range(m) -> dict[str, Any]:
@@ -14,17 +20,16 @@ def cursorless_ordinal_range(m) -> dict[str, Any]:
     ordinal_or_last_list = [m["ordinal_or_last1"]]
     with suppress(KeyError):
         ordinal_or_last_list.append(m["ordinal_or_last2"])
-
+        
+    anchor = create_ordinal_scope_modifier(
+        m["scope_type"], ordinal_or_last_list[0]
+    )
     if len(ordinal_or_last_list) > 1:
-        range_connective = m["range_connective"]
-        include_anchor = is_anchor_included(range_connective)
-        include_active = is_active_included(range_connective)
-        anchor = create_ordinal_scope_modifier(
-            m["scope_type"], ordinal_or_last_list[0]
-        )
         active = create_ordinal_scope_modifier(
             m["scope_type"], ordinal_or_last_list[1]
         )
+        include_anchor = is_anchor_included(m.cursorless_range_connective)
+        include_active = is_active_included(m.cursorless_range_connective)
         return {
             "type": "range",
             "anchor": anchor,
@@ -32,11 +37,8 @@ def cursorless_ordinal_range(m) -> dict[str, Any]:
             "excludeAnchor": not include_anchor,
             "excludeActive": not include_active,
         }
-    else:
-        return create_ordinal_scope_modifier(
-            m["scope_type"], ordinal_or_last_list[0]
-        )
-
+    return anchor
+    
 def cursorless_first_last(m) -> dict[str, Any]:
     """First/last `n` scopes; eg "first three funk"""
     if m["_node"].words()[0] == "first":
@@ -47,7 +49,7 @@ def cursorless_first_last(m) -> dict[str, Any]:
         m["scope_type_plural"], -m["number_small"], m["number_small"]
     )
 
-def create_ordinal_scope_modifier(scope_type: Any, start: int, length: int = 1):
+def create_ordinal_scope_modifier(scope_type: dict, start: int, length: int = 1):
     return {
         "type": "ordinalScope",
         "scopeType": scope_type,

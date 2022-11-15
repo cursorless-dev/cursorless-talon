@@ -1,13 +1,11 @@
 import csv
 from collections.abc import Container
 from datetime import datetime
-from email.policy import default
 from pathlib import Path
 from typing import Optional
-from contextlib import suppress
 
 from .cursorless_lists import append_list
-import os
+# from .conventions import get_cursorless_list_name
 from .vendor.inflection import pluralize
 
 import os
@@ -24,6 +22,7 @@ def init_csv_and_watch_changes(
     default_list_name: Optional[str] = None,
     headers: list[str] = [SPOKEN_FORM_HEADER, CURSORLESS_IDENTIFIER_HEADER],
     no_update_file: bool = False,
+    pluralize_lists: Optional[list[str]] = []
 ):
     """
     Initialize a cursorless settings csv, creating it if necessary, and watch
@@ -50,6 +49,7 @@ def init_csv_and_watch_changes(
         unknown values in this list
         no_update_file Optional[bool]: Set this to `TRUE` to indicate that we should
         not update the csv. This is used generally in case there was an issue coming up with the default set of values so we don't want to persist those to disk
+        pluralize_lists: Create plural version of given lists
     """
     if extra_ignored_values is None:
         extra_ignored_values = []
@@ -74,7 +74,7 @@ def init_csv_and_watch_changes(
     #             extra_ignored_values,
     #             allow_unknown_values,
     #             default_list_name,
-    #		  pluralize_lists,
+    #		      pluralize_lists,
     #         )
 
     # fs.watch(str(file_path.parent), on_watch)
@@ -94,6 +94,7 @@ def init_csv_and_watch_changes(
             extra_ignored_values,
             allow_unknown_values,
             default_list_name,
+            pluralize_lists,
         )
     else:
         if not no_update_file:
@@ -104,6 +105,7 @@ def init_csv_and_watch_changes(
             extra_ignored_values,
             allow_unknown_values,
             default_list_name,
+            pluralize_lists,
         )
 
     # def unsubscribe():
@@ -122,6 +124,7 @@ def update_dicts(
     extra_ignored_values: list[str],
     allow_unknown_values: bool,
     default_list_name: Optional[str],
+    pluralize_lists: Optional[list[str]],
 ):
     # Create map with all default values
     results_map = {}
@@ -156,8 +159,10 @@ def update_dicts(
 
     # Assign result to talon context list
     for list_name, dict in results.items():
-        # ctx.lists[get_cursorless_list_name(list_name)] = dict
         append_list(list_name, dict)
+        if list_name in pluralize_lists:
+            list_plural_name = f"{list_name}_plural"
+            append_list(list_plural_name, {pluralize(k): v for k, v in dict.items()})  
            
 
 def update_file(

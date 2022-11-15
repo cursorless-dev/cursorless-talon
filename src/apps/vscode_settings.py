@@ -40,31 +40,32 @@ class Actions:
         """
         try:
             return Actions.vscode_get_setting(key, default_value), False
-        except Exception as e:
+        except Exception:
             print(fallback_message)
             traceback.print_exc()
             return fallback_value, True
 
 
-def pick_path(paths: list[Path]):
+def pick_path(paths: list[Path]) -> Path:
     existing_paths = [path for path in paths if path.exists()]
     return max(existing_paths, key=lambda path: path.stat().st_mtime)
 
 
 def vscode_settings_path() -> Path:
     if is_macos():
-        path = Path(
-                    f"{os.environ['HOME']}/Library/Application Support/Code/User/settings.json"
-                )
-        path_alternative = Path(
-                    f"{os.environ['HOME']}/Library/Application Support/VSCodium/User/settings.json"
-                )
-    elif is_windows():
-        path = Path(f"{os.environ['APPDATA']}/Code/User/settings.json")
-        path_alternative = Path(f"{os.environ['APPDATA']}/VSCodium/User/settings.json")
+        application_support = Path.home() / "Library/Application Support"
+        path = application_support / "Code/User/settings.json"
+        alt_path = application_support / "VSCodium/User/settings.json"
     elif is_linux():
-        path = Path(f"{os.environ['HOME']}/.config/Code/User/settings.json")
-        path_alternative = Path(f"{os.environ['HOME']}/.config/VSCodium/User/settings.json")
+        xdg_config_home = Path(
+            os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config")
+        )
+        path = xdg_config_home / "Code/User/settings.json"
+        alt_path = xdg_config_home / "VSCodium/User/settings.json"
+    elif is_windows():
+        appdata = Path(os.environ["APPDATA"])
+        path = appdata / "Code/User/settings.json"
+        alt_path = appdata / "VSCodium/User/settings.json"
     else:
         raise NotImplementedError("This OS is not supported") 
-    return pick_path([path, path_alternative])
+    return pick_path([path, alt_path])

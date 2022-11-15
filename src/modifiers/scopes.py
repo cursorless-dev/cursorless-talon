@@ -1,4 +1,7 @@
+from typing import Any
+
 from ..csv_overrides import SPOKEN_FORM_HEADER, init_csv_and_watch_changes
+
 
 # NOTE: Please do not change these dicts.  Use the CSVs for customization.
 # See https://www.cursorless.org/docs/user/customization/
@@ -61,15 +64,21 @@ scope_types = {
     "environment": "environment",
 }
 
+def cursorless_scope_type(m) -> dict[str, str]:
+    """Cursorless scope type singular"""
+    try:
+        return {"type": m["scope_type"]}
+    except KeyError:
+        return {"type": "customRegex", "regex": m["custom_regex_scope_type"]}
 
 def cursorless_scope_type_plural(m) -> dict[str, str]:
     """Cursorless scope type plural"""
     try:
         return {"type": m["scope_type_plural"]}
-    except AttributeError:
+    except KeyError:
         return {
             "type": "customRegex",
-            "regex": m.["custom_regex_scope_type_plural"],
+            "regex": m["custom_regex_scope_type_plural"],
         }
 
 def cursorless_containing_scope(m) -> dict[str, Any]:
